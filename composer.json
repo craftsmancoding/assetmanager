@@ -1,0 +1,65 @@
+{
+    "name": "craftsmancoding/assetmanager",
+    "description": "Asset Manager Media Library for MODX Revolution.",
+    "type": "library",
+    "keywords": ["modx","assets","manager","thumbnails","cropping"], 
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Everett Griffiths",
+            "email": "everett@craftsmancoding.com",
+            "homepage": "http://craftsmancoding.com"
+        }        
+    ],
+    "support": {
+        "email": "donotreply@craftsmancoding.org",
+        "issues": "http://github.com/craftsmancoding/assetmanager/issues",
+        "forum": "http://forums.modx.com/",
+        "wiki": "http://github.com/craftsmancoding/assetmanager/wiki",
+        "source": "http://github.com/craftsmancoding/assetmanager"
+    },    
+    "require": {
+        "php": ">=5.3"
+    },
+    "repositories": [
+    ],
+    "autoload": {
+        "classmap":[
+            "model/"
+        ],
+        "psr-4": {
+            "Assman\\": ["model/","controllers/"]
+        }
+    },    
+    "extra": {
+        "repoman": "1.0",
+        "package_name": "Asset Manager",
+        "namespace": "assman",
+        "version": "1.0.0",
+        "release": "pl",
+        "category":"Asset Manager",
+        "core_path": "",
+        "orm_path": "model/",
+        "assets_path" : "assets/",
+        "seeds_path": ["model/seeds/base"],
+        "packages":[
+            {
+                "pkg":"assman",
+                "path":"model/",
+                "table_prefix": "ass_"
+            }
+        ],
+        "build_attributes":{
+            "Asset": {
+                "preserve_keys": true,
+                "update_object": true, 
+                "unique_key": "path"
+            },
+            "PageAsset": {
+                "preserve_keys": true,
+                "update_object": true, 
+                "unique_key": ["page_id","asset_id"]
+            }
+        }
+    }
+}
