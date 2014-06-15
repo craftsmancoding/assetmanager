@@ -19,7 +19,8 @@
         "source": "http://github.com/craftsmancoding/assetmanager"
     },    
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "craftsmancoding/image":"dev-master"
     },
     "repositories": [
     ],

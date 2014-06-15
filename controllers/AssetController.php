@@ -26,11 +26,13 @@ class AssetController extends APIController {
         )     
      */
     public function postCreate(array $scriptProperties = array()) {
+        $this->modx->setLogLevel(4);
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API $_FILES: '.print_r($_FILES,true),'',__CLASS__,__FUNCTION__,__LINE__);
         $fieldname = $this->modx->getOption('fieldname', $scriptProperties,'file');
-        $product_id = $this->modx->getOption('product_id', $scriptProperties); // Optionally associate it with a product
+        $page_id = $this->modx->getOption('page_id', $scriptProperties); // Optionally associate it with a product
 
+        // Error checking
         if (empty($_FILES)) {
             return $this->sendFail(array('errors'=> 'No FILE data detected.'));
         }
@@ -49,8 +51,8 @@ class AssetController extends APIController {
                 return $this->sendFail(array('errors'=> $Model->errors));
             }
 /*
-            if ($product_id) {
-                $PA = $this->modx->newObject('ProductAsset',array('product_id'=>$product_id,'asset_id'=>$Asset->getPrimaryKey()));
+            if ($page_id) {
+                $PA = $this->modx->newObject('ProductAsset',array('page_id'=>$page_id,'asset_id'=>$Asset->getPrimaryKey()));
                 $PA->save();
             }
 */

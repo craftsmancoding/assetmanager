@@ -25,13 +25,11 @@ class PageController extends BaseController {
     function __construct(\modX &$modx,$config = array()) {
         parent::__construct($modx,$config);
         static::$x =& $modx;
-        
-        $this->config['assets_url'] = $modx->getOption('assman.assets_url', null, MODX_CORE_PATH.'components/assman/');
-        
-        // Set up any config data needed by the HTML client
-        $this->client_config = array(
-            'controller_url' => $this->config['controller_url']
-        );
+
+        $this->config['controller_url'] = self::url();
+        $this->config['core_path'] = $this->modx->getOption('assman.core_path', null, MODX_CORE_PATH.'components/assman/');
+        $this->config['assets_url'] = $this->modx->getOption('assman.assets_url', null, MODX_ASSETS_URL.'components/assman/');
+
 //        $this->modx->regClientCSS($this->config['assets_url'].'css/mgr.css');
 //        $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
 //        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
@@ -45,7 +43,9 @@ class PageController extends BaseController {
         $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery-ui.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/handlebars.js');
+        //$this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');
+        
 //        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.tabify.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/dropzone.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/bootstrap.js');
@@ -130,22 +130,23 @@ class PageController extends BaseController {
     //! Page
     //------------------------------------------------------------------------------
     /**
-     * Called from the Store CRC: controllers/store/update.class.php and create.class.php 
-     *
+     * Generates a tab for Ext JS editing a resource
      * @param array $scriptProperties
      */
-    public function getPageAssets(array $scriptProperties = array()) {
+    public function getPageAssetsTab(array $scriptProperties = array()) {
+        $this->modx->setLogLevel(4);
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $page_id = (int) $this->modx->getOption('page_id', $scriptProperties);
-        $this->client_config['page_id'] = $page_id;
+        $this->config['page_id'] = $page_id;
         $this->setPlaceholder('page_id', $page_id);
         $this->scriptProperties['_nolayout'] = true;
 
         $c = $this->modx->newQuery('PageAsset');
-        $c->where(array('PageAsset.product_id' => $product_id));
+        $c->where(array('PageAsset.page_id' => $page_id));
         $c->sortby('PageAsset.seq','ASC');
         $PA = $this->modx->getCollectionGraph('PageAsset','{"Asset":{}}',$c);
         $this->setPlaceholder('page_assets',$PA);
+        
 
 /*
         $results = $Obj->all($scriptProperties);
@@ -160,7 +161,29 @@ class PageController extends BaseController {
         $this->setPlaceholder('results_per_page', $results_per_page);        
 */
         $this->setPlaceholders($scriptProperties);
-        return $this->fetchTemplate('main/pageassets.php');
+        $out = $this->fetchTemplate('main/pageassets.php');
+        
+        // Wedge the output into the tab
+        $this->modx->lexicon->load('assman:default');
+        $title = $this->modx->lexicon('assets_tab');
+
+        $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+            var assman = '.json_encode($this->config).';
+
+            MODx.on("ready",function() {
+                console.log("[assman] on ready...");
+                MODx.addTab("modx-resource-tabs",{
+                    title: '.json_encode($title).',
+                    id: "assets-resource-tab",
+                    width: "95%",
+                    html: '.json_encode($out).'
+                });
+                
+                page_init();
+            });                
+        </script>');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');
+
     }            
 }
 /*EOF*/

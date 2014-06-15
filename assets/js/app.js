@@ -14,7 +14,19 @@ else {
 }
 
 
-
+/**
+ * Handlebars Parsing
+ *
+ * @param string CSS id of a handlebars template :<script id="entry-template" type="text/x-handlebars-template"> 
+ * @param object data key/value pairs
+ */
+function parse_tpl(src,data) {
+    console.log('[parse_tpl] src tpl id: '+src);
+    var source   = jQuery('#'+src).html();
+    console.log(source);
+    var template = Handlebars.compile(source);
+    return template(data);    
+}
 
 function page_init() {
     console.debug('[page_init]');
@@ -59,14 +71,43 @@ function page_init() {
                 jQuery('#asset_is_active_'+asset_id).val(is_active);
 
                 // This data here is specific to the Asset
-                mapi('asset','edit',{"asset_id":asset_id,"title":title,"alt":alt});
+                //mapi('asset','edit',{"asset_id":asset_id,"title":title,"alt":alt});
                 
-                $( this ).dialog( "close" );
+                jQuery( this ).dialog( "close" );
             },
             "Cancel": function() {
-                $( this ).dialog( "close" );
+                jQuery( this ).dialog( "close" );
             }
         }   
+    });
+    
+
+    // Define Dropzone for Assets 
+    var myDropzone = new Dropzone("div#asset_upload", {url: assman.controller_url+'&class=asset&method=create'});    
+    // Refresh the list on success (append new tile to end)
+    myDropzone.on("success", function(file,response) {
+
+        response = jQuery.parseJSON(response);
+        console.log('[Dropzone Success]', file, response);
+//        console.log(response);
+        if (response.status == "success") {
+            console.log('success here...');
+            var data = parse_tpl("page_asset_tpl",response.data.fields);
+            jQuery("#page_assets").append(data);
+            jQuery(".dz-preview").remove();
+       } 
+       else {                           
+            console.log('problem here...');
+            $(".dz-success-mark").hide();
+            $(".dz-error-mark").show();
+            $(".moxy-msg").show();
+            $("#moxy-result").html("Failed");
+            $("#moxy-result-msg").html(response.data.msg);
+            $(".moxy-msg").delay(3200).fadeOut(400);
+       }
+    });    
+    myDropzone.on("error", function(file,errorMessage) {
+        console.log('[Dropzone Error]',file, errorMessage);
     });
 
 }

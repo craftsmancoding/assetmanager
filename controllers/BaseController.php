@@ -49,6 +49,7 @@ class BaseController extends \modExtraManagerController {
     private $cache; // for iterative ops
     private $depth = 0; //
     
+    public $client_config = array();    
     
     /**
      * Map a function name to a MODX permission, e.g. 
@@ -145,7 +146,7 @@ class BaseController extends \modExtraManagerController {
         if (substr($file,-4) == '.tpl') {
             return parent::fetchTemplate($file);
         }
-        $this->modx->log(\modX::LOG_LEVEL_ERROR, 'File: '.$file,'','BaseController::'.__FUNCTION__);
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'File: '.$file,'','BaseController::'.__FUNCTION__);
         // WTF?  using regClientCSS here fails ONLY if you also use it in your view file. 
         // Otherwise it works. W.T.F.?
         //print $this->config['assets_url']; exit;
@@ -167,18 +168,35 @@ class BaseController extends \modExtraManagerController {
 */
         
         // Late register here so controllers can add relevant bits of config data
+//		ob_start();  
         if ($this->client_config) {
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'client_config: '.print_r($this->client_config,true),'','BaseController::'.__FUNCTION__);
+            // This probably only works if the content has an HTML block...
+/*
             $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->client_config).';
+//            jQuery(document).ready(function() {
+                console.log("Mysteries...");
+                page_init();
+//            });
+            </script>');
+*/
+            // Print this to the output buffer
+/*
+            print '<script type="text/javascript">
+            var assman = '.json_encode($this->client_config).';
             jQuery(document).ready(function() {
+                console.log("BaseController::fetchTemplate('.$file.')");
                 page_init();
             });
-            </script>');
+            </script>';
+*/
+
         }
         
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
 
-        $data =& $this->getPlaceholders();
+        $data = $this->getPlaceholders();
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'View: ' .$file.' data: '.print_r($data,true),'','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
 		if (!is_file($path.$file)) {
     		$this->modx->log(\modX::LOG_LEVEL_ERROR, 'View file does not exist: '. $file, '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);

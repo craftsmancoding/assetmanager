@@ -1,7 +1,7 @@
 <?php
 /**
- * @name getProductImages
- * @description Returns a list of product_images.
+ * @name getPageAssets
+ * @description Returns a list of page assets
  *
  * 
  * Available Placeholders

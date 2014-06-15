@@ -34,38 +34,45 @@ switch ($modx->event->name) {
         $classes = json_decode($modx->getOption('assman.class_keys'),true);
 
         if (empty($resource)) {
-            $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';            
+            $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';
+            $page_id = 0;
         } 
         else {
             $class_key = $resource->get('class_key');    
+            $page_id = $resource->get('id');
         }
 
         if (in_array($class_key,$classes)) {
             //$T = new \Assman\Base($modx);
             //$form = $T->getForm($id);
             $Page = new \Assman\PageController($modx);
-            $url = $Page::url('page','pageassets',array('_nolayout'=>true));
+            $Page->getPageAssetsTab(array('page_id'=>$page_id,'_nolayout'=>true));
+
+            
+//            $url = $Page::url('page','index',array('_nolayout'=>true));
 //            print $url; exit;
 //            $form = $Page->getPageAssets();
 //            $form = '<p>Hello there</p>';
+/*
             $modx->lexicon->load('assman:default');
             $title = $modx->lexicon('assets_tab');
 
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
                     console.log("[assman] Ajax Requesting URL: '.$url.'");
+                    
                     MODx.addTab("modx-resource-tabs",{
                         title: '.json_encode($title).',
                         id: "assets-resource-tab",
                         width: "95%",
-                        //html: '.json_encode(utf8_encode("$form")).',
                         autoLoad: {
-                            url : "'.$url.'",
+                            url: "'.$url.'",
                             scripts : true
                         }
                     });
                 });                
             </script>');
+*/
         }
         break;
         

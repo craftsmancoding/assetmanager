@@ -2,8 +2,14 @@
 /**
  * Asset
  * For asset management
+ *
+ * Configuration (via MODX System Settings)
+ *
+ *
+ *
  */
 namespace Assman;
+
 class Asset extends BaseModel {
 
     public $xclass = 'Asset';
@@ -67,9 +73,8 @@ class Asset extends BaseModel {
      * Enforces our naming convention for thumbnail images (or any resized images).
      * Desired behavior is like this:
      *
-     *  Original image: /path/to/image/foo.jpg
-     *  Thumb1:         /path/to/image/thumbs/foo.250x100.jpg
-     *  Thumb1:         /path/to/image/thumbs/foo.100x50.jpg
+     *  Original image: /lib/path/to/image/foo.jpg   (asset_id 123)
+     *  Resized         /lib/resized/123/250x100.jpg
      *  ...etc...
      *
      * @param string $orig full path to the original image
@@ -78,30 +83,31 @@ class Asset extends BaseModel {
      * @param integer $h
      * @return string
      */
-    public function getThumbFilename($orig,$subdir,$w,$h) {
-        $subdir = trim($subdir,'/');
+    public function getThumbFilename($orig,$asset_id,$w,$h) {
+        $storage_basedir = $this->modx->getOption('assets_path').rtrim($this->modx->getOption('assman.library_path'),'/').'/';
+        $dir = $storage_basedir.$asset_id.'/';
         // dirname : omits trailing slash
         // basename : same as basename()
         // extension : omits period
         // filename : w/o extension
         $p = pathinfo($orig);
-        return sprintf('%s/%s/%s.%sx%s.%s',$p['dirname'],$subdir,$p['filename'],$w,$h,$p['extension']);
+        return $dir . $w.'x'.$h.'.'.$p['extension'];
+//        return sprintf('%s/%s/%s.%sx%s.%s',$p['dirname'],$subdir,$p['filename'],$w,$h,$p['extension']);
     }
     
     /**
-     * Create the thumbnail and return its full path
+     * Create a resized image for the given asset_id
      *
-     * @param string $filepath full path to original image
-     * @param string $subdir inside $filepath's dir where thumbnail will be created.
-     *          In prod:  $subdir = $this->modx->getOption('moxycart.thumbnail_dir');
+     * @param string $src fullpath to original image
+     * @param integer $asset_id primary key
      * @param integer $w
      * @param integer $h (todo)
      * @return string relative URL to thumbnail, rel to $storage_basedir
      */
-    public function getThumbnail($filepath,$subdir,$w,$h) {
+    public function getResizedImage($filepath, $asset_id,$w,$h) {
         $this->_validFile($filepath);
-        $thumbnail_path = $this->getThumbFilename($filepath, $subdir,$w,$h);
-        return Image::thumbnail($filepath,$thumbnail_path,$w);
+        $thumbnail_path = $this->getThumbFilename($filepath, $asset_id,$w,$h);
+        return \Craftsmancoding\Image::thumbnail($filepath,$thumbnail_path,$w,$h);
     }
     
     /**
@@ -112,8 +118,8 @@ class Asset extends BaseModel {
      */
     public static function getMissingThumbnail($w,$h) {
         //$ext = strtolower(strrchr($this->get('url'), '.'));
-        //$w = $this->modx->getOption('moxycart.thumbnail_width');
-        //$h = $this->modx->getOption('moxycart.thumbnail_height');
+        //$w = $this->modx->getOption('assman.thumbnail_width');
+        //$h = $this->modx->getOption('assman.thumbnail_height');
         return sprintf('http://placehold.it/%sx%s',$w,$h);
     }
     
@@ -127,7 +133,7 @@ class Asset extends BaseModel {
     public function getExisting($src) {
         $this->_validFile($src);
         if ($obj = $this->modx->getObject('Asset',array('sig'=>md5_file($src)))) {
-            $classname = '\\Moxycart\\'.$this->xclass;        
+            $classname = '\\Assman\\'.$this->xclass;        
             return new $classname($this->modx, $obj); 
         }
             
@@ -154,10 +160,10 @@ class Asset extends BaseModel {
      * CONFIG (modx system setttings):
      *
      *      assets_path : full path to MODX's assets directory
-     *      moxycart.upload_dir : path relative to assets_path where Moxycart will store its images
-     *      moxycart.thumbnail_width
-     *      moxycart.thumbnail_height
-     *      moxycart.thumbnail_dir
+     *      assman.library_path : path relative to assets_path where Assman will store its images
+     *      assman.thumbnail_width
+     *      assman.thumbnail_height
+     *      assman.thumbnail_dir
      *
      * @param array $FILES structure mimics part of the $_FILES array, see above.
      * @param boolean $force_create if true, a duplicate asset will be created. False will trigger a search for existing asset.
@@ -170,12 +176,13 @@ class Asset extends BaseModel {
         if (!isset($FILE['tmp_name']) || !isset($FILE['name'])) {
             throw new \Exception('Missing required keys in FILE array.');        
         }
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, print_r($FILE,true),'',__CLASS__,__FUNCTION__,__LINE__);
         
         // From Config
-        $storage_basedir = $this->modx->getOption('assets_path').rtrim($this->modx->getOption('moxycart.upload_dir'),'/').'/';
-        $w = $this->modx->getOption('moxycart.thumbnail_width');
-        $h = $this->modx->getOption('moxycart.thumbnail_height');
-        $subdir = $this->modx->getOption('moxycart.thumbnail_dir');
+        $storage_basedir = $this->modx->getOption('assets_path').rtrim($this->modx->getOption('assman.library_path'),'/').'/';
+        $w = $this->modx->getOption('assman.thumbnail_width');
+        $h = $this->modx->getOption('assman.thumbnail_height');
+        $subdir = $this->modx->getOption('assman.thumbnail_dir');
         
         $src = $FILE['tmp_name']; // source file
         $this->_validFile($src);
@@ -185,8 +192,8 @@ class Asset extends BaseModel {
         // Existing?
         if (!$force_create) {
             if ($existing = $this->modx->getObject('Asset', array('sig'=>$sig))) {
-                $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Existing Asset found with matching signature: '.$existing->get('asset_id'),'',__CLASS__,__FUNCTION__,__LINE__);        
-                $classname = '\\Moxycart\\'.$this->xclass;
+                $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Existing Asset found with matching signature: '.$existing->get('asset_id'),'',__CLASS__,__FUNCTION__,__LINE__); 
+                $classname = '\\Assman\\'.$this->xclass;
                 return new $classname($this->modx, $existing); 
             }
         }
@@ -197,7 +204,7 @@ class Asset extends BaseModel {
         $basename = $FILE['name'];
         $dst = $this->getUniqueFilename($target_dir.$basename);
 
-        $obj = $this->modx->newObject($this->xclass); // new Asset()        
+        $obj = $this->modx->newObject('Asset'); 
         $obj->fromArray($FILE); // get any defaults
         
         $size = (isset($FILE['size'])) ? $FILE['size'] : filesize($src);
@@ -221,26 +228,36 @@ class Asset extends BaseModel {
             $obj->set('width', $info['width']);
             $obj->set('height', $info['height']);
             $obj->set('duration', $info['duration']);
-            if ($thumb_fullpath = $this->getThumbnail($dst,$subdir,$w,$h)) {
+/*
+            if ($thumb_fullpath = $this->getResizedImage($dst,$subdir,$w,$h)) {
                 $obj->set('thumbnail_url',$this->getRelPath($thumb_fullpath, $storage_basedir));
             }
+*/
         }
         else {
             $obj->set('is_image', 0);
         }
-
+        
         if(!$obj->save()) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to save Asset. Errors: '.print_r($obj->errors,true),'',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Error saving to database.');
         }
-        $classname = '\\Moxycart\\'.$this->xclass;
+        // Store thumbnail
+        if ($obj->get('is_image')) {
+            if ($thumb_fullpath = $this->getResizedImage($dst,$obj->get('asset_id'),$w,$h)) {
+                $obj->set('thumbnail_url',$this->getRelPath($thumb_fullpath, $storage_basedir));
+            }        
+        }
+        
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Saved Asset: '.print_r($obj->toArray(), true),'',__CLASS__,__FUNCTION__,__LINE__);
+        $classname = '\\Assman\\'.$this->xclass;
         return new $classname($this->modx, $obj); 
     }
     
     
     /**
      * Given a full path to a file, this strips out the $prefix.
-     * (default if null: MODX_ASSET_PATH . moxycart.upload_dir)
+     * (default if null: MODX_ASSET_PATH . assman.library_path)
      * The result ALWAYS omits the leading slash, e.g. "/path/to/something.txt"
      * stripped of "/path/to" becomes "something.txt"
      *
@@ -252,7 +269,7 @@ class Asset extends BaseModel {
             throw new \Exception('Invalid data type for path');
         }
         if (!$storage_basedir) {
-            $storage_basedir = $this->modx->getOption('assets_path').$this->modx->getOption('moxycart.upload_dir');
+            $storage_basedir = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
         }
         
         if (substr($fullpath, 0, strlen($storage_basedir)) == $storage_basedir) {
@@ -415,7 +432,7 @@ class Asset extends BaseModel {
      *
      */
     public function remove() {
-        $storage_basedir = $this->modx->getOption('assets_path').$this->modx->getOption('moxycart.upload_dir');
+        $storage_basedir = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Removing Asset '.$this->getPrimaryKey().' with assets in storage_basedir '.$storage_basedir,'',__CLASS__,__FILE__,__LINE__);
         
         //$file = $storage_basedir.$this->modelObj->get('path');
@@ -468,7 +485,7 @@ class Asset extends BaseModel {
     /**
      * Save the asset to the defined storage directory. This means that various sub-directories
      * will be created within the $storage_basedir.  In normal operation, pass this the 
-     * moxycart.upload_dir setting.
+     * assman.library_path setting.
      *
      * @param string $storage_basedir full path
      */
@@ -489,14 +506,14 @@ class Asset extends BaseModel {
 
         $this->modelObj->set('path', $this->getRelPath($dst, $storage_basedir));
         $this->modelObj->set('url', $this->getRelPath($dst, $storage_basedir));
-        $this->modelObj->set('thumbnail_url',$this->getThumbnail($dst, $storage_basedir));
+        $this->modelObj->set('thumbnail_url',$this->getResizedImage($dst, $storage_basedir));
         
         return $this->save();
     }
       
     
     /**
-     * Override here to make the url and path relative to the defined moxycart.upload_dir
+     * Override here to make the url and path relative to the defined assman.library_path
      */
     public function save() {
         // move to 

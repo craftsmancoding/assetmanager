@@ -23,7 +23,7 @@ Technical Note:
 The Asset Manager helps maintain an ordered folder structure for your images and other assets while 
 keeping database records on those file assets.  Images are NOT stored as binary data in the database,
 so it is critical that the database and the filesystem be kept in sync.  Do not meddle around with the
-files on the filesystem that have been put in place by the Asset Manager.
+files on the filesystem that have been put in place by the Asset Manager!  Doing so may break your site.
 
 You are forced to use the UI so that the database "knows" about the assets you have added. The Asset
 Manager won't "know" about an asset if you upload it manually (e.g. using SFTP).

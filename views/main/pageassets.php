@@ -1,14 +1,22 @@
-<div id="assets_tab" class="content">	
-    <div class="dropzone-wrap" id="image_upload">
+<script id="page_asset_tpl" type="text/x-handlebars-template">
+<li class="li_product_image" id="product-asset-{{asset_id}}">
+	<div class="img-info-wrap">  
+        <img src="{{thumbnail_url}}?rand=<?php print uniqid(); ?>" alt="{{alt}}" width="" />
+	    <input type="hidden" name="Assets[asset_id][]" value="{{asset_id}}" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');" style="cursor:pointer;"/>
+        <input type="hidden" id="asset_asset_id_{{asset_id}}" name="Assets[asset_id][]" class="asset_asset_id" value="{{asset_id}}" />
+	</div>
+</li>
+</script>
 
-    	<ul class="clearfix" id="page_images">
+<div id="assets_tab" class="content">	
+    <div class="dropzone-wrap" id="asset_upload">
+
+    	<ul class="clearfix" id="page_assets">
             <?php 
             foreach ($data['page_assets'] as $a): ?>
                 <li class="li_page_image" id="page-asset-<?php print $a->get('asset_id'); ?>">
                 	<div class="img-info-wrap">
-                	    <!--a class="edit-img" href="#<?php print $a->get('asset_id'); ?>" data-asset_id="<?php print $a->get('asset_id'); ?>" data-toggle="modal" data-target="#update-image"-->
                 		  <img src="<?php print $a->Asset->get('thumbnail_url'); ?>?rand=<?php print uniqid(); ?>" alt="<?php print $a->Asset->get('alt'); ?>" width="" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', <?php print $a->get('asset_id'); ?>).dialog('open');" style="cursor:pointer;"/>
-                		<!--/a-->
                 	    <input type="hidden" id="asset_asset_id_<?php print $a->get('asset_id'); ?>" class="asset_asset_id" name="Assets[asset_id][]" value="<?php print $a->get('asset_id'); ?>" />
                 	    <!-- Button trigger modal -->
                 		

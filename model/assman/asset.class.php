@@ -14,21 +14,20 @@ class Asset extends xPDOObject {
     public function get($k, $format = null, $formatTemplate= null) {
         $raw  = parent::get($k, $format, $formatTemplate);
         if ($k=='url') {
-            if ($this->xpdo->getOption('assman.url_override')) {
-                return $this->xpdo->getOption('assman.site_url') . $this->xpdo->getOption('assman.library_path').$raw;
-            }
-            else {
-                return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$raw;
-            }        
+            return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$raw;
         }
         elseif ($k=='path') {
             return $this->xpdo->getOption('assets_path') . $this->xpdo->getOption('assman.library_path').$raw;    
         }
         elseif ($k=='thumbnail_url') {
+            
+            // Fallback to placehold.it e.g. http://placehold.it/350x150&text=PDF
             if (empty($raw)) {
+                //$ext = strtolower(strrchr($this->get('url'), '.'));
                 $w = $this->xpdo->getOption('assman.thumbnail_width');
                 $h = $this->xpdo->getOption('assman.thumbnail_height');
                 return \Assman\Asset::getMissingThumbnail($w,$h);
+                //return sprintf('http://placehold.it/%sx%s&text=%s',$w,$h,$ext);
             }
             // Passthru if the user has set a full URL
             elseif(filter_var($raw, FILTER_VALIDATE_URL)) {
@@ -39,6 +38,7 @@ class Asset extends xPDOObject {
         }
 
         return $raw;
+
     }
 
 }

@@ -92,7 +92,7 @@ class IndexManagerController extends \Assman\BaseController {
         $config['controller_url'] = self::url();
         $config['core_path'] = $modx->getOption('assman.core_path', null, MODX_CORE_PATH.'components/assman/');
         $config['assets_url'] = $modx->getOption('assman.assets_url', null, MODX_ASSETS_URL.'components/assman/');
-
+//$modx->log(4, print_r($config,true)); exit;
         // If you don't do this, the $_POST array will seem to be populated even during normal GET requests.
         unset($_POST['HTTP_MODAUTH']);
         // Function names are not case sensitive
