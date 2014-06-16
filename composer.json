@@ -20,9 +20,9 @@
     },    
     "require": {
         "php": ">=5.3",
-        "craftsmancoding/image":"dev-master"
+        "craftsmancoding/image": "dev-master"
     },
-    "repositories": [
+    "repositories": [    
     ],
     "autoload": {
         "classmap":[
