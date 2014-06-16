@@ -43,13 +43,17 @@ div > input.x-form-field {
   margin-bottom: 0px !important;
 }
 
+
 .img-info-wrap {
   height:98px;
   overflow: hidden;
 }
 
+
 .img-info-wrap img {
-  width: 100%;
+/* This seems to cause problems? */
+/*   width: 100%; */
+    max-width: 140px; /* Just taking a guess */
 }
 #page_images li.inactive {
   border: 1px solid #ddd;

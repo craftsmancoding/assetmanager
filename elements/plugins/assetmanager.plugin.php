@@ -30,7 +30,6 @@ switch ($modx->event->name) {
     // Remember: $resource will be null for new Resources!
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
-        $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
         $classes = json_decode($modx->getOption('assman.class_keys'),true);
 
         if (empty($resource)) {
@@ -43,45 +42,18 @@ switch ($modx->event->name) {
         }
 
         if (in_array($class_key,$classes)) {
-            //$T = new \Assman\Base($modx);
-            //$form = $T->getForm($id);
             $Page = new \Assman\PageController($modx);
             $Page->getPageAssetsTab(array('page_id'=>$page_id,'_nolayout'=>true));
-
-            
-//            $url = $Page::url('page','index',array('_nolayout'=>true));
-//            print $url; exit;
-//            $form = $Page->getPageAssets();
-//            $form = '<p>Hello there</p>';
-/*
-            $modx->lexicon->load('assman:default');
-            $title = $modx->lexicon('assets_tab');
-
-            $modx->regClientStartupHTMLBlock('<script type="text/javascript">
-                MODx.on("ready",function() {
-                    console.log("[assman] Ajax Requesting URL: '.$url.'");
-                    
-                    MODx.addTab("modx-resource-tabs",{
-                        title: '.json_encode($title).',
-                        id: "assets-resource-tab",
-                        width: "95%",
-                        autoLoad: {
-                            url: "'.$url.'",
-                            scripts : true
-                        }
-                    });
-                });                
-            </script>');
-*/
         }
         break;
         
     case 'OnDocFormSave':
-        $modx->log(modX::LOG_LEVEL_DEBUG,'','','taxonomies Plugin:OnDocFormSave');
-/*
-        if ($terms = $resource->get('terms')) {
-            $T = new \Taxonomies\Base($modx);
-            $T->dictatePageTerms($resource->get('id'), $terms);
+        $modx->log(modX::LOG_LEVEL_DEBUG,'','','asset Manager Plugin:OnDocFormSave');
+        if ($pageassets = $resource->get('PageAssets')) {
+            $A = new \Assman\Asset($modx);
+            $data = $A->indexedToRecordset($pageassets);
+            $modx->log(modX::LOG_LEVEL_DEBUG,print_r($data,true),'','Assman');
+            $A->dictateRelations($data,$resource->get('id'));
         }
-*/
-        break;}
+        break;
+    }

@@ -141,35 +141,38 @@ class PageController extends BaseController {
         $this->setPlaceholder('page_id', $page_id);
         $this->scriptProperties['_nolayout'] = true;
 
+        $A = new Asset($this->modx);
         $c = $this->modx->newQuery('PageAsset');
         $c->where(array('PageAsset.page_id' => $page_id));
         $c->sortby('PageAsset.seq','ASC');
         $PA = $this->modx->getCollectionGraph('PageAsset','{"Asset":{}}',$c);
+        $json = array();
+        $order = array();
+        foreach ($PA as $p) {
+            $json[ $p->get('asset_id') ] = $p->Asset->toArray();            
+            $order[] = $p->get('asset_id');
+        }
         $this->setPlaceholder('page_assets',$PA);
         
+        if ($json) {
+            $Assets = json_encode($json);
+        }
+        else {
+            $Assets = '{}';
+        }
 
-/*
-        $results = $Obj->all($scriptProperties);
-        $count = $Obj->count($scriptProperties);
-        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
-        $results_per_page = (int) $this->modx->getOption('assman.default_per_page','',$this->modx->getOption('default_per_page'));
-        $this->_setProductColumns();
-        $this->setPlaceholder('baseurl', $this->page('storeproducts'));
-        $this->setPlaceholder('results', $results);
-        $this->setPlaceholder('count', $count);
-        $this->setPlaceholder('offset', $offset);
-        $this->setPlaceholder('results_per_page', $results_per_page);        
-*/
-        $this->setPlaceholders($scriptProperties);
-        $out = $this->fetchTemplate('main/pageassets.php');
-        
+        $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
+        $out = file_get_contents($path.'main/pageassets.tpl');
+
         // Wedge the output into the tab
         $this->modx->lexicon->load('assman:default');
         $title = $this->modx->lexicon('assets_tab');
 
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->config).';
-
+            var Assets = '.$Assets.';
+            var Order = '.json_encode($order).';
+            var inited = 0;
             MODx.on("ready",function() {
                 console.log("[assman] on ready...");
                 MODx.addTab("modx-resource-tabs",{
@@ -178,8 +181,9 @@ class PageController extends BaseController {
                     width: "95%",
                     html: '.json_encode($out).'
                 });
-                
-                page_init();
+                if (inited==0) {
+                    page_init();
+                }
             });                
         </script>');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');

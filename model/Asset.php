@@ -38,6 +38,59 @@ class Asset extends BaseModel {
     }
 
     /**
+     * Dictate related assets (e.g. to a current page).
+     * The $data array should describe the *relations*, not the parent asset.  E.g. PageAsset objects,
+     * not the Asset objects themselves.  Because this requires a current id (e.g. page id), this can
+     * only be run after a page/product etc. has been saved and an id is present.
+     *
+     * This will remove all assets not in the given $data, add any new pivots, and order them (seq)
+     * Additional parameters are made available here for any 3rd party extension to associate assets
+     * with an object type other than PageAsset. 
+     *
+     * @param array $data of associated records
+     * @param integer $this_id ID of thing being joined to, e.g. this page id
+     * @param sstring $id_name default 'page_id' 
+     * @param string $join ProductAsset
+     * @param array $dictate'd asset_id's
+     *
+     * @return
+     */
+    public function dictateRelations(array $data, $this_id, $id_name='page_id', $join='PageAsset') {
+        $this->modx->setLogLevel(4);
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Dictating Asset Relations for id '.$this_id.' with join '.$join.' : '.print_r($data,true),'',__CLASS__,__FILE__,__LINE__);
+        
+        $dictated = array();
+        $seq = 0;
+        foreach ($data as $r) {
+            $dictated[] = $r['asset_id'];
+            // Exists aready?
+            if (!$Rel = $this->modx->getObject($join, array($id_name => $this_id, 'asset_id'=> $r['asset_id']))) {
+                $Rel = $this->modx->newObject($join, array($id_name => $this_id, 'asset_id'=> $r['asset_id']));
+            }
+            $Rel->fromArray($r);
+            $Rel->set('seq', $seq);
+            $seq++;
+            if(!$Rel->save()) {
+                $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Error saving relation for asset_id '.$Rel->get('asset_id'). ' and '.$id_name.' '.$this_id,'',__CLASS__,__FILE__,__LINE__);
+            }
+        }
+
+        // Remove un-mentioned
+        $existing = $this->modx->getIterator($join, array($id_name => $this_id));
+        foreach ($existing as $e) {
+            if (!in_array($e->get('asset_id'), $dictated)) {
+                if (!$e->remove()) {
+                    $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Error removing relation for asset_id '.$e->get('asset_id'). ' and '.$id_name.' '.$this_id,'',__CLASS__,__FILE__,__LINE__);
+                }
+            }
+        }
+
+        
+        
+        return true;
+    }
+
+    /**
      * Helps check for filename conflicts: given the desired name for the file,
      * this will see if the file already exists, and if so, it will generate a 
      * unique filename for the file while preserving the extension and the basename
@@ -77,22 +130,46 @@ class Asset extends BaseModel {
      *  Resized         /lib/resized/123/250x100.jpg
      *  ...etc...
      *
-     * @param string $orig full path to the original image
+     * @param string $src full path to the original image
      * @param string $subdir to define resized images will be written
      * @param integer $w
      * @param integer $h
      * @return string
      */
-    public function getThumbFilename($orig,$asset_id,$w,$h) {
+    public function getThumbFilename($src,$asset_id,$w,$h) {
         $storage_basedir = $this->modx->getOption('assets_path').rtrim($this->modx->getOption('assman.library_path'),'/').'/';
-        $dir = $storage_basedir.$asset_id.'/';
+        $dir = $storage_basedir.'resized/'.$asset_id.'/';
         // dirname : omits trailing slash
         // basename : same as basename()
         // extension : omits period
         // filename : w/o extension
-        $p = pathinfo($orig);
+        $p = pathinfo($src);
         return $dir . $w.'x'.$h.'.'.$p['extension'];
 //        return sprintf('%s/%s/%s.%sx%s.%s',$p['dirname'],$subdir,$p['filename'],$w,$h,$p['extension']);
+    }
+    
+    /**
+     * Get the URL for the thumbnail for a given asset.
+     * This will generate the thumbnail if necessary
+     *
+     * @param object xpdo object representing the asset
+     * @return string URL rel to library_path
+     */
+    public function getThumbnailURL($obj) {
+
+        $w = $this->modx->getOption('assman.thumbnail_width');
+        $h = $this->modx->getOption('assman.thumbnail_height');
+        
+        if (!$obj->get('is_image')) {
+            return $this->getMissingThumbnail($w,$h);
+        }
+        
+        $thumbfile = $this->getResizedImage($obj->get('path'), $obj->get('asset_id'), $w, $h);
+        //$this->modx->log(4, 'Thumbnail: '.$thumbfile);
+        $prefix = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
+        return $this->getRelPath($thumbfile, $prefix);
+        
+        
     }
     
     /**
@@ -104,10 +181,13 @@ class Asset extends BaseModel {
      * @param integer $h (todo)
      * @return string relative URL to thumbnail, rel to $storage_basedir
      */
-    public function getResizedImage($filepath, $asset_id,$w,$h) {
-        $this->_validFile($filepath);
-        $thumbnail_path = $this->getThumbFilename($filepath, $asset_id,$w,$h);
-        return \Craftsmancoding\Image::thumbnail($filepath,$thumbnail_path,$w,$h);
+    public function getResizedImage($src, $asset_id,$w,$h) {
+        $this->_validFile($src);
+        $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
+        if (file_exists($dst)) {
+            return $dst;
+        }
+        return \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
     }
     
     /**
@@ -243,11 +323,13 @@ class Asset extends BaseModel {
             throw new \Exception('Error saving to database.');
         }
         // Store thumbnail
+/*
         if ($obj->get('is_image')) {
             if ($thumb_fullpath = $this->getResizedImage($dst,$obj->get('asset_id'),$w,$h)) {
                 $obj->set('thumbnail_url',$this->getRelPath($thumb_fullpath, $storage_basedir));
             }        
         }
+*/
         
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Saved Asset: '.print_r($obj->toArray(), true),'',__CLASS__,__FUNCTION__,__LINE__);
         $classname = '\\Assman\\'.$this->xclass;
@@ -264,19 +346,20 @@ class Asset extends BaseModel {
      * @param string $fullpath
      * @param mixed $prefix to remove. Leave null to use MODX settings
      */
-    public function getRelPath($fullpath, $storage_basedir=null) {
+    public function getRelPath($fullpath, $prefix=null) {
         if (!is_scalar($fullpath)) {
             throw new \Exception('Invalid data type for path');
         }
-        if (!$storage_basedir) {
-            $storage_basedir = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
+        if (!$prefix) {
+            $prefix = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
         }
         
-        if (substr($fullpath, 0, strlen($storage_basedir)) == $storage_basedir) {
-            return ltrim(substr($fullpath, strlen($storage_basedir)),'/');
+        if (substr($fullpath, 0, strlen($prefix)) == $prefix) {
+            return ltrim(substr($fullpath, strlen($prefix)),'/');
         }
         else {
             // either the path was to some other place, or it has already been made relative??
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Prefix ('.$prefix.') not found in path ('.$fullpath.')','',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Prefix not found in path');
         }
     }

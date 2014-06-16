@@ -15,10 +15,10 @@
  * hybrid class that implements many of the same functions xpdo (e.g. toArray) and passes them
  * through to the ORM object underneath. 
  *
- * WARNING: confusion can arrise where it's not clear whether you've got a Moxycart\Product
- * or an xPDO \Product class on your hands because they look and act very similarly.  
+ * WARNING: confusion can arrise where it's not clear whether you've got a Assman\Asset
+ * or an xPDO \Asset class on your hands because they look and act very similarly.  
  *
- * php ../repoman/repoman schema:parse . --model=moxycart --table_prefix=moxy_ --overwrite --restore=store,taxonomy,term,review,product.class
+ * php ../repoman/repoman schema:parse . --model=assman --table_prefix=ass_ --overwrite 
  *
  * Beware late static bindings!
  * See http://stackoverflow.com/questions/10504129/when-using-self-parent-static-and-how
@@ -166,7 +166,7 @@ class BaseModel {
         // If you get this error: "Call to a member function getOption() on a non-object", it could mean:
         // 1) you tried to call this method statically, e.g. Product::all()
         // 2) you forgot to initialize the class and pass a modx instance to the contructor (dependency injection!)
-        $limit = (int) $this->modx->getOption('limit',$args,$this->modx->getOption('moxycart.default_per_page','',$this->modx->getOption('default_per_page')));
+        $limit = (int) $this->modx->getOption('limit',$args,$this->modx->getOption('assman.default_per_page','',$this->modx->getOption('default_per_page')));
         $offset = (int) $this->modx->getOption('offset',$args,0);
         $sort = $this->quoteSort($this->modx->getOption('sort',$args,$this->default_sort_col));
         $dir = $this->modx->getOption('dir',$args,$this->default_sort_dir);
@@ -240,12 +240,12 @@ class BaseModel {
      * @param string $prefix (needed for recursion)
      * @return array
      */
-    public function flattenArray(array $array,$prefix='') {
+    public function flattenArray(array $array,$prefix='',$separator='.') {
         $result = array();
         foreach ($array as $key => $value)
         {
             if (is_array($value))
-                $result = array_merge($result, $this->flattenArray($value, $prefix . $key . '.'));
+                $result = array_merge($result, $this->flattenArray($value, $prefix . $key . $separator));
             else
                 $result[$prefix . $key] = $value;
         }   
@@ -329,7 +329,7 @@ class BaseModel {
      */    
     public function find($id) {
         if ($obj = $this->modx->getObject($this->xclass, $id)) {
-            $classname = '\\Moxycart\\'.$this->xclass;        
+            $classname = '\\Assman\\'.$this->xclass;        
             return new $classname($this->modx,$obj);
         }
         return false;
@@ -418,7 +418,7 @@ class BaseModel {
         }
 
         if ($obj = $this->modx->getObject($this->xclass,$criteria)) {
-            $classname = '\\Moxycart\\'.$this->xclass;        
+            $classname = '\\Assman\\'.$this->xclass;        
             return new $classname($this->modx, $obj); 
         }
         

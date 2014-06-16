@@ -16,7 +16,7 @@ return array(
 		'area' => 'assman:default'
     ),
     // If true, the assman.site_url will be used to calculate an asset's URL.
-    // If false, the MODX site url is used. 
+    // If false, the MODX assets url is used. 
     array(
         'key'  =>     'assman.url_override',
 		'value'=>     false,

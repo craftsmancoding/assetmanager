@@ -1,7 +1,7 @@
 <script id="page_asset_tpl" type="text/x-handlebars-template">
 <li class="li_product_image" id="product-asset-{{asset_id}}">
 	<div class="img-info-wrap">  
-        <img src="{{thumbnail_url}}?rand=<?php print uniqid(); ?>" alt="{{alt}}" width="" />
+        <img src="{{thumbnail_url}}?rand=<?php print uniqid(); ?>" alt="{{alt}}" width="<?php print $this->modx->getOption('assman.thumbnail_width'); ?>" height="<?php print $this->modx->getOption('assman.thumbnail_height'); ?>"/>
 	    <input type="hidden" name="Assets[asset_id][]" value="{{asset_id}}" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');" style="cursor:pointer;"/>
         <input type="hidden" id="asset_asset_id_{{asset_id}}" name="Assets[asset_id][]" class="asset_asset_id" value="{{asset_id}}" />
 	</div>
@@ -15,15 +15,11 @@
             <?php 
             foreach ($data['page_assets'] as $a): ?>
                 <li class="li_page_image" id="page-asset-<?php print $a->get('asset_id'); ?>">
-                	<div class="img-info-wrap">
-                		  <img src="<?php print $a->Asset->get('thumbnail_url'); ?>?rand=<?php print uniqid(); ?>" alt="<?php print $a->Asset->get('alt'); ?>" width="" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', <?php print $a->get('asset_id'); ?>).dialog('open');" style="cursor:pointer;"/>
-                	    <input type="hidden" id="asset_asset_id_<?php print $a->get('asset_id'); ?>" class="asset_asset_id" name="Assets[asset_id][]" value="<?php print $a->get('asset_id'); ?>" />
-                	    <!-- Button trigger modal -->
-                		
-                		<!-- Modal-->
-                	</div>
-                </li>            
-            
+                    <div class="img-info-wrap">
+                        <img src="<?php print $a->Asset->get('thumbnail_url'); ?>" />
+                        <input type="hidden" id="asset_asset_id_<?php print $a->get('asset_id'); ?>" class="asset_asset_id" name="Assets[asset_id][]" value="<?php print $a->get('asset_id'); ?>" />    
+                    </div>
+                </li>
             <?php endforeach; ?>
         </ul>
 
