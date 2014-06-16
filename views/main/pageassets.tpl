@@ -30,37 +30,22 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
     
 	<!-- ======== ASSET MODAL DIALOG BOX ====== -->
 	<div id="asset_edit_form" title="Edit Asset">
-        <div id="asset_being_edited"></div>
+	
         <label for="modal_asset_title">Title</label>
         <input type="text" id="modal_asset_title" value="" />
         <label for="modal_asset_alt">Alt</label>
         <input type="text" id="modal_asset_alt" value="" />
         <label for="modal_asset_is_active">Is Active?</label>
         <input type="checkbox" id="modal_asset_is_active" value="1" />
-        <p>Dimensions: <span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></p>
+        
+        <label for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
+        <input type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
+        
+        <p>Full Dimensions: <span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></p>
+    
+        <span id="modal_asset_thumb"></span>
+        
         <span id="modal_asset_img"></span>
 	</div>		
-
-
-	<div class="modal fade" id="update-image">
-        <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Update Image</h4>
-
-
-
-                <!--div class="loader-ajax">
-                    <img src="images/gif-load.gif" alt="">
-                </div-->
-                
-              </div>
-
-              <div class="update-container"></div>
-             
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!--/.modal -->
 
 </div>
