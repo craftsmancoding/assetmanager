@@ -153,12 +153,14 @@ class Asset extends BaseModel {
      * This will generate the thumbnail if necessary
      *
      * @param object xpdo object representing the asset
+     * @param integer $w (optional)
+     * @param integer $h (optional)
      * @return string URL rel to library_path
      */
-    public function getThumbnailURL($obj) {
+    public function getThumbnailURL($obj, $w=null, $h=null) {
 
-        $w = $this->modx->getOption('assman.thumbnail_width');
-        $h = $this->modx->getOption('assman.thumbnail_height');
+        $w = ($w) ? $w : $this->modx->getOption('assman.thumbnail_width');
+        $h = ($h) ? $h : $this->modx->getOption('assman.thumbnail_height');
         
         if (!$obj->get('is_image')) {
             return $this->getMissingThumbnail($w,$h);

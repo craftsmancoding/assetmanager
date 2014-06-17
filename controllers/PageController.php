@@ -152,11 +152,16 @@ class PageController extends BaseController {
         $groups = array();
         foreach ($PA as $p) {
             $array = $p->Asset->toArray();
-            $array['group'] = $p->get('group');
+            $g = trim($p->get('group'));
+            $array['group'] = '';
+            if($g) {
+                $array['group'] = $g;
+                $groups[ $p->get('group') ] = true;
+            }
             $array['is_active'] = $p->get('is_active');
             $json[ $p->get('asset_id') ] = $array;            
             $order[] = $p->get('asset_id');
-            $groups[ $p->get('group') ] = true;
+            
         }
         $groups = array_keys($groups);
         sort($groups);
