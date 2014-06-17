@@ -94,7 +94,7 @@ function page_init() {
                 // And back to the JSON (double-ouch)
                 Assets[asset_id].title = jQuery('#modal_asset_title').val();
                 Assets[asset_id].alt = jQuery('#modal_asset_alt').val();
-                Assets[asset_id].group = jQuery('#modal_asset_group').val();
+                Assets[asset_id].group = jQuery('#modal_asset_group').val(); // TODO: splice Groups array!
                 Assets[asset_id].is_active = is_active;
                 jQuery('#asset_is_active_'+asset_id).val(is_active);
                 jQuery('#asset_group_'+asset_id).val(Assets[asset_id].group);
