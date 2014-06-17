@@ -35,7 +35,7 @@ if (!is_numeric($new_h)) {
 
 if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
     $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found.','','scale2h Output Filer');
-    return \Moxycart\Asset::getMissingThumbnail($w,$h);
+    return \Assman\Asset::getMissingThumbnail($w,$h);
 }
 
 // Calculate the new dimensions

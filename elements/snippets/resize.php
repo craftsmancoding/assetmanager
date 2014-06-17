@@ -36,7 +36,7 @@ else {
 
 if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
     $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found.','','resize Output Filer');
-    return \Moxycart\Asset::getMissingThumbnail($w,$h);
+    return \Assman\Asset::getMissingThumbnail($w,$h);
 }
 $A = new \Assman\Asset($modx);
 $url = $A->getThumbnailURL($Asset, $w, $h);
