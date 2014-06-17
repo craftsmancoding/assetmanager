@@ -147,52 +147,6 @@ class BaseController extends \modExtraManagerController {
             return parent::fetchTemplate($file);
         }
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'File: '.$file,'','BaseController::'.__FUNCTION__);
-        // WTF?  using regClientCSS here fails ONLY if you also use it in your view file. 
-        // Otherwise it works. W.T.F.?
-        //print $this->config['assets_url']; exit;
-/*
-        $this->modx->regClientCSS($this->config['assets_url'] . 'css/mgr.css');
-        $this->modx->regClientCSS($this->config['assets_url'] . 'css/dropzone.css');
-        $this->modx->regClientCSS($this->config['assets_url'].'css/datepicker.css');
-        $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery-ui.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.tabify.js');
-*/
-
-/*
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/dropzone.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/bootstrap.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/script.js');        
-*/
-        
-        // Late register here so controllers can add relevant bits of config data
-//		ob_start();  
-        if ($this->client_config) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'client_config: '.print_r($this->client_config,true),'','BaseController::'.__FUNCTION__);
-            // This probably only works if the content has an HTML block...
-/*
-            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
-            var assman = '.json_encode($this->client_config).';
-//            jQuery(document).ready(function() {
-                console.log("Mysteries...");
-                page_init();
-//            });
-            </script>');
-*/
-            // Print this to the output buffer
-/*
-            print '<script type="text/javascript">
-            var assman = '.json_encode($this->client_config).';
-            jQuery(document).ready(function() {
-                console.log("BaseController::fetchTemplate('.$file.')");
-                page_init();
-            });
-            </script>';
-*/
-
-        }
         
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
 
@@ -206,12 +160,12 @@ class BaseController extends \modExtraManagerController {
 		// Load up our page [header] + content + [footer]
 		ob_start();
         if (!isset($this->scriptProperties['_nolayout'])) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Including header.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
+            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including header.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
 			include $path.'header.php';
         }
 		include $path.$file;
         if (!isset($this->scriptProperties['_nolayout'])) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Including footer.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
+            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including footer.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
 			include $path.'footer.php';
         }
 

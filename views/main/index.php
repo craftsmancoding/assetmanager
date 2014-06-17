@@ -1,11 +1,1 @@
-Asset Manager Here.
-
-<button id="opener">open the dialog</button>
-<div id="dialog" title="Dialog Title">I'm a dialog</div>
- 
-<script>
-$( "#dialog" ).dialog({ autoOpen: false });
-$( "#opener" ).click(function() {
-  $( "#dialog" ).dialog( "open" );
-});
-</script>
+<p>Welcome to the MODX Asset Manager / Media Library.  Stay tuned... more tools and stuff will be here in future versions.</p>

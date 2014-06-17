@@ -56,7 +56,7 @@ class Asset extends BaseModel {
      * @return
      */
     public function dictateRelations(array $data, $this_id, $id_name='page_id', $join='PageAsset') {
-        $this->modx->setLogLevel(4);
+        //$this->modx->setLogLevel(4);
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Dictating Asset Relations for id '.$this_id.' with join '.$join.' : '.print_r($data,true),'',__CLASS__,__FILE__,__LINE__);
         
         $dictated = array();
@@ -310,11 +310,6 @@ class Asset extends BaseModel {
             $obj->set('width', $info['width']);
             $obj->set('height', $info['height']);
             $obj->set('duration', $info['duration']);
-/*
-            if ($thumb_fullpath = $this->getResizedImage($dst,$subdir,$w,$h)) {
-                $obj->set('thumbnail_url',$this->getRelPath($thumb_fullpath, $storage_basedir));
-            }
-*/
         }
         else {
             $obj->set('is_image', 0);
@@ -324,14 +319,6 @@ class Asset extends BaseModel {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to save Asset. Errors: '.print_r($obj->errors,true),'',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Error saving to database.');
         }
-        // Store thumbnail
-/*
-        if ($obj->get('is_image')) {
-            if ($thumb_fullpath = $this->getResizedImage($dst,$obj->get('asset_id'),$w,$h)) {
-                $obj->set('thumbnail_url',$this->getRelPath($thumb_fullpath, $storage_basedir));
-            }        
-        }
-*/
         
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Saved Asset: '.print_r($obj->toArray(), true),'',__CLASS__,__FUNCTION__,__LINE__);
         $classname = '\\Assman\\'.$this->xclass;
@@ -576,14 +563,14 @@ class Asset extends BaseModel {
      */
     public function saveTo($storage_basedir) {
         $storage_basedir = $this->preparePath($storage_basedir);
-//print "\n".$storage_basedir."\n"; exit;
+
         $src = $this->modelObj->get('src_file');
         $basename = $this->modelObj->get('src_basename');
-//        print "\n".$basename."\n"; exit;
+
         $this->_validFile($src);
 
         $target_dir = $this->preparePath($storage_basedir.$this->getCalculatedSubdir());
-//print $target_dir; exit;        
+     
         $dst = $this->getUniqueFilename($target_dir.$basename);
         if(!rename($src,$dst)) {
             throw new \Exception('Could not move file from '.$src.' to '.$dst);
@@ -595,17 +582,6 @@ class Asset extends BaseModel {
         
         return $this->save();
     }
-      
-    
-    /**
-     * Override here to make the url and path relative to the defined assman.library_path
-     */
-    public function save() {
-        // move to 
-        // calculate thumbnail?
-        // $result = Image::scale($fullpath,$thumbnail_path,$thumb_w);
-        //$this->preparePath($this->modelObj->get('target_dir'));
-        return parent::save();
-    }
+
 }
 /*EOF*/
