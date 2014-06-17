@@ -173,6 +173,26 @@ div > input.x-form-field {
     -moz-border-radius: 3px;
 }
 
+#asset_category_filters li {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+#asset_category_filters li a {
+  padding: 5px 10px;
+  border: 1px solid #d8d8d8;
+  background: #e4e4e4;
+  color: #7c7c7c;
+  text-decoration: none;
+}
+
+#asset_category_filters li.current a,
+#asset_category_filters li.first a  {
+  border: 1px solid #444444;
+  background: #444444;
+  font-weight: bold;
+  color: #fff;
+}
 
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */

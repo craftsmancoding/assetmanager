@@ -3,7 +3,7 @@ The following script is a handlebarjs template.
 Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 -->
 <script id="page_asset_tpl" type="text/x-handlebars-template">
-<li class="li_product_image" id="product-asset-{{asset_id}}" style="cursor:pointer;">
+<li class="li_product_image" data-id="id-{{asset_id}}" data-type="{{ group }}" id="product-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
         <img src="{{thumbnail_url}}?rand=" data-asset_id="{{asset_id}}" alt="{{alt}}" width="{{thumbnail_width}}" height="{{thumbnail_height}}"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" value="{{asset_id}}"/>
@@ -14,16 +14,16 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 </script>
 
 <script id="asset_group_tpl" type="text/x-handlebars-template">
-<span class="" data-filter="{{group}}">{{group}}</span>
+<li class="{{group}}"><a href="#">{{group}}</a></li>
 </script>
 
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
-    
-    <div id="asset_category_filters">
-        Filter:
-        <span class="" data-filter="">All</span>
-    </div>
+
+    <ul id="asset_category_filters"> 
+        <li class="all first"><a href="#">All</a></li> 
+    </ul>
+
     <div class="dropzone-wrap clearfix" id="asset_upload">
 
     	<ul class="clearfix" id="page_assets"></ul>

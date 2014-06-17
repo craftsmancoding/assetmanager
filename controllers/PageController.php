@@ -49,7 +49,8 @@ class PageController extends BaseController {
 //        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.tabify.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/dropzone.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/bootstrap.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');        
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.quicksand.js');      
     }
 
 

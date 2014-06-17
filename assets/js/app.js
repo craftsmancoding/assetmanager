@@ -151,28 +151,60 @@ function page_init() {
     // Drag Drop Item Delete
     $( "#trash-can" ).droppable({
             
-            over: function( event, ui ) {
-                $(this).addClass('over-trash');
-            },
-            out: function(event, ui) {
-                var id = $(ui.draggable).attr('id');
+        over: function( event, ui ) {
+            $(this).addClass('over-trash');
+        },
+        out: function(event, ui) {
+            var id = $(ui.draggable).attr('id');
+            $(this).removeClass('over-trash');
+        },
+        drop: function( event, ui ) {
+            var id = $(ui.draggable).attr('id');
+            var asset_id = $(ui.draggable).find('img').data('asset_id');
+            if (confirm("Are you Sure you want to Delete this Image?")) {
                 $(this).removeClass('over-trash');
-            },
-            drop: function( event, ui ) {
-                var id = $(ui.draggable).attr('id');
-                var asset_id = $(ui.draggable).find('img').data('asset_id');
-                if (confirm("Are you Sure you want to Delete this Image?")) {
-                    $(this).removeClass('over-trash');
-                    var result = assapi('asset','delete', {asset_id: asset_id} );
-                    $('#'+id).hide();
-                }
-                $(this).removeClass('over-trash');
-                return false;
+                var result = assapi('asset','delete', {asset_id: asset_id} );
+                $('#'+id).hide();
             }
+            $(this).removeClass('over-trash');
+            return false;
+        }
 
+    });
+
+
+    // Filter page_assets
+    // Clone page_assets items to get a second collection for Quicksand plugin
+    var $portfolioClone = $("#page_assets").clone();
+    
+    // Attempt to call Quicksand on every click event handler
+    $("#asset_category_filters a").click(function(e){
+        
+        $("#asset_category_filters li").removeClass("current");
+        $("#asset_category_filters li").removeClass("first"); 
+        
+        // Get the class attribute value of the clicked link
+        var $filterClass = $(this).parent().attr("class");
+
+        if ( $filterClass == "all" ) {
+            var $filteredPortfolio = $portfolioClone.find("li");
+        } else {
+            var $filteredPortfolio = $portfolioClone.find("li[data-type~=" + $filterClass + "]");
+        }
+        
+        // Call quicksand
+        $("#page_assets").quicksand( $filteredPortfolio, { 
+            duration: 800, 
+            easing: 'swing' 
         });
 
+
+        $(this).parent().addClass("current");
+
+    })
+
 }
+
 
 
 /**
