@@ -13,6 +13,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 </script>
 
 <div id="assets_tab" class="content">	
+    <div id="assman_msg"></div>
     <div class="dropzone-wrap clearfix" id="asset_upload">
 
     	<ul class="clearfix" id="page_assets"></ul>
@@ -31,7 +32,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
     
 	<!-- ======== ASSET MODAL DIALOG BOX ====== -->
 	<div id="asset_edit_form" title="Edit Asset">
-
+        <div id="assman_msg"></div>
         <div class="asset-edit-inner">
         
             <div class="row-input">
