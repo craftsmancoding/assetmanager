@@ -148,11 +148,17 @@ class PageController extends BaseController {
         $PA = $this->modx->getCollectionGraph('PageAsset','{"Asset":{}}',$c);
         $json = array();
         $order = array();
+        $groups = array();
         foreach ($PA as $p) {
-            $json[ $p->get('asset_id') ] = $p->Asset->toArray();            
+            $array = $p->Asset->toArray();
+            $array['group'] = $p->get('group');
+            $array['is_active'] = $p->get('is_active');
+            $json[ $p->get('asset_id') ] = $array;            
             $order[] = $p->get('asset_id');
+            $groups[ $p->get('group') ] = true;
         }
-        $this->setPlaceholder('page_assets',$PA);
+        $groups = array_keys($groups);
+        sort($groups);
         
         if ($json) {
             $Assets = json_encode($json);
@@ -172,6 +178,7 @@ class PageController extends BaseController {
             var assman = '.json_encode($this->config).';
             var Assets = '.$Assets.';
             var Order = '.json_encode($order).';
+            var Groups = '.json_encode($groups).';
             var inited = 0;
             MODx.on("ready",function() {
                 console.log("[assman] on ready...");

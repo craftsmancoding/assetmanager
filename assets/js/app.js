@@ -14,6 +14,7 @@ else {
 }
 
 var template;
+var category_tpl;
 
 /**
  * Handlebars Parsing
@@ -35,13 +36,19 @@ function page_init() {
     
     var source   = jQuery('#page_asset_tpl').html();
     template = Handlebars.compile(source);
-
+    category_tpl = Handlebars.compile(jQuery('#asset_group_tpl').html());
+    
     // JS Hashes do not preserver order. Thus the "Order" array
     var arrayLength = Order.length;
     for (var i = 0; i < arrayLength; i++) {
         var asset_id = Order[i];
         jQuery('#page_assets').append( template(Assets[asset_id]));
-    }    
+    }
+    
+    var arrayLength = Groups.length;
+    for (var i = 0; i < arrayLength; i++) {
+        jQuery('#asset_category_filters').append( category_tpl({"group": Groups[i]}));
+    }  
 
     jQuery("#page_assets").sortable({
         change: function( event, ui ) {
@@ -69,6 +76,7 @@ function page_init() {
             // Write all values temporarily to the modal
             jQuery('#modal_asset_title').val(Assets[asset_id].title);
             jQuery('#modal_asset_alt').val(Assets[asset_id].alt);
+            jQuery('#modal_asset_group').val(Assets[asset_id].group);
             jQuery('#modal_asset_width').text(Assets[asset_id].width);
             jQuery('#modal_asset_height').text(Assets[asset_id].height);
             jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;"/>');
@@ -82,14 +90,14 @@ function page_init() {
                 // For meta-data specific to the *relation* (i.e. PageAsset), write the values back to the form (ugh)
                 // For data specific to the *asset*, we have to fire off an Ajax request
                 var asset_id = jQuery("#asset_edit_form").data('asset_id');
-
                 var is_active = jQuery('#modal_asset_is_active:checked').length;
-                
                 // And back to the JSON (double-ouch)
                 Assets[asset_id].title = jQuery('#modal_asset_title').val();
                 Assets[asset_id].alt = jQuery('#modal_asset_alt').val();
+                Assets[asset_id].group = jQuery('#modal_asset_group').val();
                 Assets[asset_id].is_active = is_active;
                 jQuery('#asset_is_active_'+asset_id).val(is_active);
+                jQuery('#asset_group_'+asset_id).val(Assets[asset_id].group);
                 console.log('#asset_is_active_'+asset_id+ ' set to '+is_active);
                 // This data here is specific to the Asset... be we can't post back everything:
                 // url, thumbnail_url, path will specifically get messed up if posted here.

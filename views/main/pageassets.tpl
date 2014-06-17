@@ -2,18 +2,28 @@
 The following script is a handlebarjs template.
 Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 -->
-<script id="page_asset_tpl" type="text/x-handlebars-template" style="cursor:pointer;">
-<li class="li_product_image" id="product-asset-{{asset_id}}">
+<script id="page_asset_tpl" type="text/x-handlebars-template">
+<li class="li_product_image" id="product-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
         <img src="{{thumbnail_url}}?rand=" alt="{{alt}}" width="{{thumbnail_width}}" height="{{thumbnail_height}}"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" value="{{asset_id}}"/>
+        <input type="hidden" id="asset_group_{{asset_id}}" name="PageAssets[group][]" value="{{group}}"/>
         <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="1" />
 	</div>
 </li>
 </script>
 
+<script id="asset_group_tpl" type="text/x-handlebars-template">
+<span class="" data-filter="{{group}}">{{group}}</span>
+</script>
+
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
+    
+    <div id="asset_category_filters">
+        Filter:
+        <span class="" data-filter="">All</span>
+    </div>
     <div class="dropzone-wrap clearfix" id="asset_upload">
 
     	<ul class="clearfix" id="page_assets"></ul>
@@ -44,6 +54,11 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
             <div class="row-input">
                  <label class="row-lbl" for="modal_asset_alt">Alt</label>
                 <input class="row-field" type="text" id="modal_asset_alt" value="" />
+            </div>
+
+            <div class="row-input">
+                 <label class="row-lbl" for="modal_asset_group">Group</label>
+                <input class="row-field" type="text" id="modal_asset_group" value="" />
             </div>
            
             
