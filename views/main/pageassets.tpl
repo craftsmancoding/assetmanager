@@ -13,39 +13,68 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 </script>
 
 <div id="assets_tab" class="content">	
-    <div class="dropzone-wrap" id="asset_upload">
+    <div class="dropzone-wrap clearfix" id="asset_upload">
 
-    	<ul class="clearfix" id="page_assets">
-
-        </ul>
-
-
-    	<div class="dz-default dz-message"><span>Drop files here to upload</span></div>
-
-         <div id="trash-can" class="drop-delete">
-            <span>Drag Image Here to Delete</span>
+    	<ul class="clearfix" id="page_assets"></ul>
+        <div class="dz-link-wrap">
+            <div class="dz-label">Drop files here to upload or</div>
+            <div class="dz-default dz-message"><span>Select Files</span></div>
         </div>
+    	
 
     </div>
+
+    <div id="trash-can" class="drop-delete">
+        <span>Drag Image Here to Delete</span>
+    </div>
+
     
 	<!-- ======== ASSET MODAL DIALOG BOX ====== -->
 	<div id="asset_edit_form" title="Edit Asset">
-	
-        <label for="modal_asset_title">Title</label>
-        <input type="text" id="modal_asset_title" value="" />
-        <label for="modal_asset_alt">Alt</label>
-        <input type="text" id="modal_asset_alt" value="" />
-        <label for="modal_asset_is_active">Is Active?</label>
-        <input type="checkbox" id="modal_asset_is_active" value="1" />
+
+        <div class="asset-edit-inner">
         
-        <label for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
-        <input type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
-        
-        <p>Full Dimensions: <span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></p>
-    
-        <span id="modal_asset_thumb"></span>
-        
-        <span id="modal_asset_img"></span>
+            <div class="row-input">
+                 <label class="row-lbl" for="modal_asset_title">Title</label>
+                 <input class="row-field" type="text" id="modal_asset_title" value="" />
+            </div>
+           
+            
+            <div class="row-input">
+                 <label class="row-lbl" for="modal_asset_alt">Alt</label>
+                <input class="row-field" type="text" id="modal_asset_alt" value="" />
+            </div>
+           
+            
+            <div class="row-input">
+                 <label class="row-lbl" for="modal_asset_is_active">Is Active?</label>
+                <input class="row-field" type="checkbox" id="modal_asset_is_active" value="1" />
+            </div>
+           
+            
+            <div class="row-input">
+                 <label class="row-lbl" for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
+                <input class="row-field" type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
+            </div>
+           
+            
+            <div class="row-input">
+                <label class="row-lbl">Full Dimensions:</label> 
+                <div class="non-input"><span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></div>
+            </div>
+            
+            
+            <div class="row-input">
+                <label class="row-lbl">&nbsp;</label>
+                <span id="modal_asset_thumb"></span>
+            </div>
+            
+            
+            <div class="row-input">
+                <label class="row-lbl">&nbsp;</label>
+                <span id="modal_asset_img"></span>
+            </div>
+        </div>
 	</div>		
 
 </div>

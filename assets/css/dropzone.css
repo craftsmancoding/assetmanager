@@ -1,7 +1,9 @@
 /* The MIT License */
 .dropzone-wrap {
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px dashed #acacac;
+  background: rgba(0,0,0,0.02);
+  padding: 1em;
+
 }
 .dropzone-previews,
 .dropzone-previews * {
@@ -9,16 +11,36 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 } 
-.dz-default {
-  position: relative;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(0,0,0,0.02);
-  padding: 1em;
+.dz-label {
   text-align: center;
-  cursor: pointer;
-  font-weight: bold;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 10px;
+  color: #c7c7c7;
+  font-size: 20px;
+  display: block;
+  float: left;
+  font-weight: normal;
+}
+
+.dz-default{
+  color: #555;
+  border: 1px solid #ccc;
+  background: #fff;
+  vertical-align: top;
+  display: block;
+  float: left;
+  padding: 5px 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  margin-top: 4px;
+}
+
+.dz-default:hover {
+  -webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+  box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
 }
 
 .dropzone-wrap .dz-preview,

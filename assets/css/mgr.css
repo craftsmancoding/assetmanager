@@ -1,3 +1,19 @@
+
+#assets_tab {
+  margin-top: 10px;
+}
+
+#assets_tab li.li_product_image {
+  float: left;
+  border: 1px solid #acacac;
+  padding: 5px;
+  margin: 10px;
+  position: relative;
+  -webkit-box-shadow: 0 8px 6px -6px #ddd;
+     -moz-box-shadow: 0 8px 6px -6px #ddd;
+          box-shadow: 0 8px 6px -6px #ddd;
+}
+
 .icon-trash {
   background-position: -456px 0;
 }
@@ -13,6 +29,10 @@
   padding: 15px;
 }
 
+.dz-link-wrap {
+  width: 380px;
+  margin: 0 auto;
+}
 .over-trash {
   background: url('../images/trash-over.png') 10px 8px no-repeat;
 }
@@ -44,17 +64,6 @@ div > input.x-form-field {
 }
 
 
-.img-info-wrap {
-  height:98px;
-  overflow: hidden;
-}
-
-
-.img-info-wrap img {
-/* This seems to cause problems? */
-/*   width: 100%; */
-    max-width: 140px; /* Just taking a guess */
-}
 #page_images li.inactive {
   border: 1px solid #ddd;
 }
@@ -76,3 +85,76 @@ div > input.x-form-field {
   display: none;
 }
 
+
+.li_product_image .remove-img {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  background: url('../images/remove-icon.png') no-repeat;
+  text-indent: -999999px;
+  display: none;
+}
+
+.asset-edit-inner {
+  width: 700px;
+  margin: 15px auto;
+}
+.row-input {
+  display: block;
+  margin-bottom: 10px;
+
+}
+
+.row-input .row-lbl {
+  font-weight: bold;
+  font-size: 12px;
+  color: #707070;
+  width: 120px;
+  float: left;
+  margin-right: 20px;
+  text-align: right;
+}
+
+.row-input .row-field {
+  border: 1px solid;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  border-radius: 2px;
+  position: relative;
+  background-color: #fbfbfb;
+  background-image: none;
+  border-color: #CCCCCC;
+  padding: 5px;
+  width: 70%;
+}
+
+.row-input .non-input {
+  font-weight: bold;
+}
+
+.row-input input[type="checkbox"] {
+  width: auto;
+}
+
+.ui-dialog-titlebar-close {
+  background: #ddd url('../images/close-dialog.png') 4px 5px no-repeat;
+  border: 1px solid #bbb;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+/* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
+   j.mp/bestclearfix */
+.clear:before, .clear:after,
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden; }
+.clear:after,
+.clearfix:after { clear: both; }
+/* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
+.clear,
+.clearfix { zoom: 1; }
