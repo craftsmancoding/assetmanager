@@ -5,7 +5,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 <script id="page_asset_tpl" type="text/x-handlebars-template">
 <li class="li_product_image" id="product-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
-        <img src="{{thumbnail_url}}?rand=" alt="{{alt}}" width="{{thumbnail_width}}" height="{{thumbnail_height}}"/>
+        <img src="{{thumbnail_url}}?rand=" data-asset_id="{{asset_id}}" alt="{{alt}}" width="{{thumbnail_width}}" height="{{thumbnail_height}}"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" value="{{asset_id}}"/>
         <input type="hidden" id="asset_group_{{asset_id}}" name="PageAssets[group][]" value="{{group}}"/>
         <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="1" />
@@ -27,7 +27,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
     <div class="dropzone-wrap clearfix" id="asset_upload">
 
     	<ul class="clearfix" id="page_assets"></ul>
-        <div class="dz-link-wrap">
+        <div class="dz-link-wrap clearfix">
             <div class="dz-label">Drop files here to upload or</div>
             <div class="dz-default dz-message"><span>Select Files</span></div>
         </div>

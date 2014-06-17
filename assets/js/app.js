@@ -147,6 +147,31 @@ function page_init() {
         console.log('[Dropzone Error]',file, errorMessage);
     });
 
+
+    // Drag Drop Item Delete
+    $( "#trash-can" ).droppable({
+            
+            over: function( event, ui ) {
+                $(this).addClass('over-trash');
+            },
+            out: function(event, ui) {
+                var id = $(ui.draggable).attr('id');
+                $(this).removeClass('over-trash');
+            },
+            drop: function( event, ui ) {
+                var id = $(ui.draggable).attr('id');
+                var asset_id = $(ui.draggable).find('img').data('asset_id');
+                if (confirm("Are you Sure you want to Delete this Image?")) {
+                    $(this).removeClass('over-trash');
+                    var result = assapi('asset','delete', {asset_id: asset_id} );
+                    $('#'+id).hide();
+                }
+                $(this).removeClass('over-trash');
+                return false;
+            }
+
+        });
+
 }
 
 
@@ -193,7 +218,6 @@ function assapi(classname,methodname,data,callback) {
         return show_error('Request failed.');
     });
 }
-
 
 /**
  * Show a simple error message, then fade it out and clear it so we can reuse the div.
