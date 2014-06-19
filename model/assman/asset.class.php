@@ -19,6 +19,7 @@
  * For simplicity in the data UI, virtual fields are added to each record for thumbnail_width and thumbnail_height.
  *
  */
+require_once dirname(dirname(dirname(__FILE__))).'/vendor/autoload.php';
 class Asset extends xPDOObject {
 
     /**
