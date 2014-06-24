@@ -255,7 +255,7 @@ div > input.x-form-field {
 }
 
 .asset-edit-inner {
-  width: 700px;
+  width: 800px;
   margin: 15px auto;
 }
 .row-input {
@@ -355,7 +355,24 @@ table.classy {
   width: 100%;
 }
 
+.span70 {
+  width: 70%;
+}
 
+.span20 {
+  width: 20%;
+}
+
+.span100 {
+  width: 100%;
+  display: block;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
 
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */

@@ -63,7 +63,7 @@ function page_init() {
     jQuery( "#asset_edit_form" ).dialog({
         autoOpen: false,
         height: 600,
-        width: 800,
+        width: 920,
         modal: true,
         closeOnEscape: true,        
         open: function(event, ui) {
@@ -79,7 +79,7 @@ function page_init() {
             jQuery('#modal_asset_group').val(Assets[asset_id].group);
             jQuery('#modal_asset_width').text(Assets[asset_id].width);
             jQuery('#modal_asset_height').text(Assets[asset_id].height);
-            jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;"/>');
+            jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;margin: 0 auto;display: block;"/>');
             jQuery('#modal_asset_thumb').html('<img src="'+Assets[asset_id].thumbnail_url+'" style="max-width:500px; height:auto;"/>');
             if (Assets[asset_id].is_active == 1) {  
                 jQuery('#modal_asset_is_active').prop('checked', true);
