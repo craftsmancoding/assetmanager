@@ -6,7 +6,7 @@ Description: setting_ + $key + _desc
 -----------------------------------------------------------------*/
 return array(
 
-    // Relative to MODX_BASE_PATH and MODX_SITE_URL
+    // Relative to MODX_ASSETS_PATH and MODX_ASSETS_URL
     // This is where all downloadable product assets will be stored.
     array(
         'key'  =>     'assman.library_path',
