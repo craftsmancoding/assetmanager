@@ -45,45 +45,56 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
         <div id="assman_msg"></div>
         <div class="asset-edit-inner">
         
-            <div class="row-input">
-                 <label class="row-lbl" for="modal_asset_title">Title</label>
-                 <input class="row-field" type="text" id="modal_asset_title" value="" />
-            </div>
-           
-            
-            <div class="row-input">
-                 <label class="row-lbl" for="modal_asset_alt">Alt</label>
-                <input class="row-field" type="text" id="modal_asset_alt" value="" />
-            </div>
+            <table>
+                <tr>
 
-            <div class="row-input">
-                 <label class="row-lbl" for="modal_asset_group">Group</label>
-                <input class="row-field" type="text" id="modal_asset_group" value="" />
-            </div>
-           
+                    <td>
+                
+                        <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_title">Title</label>
+                             <input class="row-field" type="text" id="modal_asset_title" value="" />
+                        </div>
+                       
+                        
+                        <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_alt">Alt</label>
+                            <input class="row-field" type="text" id="modal_asset_alt" value="" />
+                        </div>
             
-            <div class="row-input">
-                 <label class="row-lbl" for="modal_asset_is_active">Is Active?</label>
-                <input class="row-field" type="checkbox" id="modal_asset_is_active" value="1" />
-            </div>
-           
-            
-            <div class="row-input">
-                 <label class="row-lbl" for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
-                <input class="row-field" type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
-            </div>
-           
-            
-            <div class="row-input">
-                <label class="row-lbl">Full Dimensions:</label> 
-                <div class="non-input"><span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></div>
-            </div>
-            
-            
-            <div class="row-input">
-                <label class="row-lbl">&nbsp;</label>
-                <span id="modal_asset_thumb"></span>
-            </div>
+                        <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_group">Group</label>
+                            <input class="row-field" type="text" id="modal_asset_group" value="" />
+                        </div>
+                       
+                        
+                        <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_is_active">Is Active?</label>
+                            <input class="row-field" type="checkbox" id="modal_asset_is_active" value="1" />
+                        </div>
+                       
+                        
+                        <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
+                            <input class="row-field" type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
+                        </div>
+                       
+                        
+                        <div class="row-input">
+                            <label class="row-lbl">Full Dimensions:</label> 
+                            <div class="non-input"><span id="modal_asset_width"></span> x <span id="modal_asset_height"></span></div>
+                        </div>                    
+                        
+                    </td>
+                    <td>
+                    
+                        <div class="row-input">
+                            <label class="row-lbl">&nbsp;</label>
+                            <span id="modal_asset_thumb"></span>
+                        </div>
+                    
+                    </td>
+                </tr>
+            </table>
             
             
             <div class="row-input">

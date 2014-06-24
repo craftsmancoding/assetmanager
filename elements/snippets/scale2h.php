@@ -34,8 +34,8 @@ if (!is_numeric($new_h)) {
 }
 
 if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
-    $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found.','','scale2h Output Filer');
-    return \Assman\Asset::getMissingThumbnail($w,$h);
+    $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found: '.$asset_id,'','scale2h Output Filer');
+    return \Assman\Asset::getMissingThumbnail($new_h,$new_h); //square
 }
 
 // Calculate the new dimensions
@@ -46,6 +46,9 @@ $nx = floor($new_h * ( $ox / $oy ));
 $ny = $new_h;
         
 $modx->log(\modX::LOG_LEVEL_INFO,'New asset dimensions calculated: '.$nx, $ny,'','scale2h Output Filer');
+
+
+
 $A = new \Assman\Asset($modx);
 $url = $A->getThumbnailURL($Asset, $nx, $ny);
 $modx->setPlaceholder('asset_id.width', $ny);
