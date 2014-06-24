@@ -19,6 +19,7 @@
  * For simplicity in the data UI, virtual fields are added to each record for thumbnail_width and thumbnail_height.
  *
  */
+
 class Asset extends xPDOObject {
 
     /**
@@ -29,7 +30,6 @@ class Asset extends xPDOObject {
         $this->_fields['thumbnail_width'] = $this->get('thumbnail_width');
         $this->_fields['thumbnail_height'] = $this->get('thumbnail_height');
     }
-
 
     /**
      * Modifiers: 

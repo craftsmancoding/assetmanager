@@ -31,6 +31,6 @@
         </tbody>
     </table>
     <br>
-    <a class="button btn assman-btn" href="<?php print MODX_MANAGER_URL; ?>?a=70">See all Settings</a>
+    <a class="btn assman-btn" href="<?php print MODX_MANAGER_URL; ?>?a=70">See all Settings</a>
 
 </div>

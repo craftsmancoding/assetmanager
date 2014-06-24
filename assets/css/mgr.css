@@ -1,3 +1,104 @@
+#assman_header a,
+#assman_canvas a,
+.assman_nav_item a {
+  color: #727272;
+  text-decoration: none;
+}
+
+#assman_header a:hover,
+#assman_canvas a:hover,
+.assman_nav_item a:hover {
+color: #77963d;
+}
+
+/**
+ * CMPs
+ */
+#assman_canvas {
+    background: #fff;
+    border: 1px solid #999999;
+    margin: 0px 10px 0px;
+    padding-bottom: 20px; 
+}
+
+.assman_canvas_inner {
+    padding: 20px 20px 0 20px;
+}
+
+h2.assman_cmp_heading {
+    margin-bottom: 0px;
+}
+
+#assman_nav {
+    list-style-type:none;
+    padding:0;
+    list-style-type: none;
+    padding: 0;
+    float: right;
+    margin: 40px 10px 5px 10px;
+    font-size: 12px;
+}
+
+.assman_nav_item {
+    display:inline;
+    padding: 10px;
+}
+
+.assman_nav_item a.current {
+  font-weight: bold;
+}
+/* not sure if we need this... */
+.assman_nav_home {
+
+}
+
+#assman_footer {
+    text-align: center;
+    display: block;
+    margin-top: 20px; 
+}
+.assman_donation_link {
+
+}
+.assman_bug_link {
+
+}
+.assman_wiki_link {
+
+}
+
+#assman_copyright {
+    color: #727272;
+    margin-top: 6px;
+    font-style: italic;
+}
+
+#assman_buttons {
+    width: 100%; 
+}
+#assman_buttons ul:before,
+#assman_buttons ul:after {
+    content: " ";
+    display: table;
+}
+#assman_buttons ul:after {
+    clear: both;
+}
+#assman_buttons ul {
+    width: 102%;
+    margin: -1% 0 0 -1%;
+    /* clearfix */
+    *zoom: 1;
+}
+#assman_buttons ul li {
+    display: table;
+    position: relative;
+    float: left;
+    width: 32%;
+    margin: 0;
+    padding: 1% 0 0 1%;
+}
+
 
 #assets_tab {
   margin-top: 10px;
@@ -12,6 +113,62 @@
   -webkit-box-shadow: 0 8px 6px -6px #ddd;
      -moz-box-shadow: 0 8px 6px -6px #ddd;
           box-shadow: 0 8px 6px -6px #ddd;
+}
+
+.assman_nav_item a.current {
+  font-weight: bold;
+}
+
+.btn {
+  display: inline-block;
+  padding: 7px 8px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #bbbbbb;
+  border-bottom-color: #a2a2a2;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #53595f;
+  font: bold 11px tahoma,verdana,helvetica,sans-serif;
+  text-shadow: 0 1px 0 #fcfcfc;
+}
+
+.assman-btn {
+  background-color: #658F1A !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#658F1A", endColorstr="#658F1A");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#658F1A), to(#658F1A));
+  background-image: -moz-linear-gradient(top, #658F1A, #658F1A);
+  background-image: -ms-linear-gradient(top, #658F1A, #658F1A);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #658F1A), color-stop(100%, #658F1A));
+  background-image: -webkit-linear-gradient(top, #658F1A, #658F1A);
+  background-image: -o-linear-gradient(top, #658F1A, #658F1A);
+  background-image: linear-gradient(#658F1A, #658F1A);
+  border-color: #617a2d #617a2d hsl(80, 46%, 29%);
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.26);
+  -webkit-font-smoothing: antialiased;
 }
 
 .icon-trash {
@@ -193,6 +350,12 @@ div > input.x-form-field {
   font-weight: bold;
   color: #fff;
 }
+
+table.classy {
+  width: 100%;
+}
+
+
 
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */

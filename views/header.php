@@ -3,10 +3,13 @@
         <li class="assman_nav_item">
             <strong>Manage:</strong>
         </li>
-        <li class="assman_nav_item">
+
+         <li class="assman_nav_item">
             <!--span class="linklike" onclick="javascript:paint('settings');">Settings</span-->
-            <a href="<?php print self::page('settings'); ?>">Settings</a>
+            <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>">Settings</a>
         </li>
+
+       
     </ul>
 </div>
 
