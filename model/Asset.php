@@ -163,7 +163,7 @@ class Asset extends BaseModel {
         $h = ($h) ? $h : $this->modx->getOption('assman.thumbnail_height');
         
         if (!$obj->get('is_image')) {
-            return $this->getMissingThumbnail($w,$h);
+            return $this->getMissingThumbnail($w,$h, substr($obj->get('url'),-3));
         }
         
         $thumbfile = $this->getResizedImage($obj->get('path'), $obj->get('asset_id'), $w, $h);
@@ -198,11 +198,11 @@ class Asset extends BaseModel {
      * @param integer $w
      * @param integer $h
      */
-    public static function getMissingThumbnail($w,$h) {
+    public static function getMissingThumbnail($w,$h,$text) {
         //$ext = strtolower(strrchr($this->get('url'), '.'));
         //$w = $this->modx->getOption('assman.thumbnail_width');
         //$h = $this->modx->getOption('assman.thumbnail_height');
-        return sprintf('http://placehold.it/%sx%s',$w,$h);
+        return sprintf('http://placehold.it/%sx%s/648a1e/ffffff/&text=%s',$w,$h,$text);
     }
     
     /**

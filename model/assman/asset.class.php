@@ -63,7 +63,13 @@ class Asset extends xPDOObject {
             if (empty($raw)) {
                 $Asset = new \Assman\Asset($this->xpdo);
                 $thumbnail_url = $Asset->getThumbnailURL($this);
-                return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$thumbnail_url;
+
+                if($this->is_image) {
+                    return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$thumbnail_url;
+                } else {
+                    return $thumbnail_url;
+                }
+                
 /*
                 //$ext = strtolower(strrchr($this->get('url'), '.'));
                 $w = $this->xpdo->getOption('assman.thumbnail_width');

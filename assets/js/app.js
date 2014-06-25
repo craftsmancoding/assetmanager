@@ -163,6 +163,7 @@ function page_init() {
             var asset_id = $(ui.draggable).find('img').data('asset_id');
             if (confirm("Are you Sure you want to Delete this Image?")) {
                 $(this).removeClass('over-trash');
+                //assapi('pageasset','delete', {asset_id: asset_id} );
                 var result = assapi('asset','delete', {asset_id: asset_id} );
                 $('#'+id).hide();
             }

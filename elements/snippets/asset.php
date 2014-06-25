@@ -26,7 +26,6 @@
  *
  * @package assman
  */
-
 $core_path = $modx->getOption('assman.core_path', null, MODX_CORE_PATH.'components/assman/');
 require_once $core_path .'vendor/autoload.php';
 $Snippet = new \Assman\Snippet($modx);
@@ -44,55 +43,61 @@ if(!$Asset) {
 	$modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','Asset',__LINE__);
 	return;
 }
+
+
 $ass_props = array(
 	'asset_id'	=> $Asset->get('asset_id'),
 	'title'	=> $Asset->get('title'),
 	'alt'	=> $Asset->get('alt'),
 	'width'	=> $Asset->get('width'),
 	'height'	=> $Asset->get('height'),
+	'thumbnail_url'	=> $Asset->get('thumbnail_url'),
 	'url'	=> $Asset->get('url')
 );
 
-if( $width == 0 && $height > 0 ) {
-	// Calculate the new dimensions
-	$nx = floor($height * ( $Asset->get('width') / $Asset->get('height') ));
-	$ny = $height;
-	$A = new \Assman\Asset($modx);
-	$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
-	$url = explode('/', $url);
-	unset($url[0]);
-	unset($url[1]);
-	unset($url[2]);
-	$ass_props['url'] = '/'.implode('/', $url);
-	$ass_props['width'] = $nx;
-	$ass_props['height'] = $ny;
-}
+if($Asset->is_image) {
 
-if( $height == 0 && $width > 0 ) {
-	// Calculate the new dimensions
-	$nx = $width;
-	$ny = floor($width * ($Asset->get('height') / $Asset->get('width')));
-	$A = new \Assman\Asset($modx);
-	$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
-	$url = explode('/', $url);
-	unset($url[0]);
-	unset($url[1]);
-	unset($url[2]);
-	$ass_props['url'] = '/'.implode('/', $url);
-	$ass_props['width'] = $nx;
-	$ass_props['height'] = $ny;
-}
+	if( $width == 0 && $height > 0 ) {
+		// Calculate the new dimensions
+		$nx = floor($height * ( $Asset->get('width') / $Asset->get('height') ));
+		$ny = $height;
+		$A = new \Assman\Asset($modx);
+		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
+		$url = explode('/', $url);
+		unset($url[0]);
+		unset($url[1]);
+		unset($url[2]);
+		$ass_props['url'] = '/'.implode('/', $url);
+		$ass_props['width'] = $nx;
+		$ass_props['height'] = $ny;
+	}
 
-if( $height > 0 && $width > 0 ) {
-	$A = new \Assman\Asset($modx);
-	$url = $A->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
-	$url = explode('/', $url);
-	unset($url[0]);
-	unset($url[1]);
-	unset($url[2]);
-	$ass_props['url'] = '/'.implode('/', $url);
-	$ass_props['width'] = $width;
-	$ass_props['height'] = $height;
+	if( $height == 0 && $width > 0 ) {
+		// Calculate the new dimensions
+		$nx = $width;
+		$ny = floor($width * ($Asset->get('height') / $Asset->get('width')));
+		$A = new \Assman\Asset($modx);
+		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
+		$url = explode('/', $url);
+		unset($url[0]);
+		unset($url[1]);
+		unset($url[2]);
+		$ass_props['url'] = '/'.implode('/', $url);
+		$ass_props['width'] = $nx;
+		$ass_props['height'] = $ny;
+	}
+
+	if( $height > 0 && $width > 0 ) {
+		$A = new \Assman\Asset($modx);
+		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
+		$url = explode('/', $url);
+		unset($url[0]);
+		unset($url[1]);
+		unset($url[2]);
+		$ass_props['url'] = '/'.implode('/', $url);
+		$ass_props['width'] = $width;
+		$ass_props['height'] = $height;
+	}
 }
 
 // Create the temporary chunk
