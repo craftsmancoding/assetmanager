@@ -42,6 +42,7 @@ class assetTest extends \PHPUnit_Framework_TestCase {
         self::$modx->addPackage('assman',"{$core_path}model/",'ass_');
         
         // Create Asset
+/*
         if (!self::$Asset = self::$modx->getObject('Asset', array('title'=>'Test Asset 101'))) {
             self::$Asset = self::$modx->newObject('Asset');
             self::$Asset->fromArray(array(
@@ -49,30 +50,95 @@ class assetTest extends \PHPUnit_Framework_TestCase {
             ));
             self::$Asset->save();        
         }
-        
-        // Associate them
-        if (!$PageAsset = self::$modx->getObject('PageAsset', array('seq'=> 100))) {
-            $PageAsset = self::$modx->newObject('PageAsset');
-            $PageAsset->fromArray(array(
-                'page_id' => 1,
-                'asset_id' => self::$Asset->get('asset_id'),
-                'seq' => 100
+*/
+        // Create Page
+        if (!self::$Page = self::$modx->getObject('modResource', array('alias'=>'test-test-test'))) {
+            self::$Page = self::$modx->newObject('modResource');
+            self::$Page->fromArray(array(
+                'alias' => 'test-test-test',
+                'pagetitle' => 'Test Asset 101',
             ));
-            $PageAsset->save();
-        }
-
-        
+            self::$Page->save();        
+        }        
     }
     
     /**
      *
      */
     public static function tearDownAfterClass() {
-        self::$Asset->remove();
+        //self::$Asset->remove();
+        self::$Page->remove();
+    }
+
+
+
+    public function testFromFile() {
+        $A = new Asset(self::$modx);
+        $file = dirname(__FILE__).'/assets/image.jpg';
+        $this->assertTrue(file_exists($file));
+        $newfile = dirname(__FILE__).'/assets/image2.jpg';
+        $result = copy($file, $newfile);
+        $this->assertTrue($result, 'Failed copying '.$file.' to '.$newfile);
+        $this->assertTrue(file_exists($newfile));
+        $finfo = new \finfo(FILEINFO_MIME);
+                        
+        $FILE = array(
+            'name'=>basename($newfile),
+            'tmp_name' => $newfile,
+            'type' => $finfo->file($newfile),
+            'size' => filesize($newfile)
+        );
+        
+        $Asset = $A->fromFile($FILE);
+        
+        $this->assertTrue(is_object($Asset));
+
+        $this->assertTrue(file_exists($Asset->get('path')));
+
+        $Asset->remove();
+        @unlink($newfile);
     }
 
     public function testRelation() {
-        print self::$Asset->get('asset_id');
+        $A = new Asset(self::$modx);
+        $file = dirname(__FILE__).'/assets/image.jpg';
+        $this->assertTrue(file_exists($file));
+        $newfile = dirname(__FILE__).'/assets/image2.jpg';
+        $result = copy($file, $newfile);
+        $this->assertTrue($result, 'Failed copying '.$file.' to '.$newfile);
+        $this->assertTrue(file_exists($newfile));
+        $finfo = new \finfo(FILEINFO_MIME);
+                        
+        $FILE = array(
+            'name'=>basename($newfile),
+            'tmp_name' => $newfile,
+            'type' => $finfo->file($newfile),
+            'size' => filesize($newfile)
+        );
+        
+        $Asset = $A->fromFile($FILE);
+    
+        $asset_id = $Asset->get('asset_id');
+        $this->assertTrue((bool)$asset_id);
+        $page_id = self::$Page->get('id');
+        $this->assertTrue((bool)$page_id);
+
+        if (!$PageAsset = self::$modx->getObject('PageAsset', array('page_id'=> $page_id,'asset_id'=>$asset_id))) {
+            $PageAsset = self::$modx->newObject('PageAsset');
+        }
+
+        $PageAsset->set('page_id', $page_id);
+        $PageAsset->set('asset_id',$asset_id);
+        $result = $PageAsset->save();
+        $this->assertTrue($result);
+
+        $result = $Asset->remove();
+
+        $this->assertTrue($result);
+
+        // Did the PageAsset also get deleted?
+        $PageAsset = self::$modx->getObject('PageAsset', array('page_id'=> $page_id,'asset_id'=>$asset_id));   
+        $this->assertTrue(empty($PageAsset));
     }
     
 
