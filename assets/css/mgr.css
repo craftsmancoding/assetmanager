@@ -225,6 +225,22 @@ div > input.x-form-field {
   border: 1px solid #ddd;
 }
 
+.img-info-wrap {
+  position: relative;
+}
+
+.img-info-inner {
+  position: absolute;
+  bottom: 0px;
+  background: #000;
+  opacity: .50;
+  width: 100%;
+  color: #fff;
+}
+
+.img-info-inner p {
+  margin: 3px 5px;
+}
 #page_images li.inactive .img-info-wrap a img {
     filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
     filter: gray; /* IE6-9 */

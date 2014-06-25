@@ -9,6 +9,10 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 	    <input type="hidden" name="PageAssets[asset_id][]" value="{{asset_id}}"/>
         <input type="hidden" id="asset_group_{{asset_id}}" name="PageAssets[group][]" value="{{group}}"/>
         <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="1" />
+        <div class="img-info-inner">
+            <p class="asset-id-ph">Asset ID: {{asset_id}}</p>
+            <p class="asset-title-ph">Title: {{title}}</p>
+        </div>
 	</div>
 </li>
 </script>
