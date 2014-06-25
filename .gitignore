@@ -4,4 +4,5 @@
 *.swp
 *.out
 composer.phar
+phpunit.phar
 vendor/

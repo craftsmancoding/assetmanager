@@ -86,7 +86,14 @@ return array(
         'headers' => null,
         'binary' => true,
     ),
-
+    array(
+        'name' => 'XLSX',
+        'description' => 'Microsoft Excel Workbook',
+        'mime_type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'file_extensions' => '.xlsx',
+        'headers' => null,
+        'binary' => true,
+    ),
     
 );
 /*EOF*/

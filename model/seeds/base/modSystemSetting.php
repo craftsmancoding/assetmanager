@@ -54,6 +54,13 @@ return array(
 		'namespace' => 'assman',
 		'area' => 'assman:default'
     ),
+    array(
+        'key'  =>     'assman.autocreate_content_type',
+		'value'=>     '1',
+		'xtype'=>     'combo-boolean',
+		'namespace' => 'assman',
+		'area' => 'assman:default'
+    ),
 
 );
 /*EOF*/

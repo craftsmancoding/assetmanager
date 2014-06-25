@@ -13,6 +13,7 @@ else {
     console.debug('[assman html client]: jQuery loaded.');
 }
 
+// Globals
 var template;
 var category_tpl;
 
@@ -29,16 +30,9 @@ function parse_tpl(src,data) {
     return template(data);    
 }
 */
-
-function page_init() {
-    console.debug('[page_init]');
-    inited = 1; // flag it as having been initialized
-    
-    var source   = jQuery('#page_asset_tpl').html();
-    template = Handlebars.compile(source);
-    category_tpl = Handlebars.compile(jQuery('#asset_group_tpl').html());
-    
-    // JS Hashes do not preserver order. Thus the "Order" array
+function draw_tab() {
+    jQuery('#page_assets').html('');
+    // JS Hashes do not preserve order. Thus the "Order" array
     var arrayLength = Order.length;
     for (var i = 0; i < arrayLength; i++) {
         var asset_id = Order[i];
@@ -47,7 +41,9 @@ function page_init() {
     
     var arrayLength = Groups.length;
     for (var i = 0; i < arrayLength; i++) {
-        jQuery('#asset_category_filters').append( category_tpl({"group": Groups[i]}));
+        if (Groups[i]) {
+            jQuery('#asset_category_filters').append( category_tpl({"group": Groups[i]}));
+        }
     }  
 
     jQuery("#page_assets").sortable({
@@ -57,6 +53,41 @@ function page_init() {
     });
     jQuery("#page_assets").disableSelection();
 
+
+    // Filter page_assets
+    // Clone page_assets items to get a second collection for Quicksand plugin (image gallery)
+    var $portfolioClone = $("#page_assets").clone();
+    
+    // Attempt to call Quicksand on every click event handler
+    jQuery("#asset_category_filters a").click(function(e){
+        
+        jQuery("#asset_category_filters li").removeClass("current");
+        jQuery("#asset_category_filters li").removeClass("first"); 
+        
+        // Get the class attribute value of the clicked link
+        var $filterClass = $(this).parent().attr("class");
+
+        if ( $filterClass == "all" ) {
+            var $filteredPortfolio = $portfolioClone.find("li");
+        } else {
+            var $filteredPortfolio = $portfolioClone.find("li[data-type~=" + $filterClass + "]");
+        }
+        
+        // Call quicksand
+        jQuery("#page_assets").quicksand( $filteredPortfolio, { 
+            duration: 800, 
+            easing: 'swing' 
+        });
+
+
+        jQuery(this).parent().addClass("current");
+
+    })
+
+
+}
+
+function define_dialog_boxes() {
     // Edit Asset Form
     // The trick here is reading data out of the JS "Assets" var and into the form when it is displayed,
     // then from the form and back into the JS Assets var when the form is closed.
@@ -79,7 +110,12 @@ function page_init() {
             jQuery('#modal_asset_group').val(Assets[asset_id].group);
             jQuery('#modal_asset_width').text(Assets[asset_id].width);
             jQuery('#modal_asset_height').text(Assets[asset_id].height);
-            jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;margin: 0 auto;display: block;"/>');
+            if (Assets[asset_id].is_image) {
+                jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;margin: 0 auto;display: block;"/>');
+            }
+            else {
+                jQuery('#modal_asset_img').html(''); 
+            }
             jQuery('#modal_asset_thumb').html('<img src="'+Assets[asset_id].thumbnail_url+'" style="max-width:500px; height:auto;"/>');
             if (Assets[asset_id].is_active == 1) {  
                 jQuery('#modal_asset_is_active').prop('checked', true);
@@ -94,10 +130,12 @@ function page_init() {
                 // And back to the JSON (double-ouch)
                 Assets[asset_id].title = jQuery('#modal_asset_title').val();
                 Assets[asset_id].alt = jQuery('#modal_asset_alt').val();
-                Assets[asset_id].group = jQuery('#modal_asset_group').val(); // TODO: splice Groups array!
+                Assets[asset_id].group = jQuery('#modal_asset_group').val(); 
                 Assets[asset_id].is_active = is_active;
                 jQuery('#asset_is_active_'+asset_id).val(is_active);
                 jQuery('#asset_group_'+asset_id).val(Assets[asset_id].group);
+                jQuery('#asset_title_'+asset_id).html(Assets[asset_id].title);
+                jQuery('#asset_group_vis_'+asset_id).html(Assets[asset_id].group);
                 console.log('#asset_is_active_'+asset_id+ ' set to '+is_active);
                 // This data here is specific to the Asset... be we can't post back everything:
                 // url, thumbnail_url, path will specifically get messed up if posted here.
@@ -108,6 +146,12 @@ function page_init() {
                     alt: Assets[asset_id].alt
                 });
                 
+                // Update the groups and redraw the groups
+                Groups.push(Assets[asset_id].group);
+                Groups = array_unique(Groups);
+                jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
+                draw_tab();
+                
                 jQuery( this ).dialog( "close" );
             },
             "Cancel": function() {
@@ -115,7 +159,6 @@ function page_init() {
             }
         }   
     });
-    
 
     // Define Dropzone for Assets 
     // This does create an error on save: "Dropzone already attached." boo.
@@ -127,20 +170,18 @@ function page_init() {
         response = jQuery.parseJSON(response);
         console.log('[Dropzone Success]', file, response);
         if (response.status == "success") {
-            var newhtml = template(response.data.fields);
+            // Write data back to parent JS
             var asset_id = response.data.fields.asset_id;
             Assets[asset_id] = response.data.fields;
-            jQuery("#page_assets").append(newhtml);
+            Order.push(asset_id);
+            draw_tab();
             jQuery(".dz-preview").remove();
        } 
        else {                           
             console.log('There was a problem with your image upload.');
-            $(".dz-success-mark").hide();
-            $(".dz-error-mark").show();
-            $(".moxy-msg").show();
-            $("#moxy-result").html("Failed");
-            $("#moxy-result-msg").html(response.data.msg);
-            $(".moxy-msg").delay(3200).fadeOut(400);
+            jQuery(".dz-success-mark").hide();
+            jQuery(".dz-error-mark").show();
+            show_error(response.data.msg);
        }
     });    
     myDropzone.on("error", function(file,errorMessage) {
@@ -163,7 +204,6 @@ function page_init() {
             var asset_id = $(ui.draggable).find('img').data('asset_id');
             if (confirm("Are you Sure you want to Delete this Image?")) {
                 $(this).removeClass('over-trash');
-                //assapi('pageasset','delete', {asset_id: asset_id} );
                 var result = assapi('asset','delete', {asset_id: asset_id} );
                 $('#'+id).hide();
             }
@@ -173,37 +213,23 @@ function page_init() {
 
     });
 
+}
 
-    // Filter page_assets
-    // Clone page_assets items to get a second collection for Quicksand plugin
-    var $portfolioClone = $("#page_assets").clone();
+/**
+ * Draw our tab, formatting data using handlebarsjs
+ *
+ */
+function page_init() {
+    console.debug('[page_init]');
+    inited = 1; // flag it as having been initialized
     
-    // Attempt to call Quicksand on every click event handler
-    $("#asset_category_filters a").click(function(e){
-        
-        $("#asset_category_filters li").removeClass("current");
-        $("#asset_category_filters li").removeClass("first"); 
-        
-        // Get the class attribute value of the clicked link
-        var $filterClass = $(this).parent().attr("class");
-
-        if ( $filterClass == "all" ) {
-            var $filteredPortfolio = $portfolioClone.find("li");
-        } else {
-            var $filteredPortfolio = $portfolioClone.find("li[data-type~=" + $filterClass + "]");
-        }
-        
-        // Call quicksand
-        $("#page_assets").quicksand( $filteredPortfolio, { 
-            duration: 800, 
-            easing: 'swing' 
-        });
-
-
-        $(this).parent().addClass("current");
-
-    })
-
+    var source   = jQuery('#page_asset_tpl').html();
+    template = Handlebars.compile(source);
+    category_tpl = Handlebars.compile(jQuery('#asset_group_tpl').html());
+    
+    draw_tab();
+    define_dialog_boxes();
+    
 }
 
 
@@ -250,6 +276,21 @@ function assapi(classname,methodname,data,callback) {
         console.error('[assapi] post to %s failed', url);
         return show_error('Request failed.');
     });
+}
+
+/**
+ * Given an array, make all elements in it unique (like PHP function of the same name)
+ * @param array
+ * @return array
+ */
+function array_unique(a) {
+    var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
 }
 
 /**

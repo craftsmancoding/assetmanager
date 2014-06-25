@@ -44,3 +44,6 @@ $_lang['setting_assman.thumbnail_height_desc'] = 'Used when calculating thumbnai
 $_lang['setting_assman.class_keys'] = 'Class Keys';
 $_lang['setting_assman.class_keys_desc'] = 'JSON array listing class names of MODX resources that will get the "Assets" tab added. Default is modDocument. Other possible values include modStaticResource, modSymLink, modWebLink, and any custom resource classes you may have defined.';
 
+$_lang['setting_assman.autocreate_content_type'] = 'Auto-Create Content Types';
+$_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in the content_type table, the Asset Manager will attempt to intelligently create it based on the file extension and detected mime-type. If you disable this setting, uploads may fail when a user tries to upload an allowed file type (via the upload_files setting), but no corresponding content type is defined.';
+

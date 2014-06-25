@@ -223,6 +223,30 @@ class Asset extends BaseModel {
     }
 
     /**
+     * Is the file binary?
+     * From http://stackoverflow.com/questions/3872877/how-to-check-if-uploaded-file-is-binary-file
+     * @param string $file (full file name and path)
+     * @return integer like boolean
+     */
+    public function isBinary($file) 
+    { 
+        if (file_exists($file)) { 
+        if (!is_file($file)) return 0; 
+        
+        $fh  = fopen($file, "r"); 
+        $blk = fread($fh, 512); 
+        fclose($fh); 
+        clearstatcache(); 
+        
+        return ( 
+          0 or substr_count($blk, "^ -~", "^\r\n")/512 > 0.3 
+            or substr_count($blk, "\x00") > 0 
+        ); 
+        } 
+        return 0; 
+    } 
+
+    /**
      * Create a new asset object and upload the file into an organized directory structure.
      * This was built to handle form submissions and the $_FILES array. Use indexedToRecordset()
      * to process the array for iterating over this function.
@@ -269,9 +293,17 @@ class Asset extends BaseModel {
         $src = $FILE['tmp_name']; // source file
         $this->_validFile($src);
         
-        $sig = md5_file($src);
+        // Are we allowed to upload this file type?
+        $ext = ltrim(strtolower(strrchr($FILE['name'], '.')),'.');
+        $uploadable = explode(',',$this->modx->getOption('upload_files'));
+        $uploadable = array_map('trim', $uploadable);
+        if (!in_array($ext, $uploadable)) {
+            throw new \Exception('Uploads not allowed for this file type ('.$ext.')! <a href="?a=70">Adjust the allowed extensions</a> for the <code>upload_files</code> Setting.');
+        }
         
-        // Existing?
+        $sig = md5_file($src);
+
+        // File already exists?
         if (!$force_create) {
             if ($existing = $this->modx->getObject('Asset', array('sig'=>$sig))) {
                 $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Existing Asset found with matching signature: '.$existing->get('asset_id'),'',__CLASS__,__FUNCTION__,__LINE__); 
@@ -293,6 +325,9 @@ class Asset extends BaseModel {
         $obj->set('sig', $sig);
         $obj->set('size', $size);
         
+        // Fail if content type cannot be found
+        $C = $this->getContentType($FILE);
+        
         if(!@rename($src,$dst)) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to move asset file from '.$src.' to '.$dst,'',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Could not move file from '.$src.' to '.$dst);
@@ -300,8 +335,6 @@ class Asset extends BaseModel {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Moved file from '.$src.' to '.$dst,'',__CLASS__,__FILE__,__LINE__);
         @chmod($dst, 0666); // <-- config?
 
-        
-        $C = $this->getContentType($dst);        
         $obj->set('content_type_id', $C->get('id'));
         $obj->set('path', $this->getRelPath($dst, $storage_basedir));
         $obj->set('url', $this->getRelPath($dst, $storage_basedir));   
@@ -414,37 +447,53 @@ class Asset extends BaseModel {
     }
 
     /** 
-     * Find a MODX content type based on a filename
+     * Find a MODX content type based on a filename. This should be executable before a file has been
+     * moved into place.
      *
-     * @param string $filename
+     * Array
+     * (
+     *   [name] => example.pdf
+     *   [type] => application/pdf
+     *   [tmp_name] => /tmp/path/somewhere/phpkAYQwR
+     *   [error] => 0
+     *   [size] => 2109
+     *)
+     *
+     * @param array $FILE from upload (in case we need to auto-create)
      * @return object modContentType
      */
-    public function getContentType($filename) {
-        if (!file_exists($filename)) {
-            throw new \Exception('File not found '.$filename);
+    public function getContentType($FILE) {
+        // Lookup by the mime-type
+        if ($C = $this->modx->getObject('modContentType', array('mime_type'=>$FILE['type']))) {
+            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Content Type Found for mime-type '.$FILE['type'].': '.$C->get('id'),'',__CLASS__,__FILE__,__LINE__);
+            return $C;
         }
-        // More thorough is to lookup by the mime-type
-        if (function_exists('finfo_file') && function_exists('finfo_open')) {
-            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Looking up content type for file '.$filename.' by mime-type','',__CLASS__,__FILE__,__LINE__);
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            if ($mime_type = finfo_file($finfo, $filename)) {
-                if ($C = $this->modx->getObject('modContentType', array('mime_type'=>$mime_type))) {
-                    $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Content Type Found for mime-type '.$mime_type.': '.$C->get('id'),'',__CLASS__,__FILE__,__LINE__);
-                    return $C;
-                }
-            }
-        }
+
         // Fallback to file extension
-        $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Looking up content type for file '.$filename.' by file extension','',__CLASS__,__FILE__,__LINE__);
-        if (!$ext = $this->getExt($filename)) {
-            throw new \Exception('Extension not found '.$filename);
-        }
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Looking up content type for file '.$FILE['name'].' by file extension','',__CLASS__,__FILE__,__LINE__);
+        $ext = ltrim(strtolower(strrchr($FILE['name'], '.')),'.');
         if ($C = $this->modx->getObject('modContentType', array('file_extensions'=>'.'.$ext))) {
             $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Content Type Found for extension .'.$ext.': '.$C->get('id'),'',__CLASS__,__FILE__,__LINE__);        
             return $C;
         }
         
-        throw new \Exception('Content type not defined.');
+        // Final chance: auto-create the content type        
+        $this->modx->log(\modX::LOG_LEVEL_WARN, 'Unknown Content Type for file '.$FILE['name'],'',__CLASS__,__FILE__,__LINE__);
+        if ($this->modx->getOption('assman.autocreate_content_type')) {
+            $this->modx->log(\modX::LOG_LEVEL_INFO, 'Attempting to auto-create modContentType for file '.$FILE['name'],'',__CLASS__,__FILE__,__LINE__);
+            $C = $this->modx->newObject('modContentType');
+            $C->set('name', strtoupper($ext));
+            $C->set('file_extensions', '.'.$ext);
+            $C->set('binary', $this->isBinary($FILE['tmp_name'])); 
+            $C->set('description', 'Automatically created by Asset Manager');
+            $C->set('mime_type', $FILE['type']);
+            if (!$C->save()) {
+                throw new \Exception('Failed to automatically create content type for file.');        
+            }
+            return $C;
+        }
+        
+        throw new \Exception('Content type not defined for files of type '.$ext.'. Enable auto-creation of content types by adjusting the assman.autocreate_content_type setting.');
     }
 
     /**

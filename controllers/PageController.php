@@ -29,24 +29,14 @@ class PageController extends BaseController {
         $this->config['controller_url'] = self::url();
         $this->config['core_path'] = $this->modx->getOption('assman.core_path', null, MODX_CORE_PATH.'components/assman/');
         $this->config['assets_url'] = $this->modx->getOption('assman.assets_url', null, MODX_ASSETS_URL.'components/assman/');
-
-//        $this->modx->regClientCSS($this->config['assets_url'].'css/mgr.css');
-//        $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
-//        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
-//        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery-ui.js'); 
-        
-        
-        
+                
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/mgr.css');
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/dropzone.css');
-//        $this->modx->regClientCSS($this->config['assets_url'].'css/datepicker.css');
         $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+//        $this->modx->regClientCSS($this->config['assets_url'].'css/jquery-ui.css'); // smoothness        
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery-ui.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/handlebars.js');
-        //$this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');
-        
-//        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.tabify.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/dropzone.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/bootstrap.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
@@ -54,9 +44,6 @@ class PageController extends BaseController {
     }
 
 
-    
-
-    
     //------------------------------------------------------------------------------
     //! Assets
     //------------------------------------------------------------------------------
@@ -166,6 +153,7 @@ class PageController extends BaseController {
         $groups = array_keys($groups);
         sort($groups);
         
+        // We always want a hash, not an array
         if ($json) {
             $Assets = json_encode($json);
         }

@@ -59,7 +59,6 @@ class Asset extends xPDOObject {
         }
         elseif ($k=='thumbnail_url') {
             
-
             if (empty($raw)) {
                 $Asset = new \Assman\Asset($this->xpdo);
                 $thumbnail_url = $Asset->getThumbnailURL($this);
@@ -68,14 +67,7 @@ class Asset extends xPDOObject {
                     return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$thumbnail_url;
                 } else {
                     return $thumbnail_url;
-                }
-                
-/*
-                //$ext = strtolower(strrchr($this->get('url'), '.'));
-                $w = $this->xpdo->getOption('assman.thumbnail_width');
-                $h = $this->xpdo->getOption('assman.thumbnail_height');
-                return \Assman\Asset::getMissingThumbnail($w,$h);
-*/
+                }                
             }
             // Passthru if the user has set a full URL
             elseif(filter_var($raw, FILTER_VALIDATE_URL)) {

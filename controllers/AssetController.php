@@ -43,30 +43,23 @@ class AssetController extends APIController {
             return $this->sendFail(array('errors'=> 'Error uploading file: '.$_FILES[$filename]['error']));
         }        
         
-//        try {
+        try {
             $Model = new Asset($this->modx);    
             $Asset = $Model->fromFile($_FILES[$fieldname]);
-    
-            if (!$Asset->save()) {
-                return $this->sendFail(array('errors'=> $Model->errors));
-            }
-/*
-            if ($page_id) {
-                $PA = $this->modx->newObject('ProductAsset',array('page_id'=>$page_id,'asset_id'=>$Asset->getPrimaryKey()));
-                $PA->save();
-            }
-*/
-            
-            return $this->sendSuccess(array(
-                'msg' => sprintf('%s created successfully.',$this->model),
-                'class' => $this->model,
-                'fields' => $Asset->toArray()
-            ));
-//        }
-         // oddly, trapping exceptions here winds us up on the MODX error pages
-//        catch (\Exception $e) {
-//            $this->sendError($e->getMessage(),'Exception');
-//        }
+        }
+        catch (\Exception $e) {
+            return $this->sendFail(array('msg'=> $e->getMessage()));    
+        }  
+        
+        if (!$Asset->save()) {
+            $this->modx->log(\modX::LOG_LEVEL_ERROR,'Error saving Asset '.print_r($_FILES[$fieldname],true).' '.print_r($Model->errors,true),'',__CLASS__,__FUNCTION__,__LINE__);
+            return $this->sendFail(array('errors'=> $Model->errors));
+        }            
+        return $this->sendSuccess(array(
+            'msg' => sprintf('%s created successfully.',$this->model),
+            'class' => $this->model,
+            'fields' => $Asset->toArray()
+        ));
     }
 
 }

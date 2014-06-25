@@ -28,6 +28,7 @@ class assetTest extends \PHPUnit_Framework_TestCase {
     public static $modx;
     public static $Asset;
     public static $PageAsset;
+    public static $Page;
         
     /**
      * Load up MODX for our tests.
@@ -39,8 +40,8 @@ class assetTest extends \PHPUnit_Framework_TestCase {
         $core_path = self::$modx->getOption('assman.core_path','',MODX_CORE_PATH.'components/assetmanager/');
         self::$modx->addExtensionPackage('assman',"{$core_path}model/orm/", array('tablePrefix'=>'ass_'));
         self::$modx->addPackage('assman',"{$core_path}model/",'ass_');
-
-        // Prep: create a parent store 
+        
+        // Create Asset
         if (!self::$Asset = self::$modx->getObject('Asset', array('title'=>'Test Asset 101'))) {
             self::$Asset = self::$modx->newObject('Asset');
             self::$Asset->fromArray(array(
@@ -49,7 +50,7 @@ class assetTest extends \PHPUnit_Framework_TestCase {
             self::$Asset->save();        
         }
         
-        // Rustle up some products
+        // Associate them
         if (!$PageAsset = self::$modx->getObject('PageAsset', array('seq'=> 100))) {
             $PageAsset = self::$modx->newObject('PageAsset');
             $PageAsset->fromArray(array(
