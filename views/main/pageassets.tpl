@@ -3,27 +3,24 @@ The following script is a handlebarjs template.
 Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 -->
 <script id="page_asset_tpl" type="text/x-handlebars-template">
-<li class="li_product_image" data-id="id-{{asset_id}}" data-type="{{group}}" id="product-asset-{{asset_id}}" style="cursor:pointer;">
+<li class="li_product_image" data-id="id-{{asset_id}}" data-type="{{ group }}" id="product-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
         <img src="{{thumbnail_url}}?rand=" data-asset_id="{{asset_id}}" alt="{{alt}}" width="{{thumbnail_width}}" height="{{thumbnail_height}}"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" value="{{asset_id}}"/>
         <input type="hidden" id="asset_group_{{asset_id}}" name="PageAssets[group][]" value="{{group}}"/>
         <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="1" />
         <div class="img-info-inner">
-            <p class="asset-id-ph"><span id="asset_title_{{asset_id}}">{{title}}</span> ({{asset_id}})</p>
-            <p class="asset-title-ph" id="asset_group_vis_{{asset_id}}">{{group}}</p>
+            <p class="asset-id-ph">Asset ID: {{asset_id}}</p>
+            <p class="asset-title-ph">Title: {{title}}</p>
         </div>
 	</div>
 </li>
 </script>
 
-
 <script id="asset_group_tpl" type="text/x-handlebars-template">
 <li class="{{group}}"><a href="#">{{group}}</a></li>
 </script>
 
-
-<!-- ========================================= CONTENT ======================================== -->
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
 
@@ -77,7 +74,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
                     </div>
 
                     <div class="row-input">
-                         <label class="row-lbl" for="modal_asset_thumbnail_override">Thumbnail Override</label>
+                         <label class="row-lbl" for="modal_asset_thumbnail_override">Manual Thumbnail Override</label>
                         <input class="row-field" type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
                     </div>
 

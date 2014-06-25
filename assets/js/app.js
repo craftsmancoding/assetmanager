@@ -297,7 +297,11 @@ function array_unique(a) {
  * Show a simple error message, then fade it out and clear it so we can reuse the div.
  */
 function show_error(msg) {
-    jQuery('#assman_msg').html('<div class="danger">'+msg+'</div>');
+    jQuery('#assman_msg').html('<div class="danger">'+msg+'</div>')
+    .delay(3000).fadeOut(function() {
+        jQuery(this).html('');
+        jQuery(this).show(); 
+    });
 }
 
 
