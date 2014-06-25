@@ -108,4 +108,3 @@ $chunk->setCacheable(false);
 $output = $chunk->process($ass_props, $tpl);
 
 return $output;
-
