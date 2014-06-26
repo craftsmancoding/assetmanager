@@ -100,10 +100,10 @@ h2.assman_cmp_heading {
 }
 
 
-#assets_tab {
+/* #assets_tab {
   margin-top: 10px;
 }
-
+ */
 #assets_tab li.li_product_image {
   float: left;
   border: 1px solid #acacac;
