@@ -37,6 +37,7 @@
  * @param integer $page_id of the page whose images you want. Defaults to the current page.
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
  * @param string $innerTpl Format the Inner Item of List
+ * @param string $group optional: limit the results to the specified group
  * @param boolean $is_active Get all active records only
  * @param boolean $is_image if true, return only images, if false, only other assets. If not set, we get everything.
  * @param int $limit Limit the records to be shown (if set to 0, all records will be pulled)
@@ -87,6 +88,9 @@ $criteria['page_id'] = $page_id;
 $criteria['PageAsset.is_active'] = true;
 if (isset($scriptProperties['is_image'])) {
     $criteria['Asset.is_image'] = (bool) $scriptProperties['is_image'];
+}
+if (isset($scriptProperties['group'])) {
+    $criteria['PageAsset.group'] = $scriptProperties['group'];
 }
 
 $c = $modx->newQuery('PageAsset');
