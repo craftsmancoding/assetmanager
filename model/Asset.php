@@ -163,7 +163,8 @@ class Asset extends BaseModel {
         $h = ($h) ? $h : $this->modx->getOption('assman.thumbnail_height');
         
         if (!$obj->get('is_image')) {
-            return $this->getMissingThumbnail($w,$h, substr($obj->get('url'),-3));
+            $ext = trim(strtolower(strrchr($obj->get('path'), '.')),'.');
+            return $this->getMissingThumbnail($w,$h, $ext);
         }
         
         $thumbfile = $this->getResizedImage($obj->get('path'), $obj->get('asset_id'), $w, $h);
