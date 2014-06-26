@@ -33,11 +33,18 @@ function parse_tpl(src,data) {
 function draw_tab() {
     jQuery('#page_assets').html('');
     // JS Hashes do not preserve order. Thus the "Order" array
+    Groups = [];
     var arrayLength = Order.length;
     for (var i = 0; i < arrayLength; i++) {
         var asset_id = Order[i];
         jQuery('#page_assets').append( template(Assets[asset_id]));
+        if (Assets[asset_id].group) {
+            Groups.push(Assets[asset_id].group);
+        }
     }
+    
+    //Groups.push(Assets[asset_id].group);
+    Groups = array_unique(Groups);
     
     jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
     var arrayLength = Groups.length;
@@ -148,8 +155,8 @@ function define_dialog_boxes() {
                 });
                 
                 // Update the groups and redraw the groups
-                Groups.push(Assets[asset_id].group);
-                Groups = array_unique(Groups);
+                //Groups.push(Assets[asset_id].group);
+                //Groups = array_unique(Groups);
                 draw_tab();
                 
                 jQuery( this ).dialog( "close" );
