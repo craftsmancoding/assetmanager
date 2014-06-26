@@ -87,12 +87,8 @@ function draw_tab() {
             easing: 'swing' 
         });
 
-
         jQuery(this).parent().addClass("current");
-
     })
-
-
 }
 
 function define_dialog_boxes() {

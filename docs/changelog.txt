@@ -1,0 +1,4 @@
+Changelog for Asset Manager
+
+Asset Manager 1.0.0
+---------------------------------
