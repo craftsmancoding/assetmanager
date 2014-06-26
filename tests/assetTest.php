@@ -3,7 +3,7 @@
  * Before running these tests, you must install the package using Repoman
  * and seed the database with the test data!
  *
- *  php repoman.php install /path/to/repos/moxycart '--seed=base,test'
+ *  php repoman.php install /path/to/repos/assetmanager
  * 
  * That will ensure that the database tables contain the correct test data. 
  * If you need to create more test data, make sure you add the appropriate 
@@ -12,7 +12,7 @@
  *
  * To run these tests, pass the test directory as the 1st argument to phpunit:
  *
- *   phpunit path/to/moxycart/core/components/moxycart/tests
+ *   phpunit path/to/moxycart/core/components/assetmanager/tests
  *
  * or if you're having any trouble running phpunit, download its .phar file, and 
  * then run the tests like this:
@@ -41,16 +41,6 @@ class assetTest extends \PHPUnit_Framework_TestCase {
         self::$modx->addExtensionPackage('assman',"{$core_path}model/orm/", array('tablePrefix'=>'ass_'));
         self::$modx->addPackage('assman',"{$core_path}model/",'ass_');
         
-        // Create Asset
-/*
-        if (!self::$Asset = self::$modx->getObject('Asset', array('title'=>'Test Asset 101'))) {
-            self::$Asset = self::$modx->newObject('Asset');
-            self::$Asset->fromArray(array(
-                'title' => 'Test Asset 101'
-            ));
-            self::$Asset->save();        
-        }
-*/
         // Create Page
         if (!self::$Page = self::$modx->getObject('modResource', array('alias'=>'test-test-test'))) {
             self::$Page = self::$modx->newObject('modResource');
