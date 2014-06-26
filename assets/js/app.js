@@ -39,6 +39,7 @@ function draw_tab() {
         jQuery('#page_assets').append( template(Assets[asset_id]));
     }
     
+    jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
     var arrayLength = Groups.length;
     for (var i = 0; i < arrayLength; i++) {
         if (Groups[i]) {
@@ -149,7 +150,6 @@ function define_dialog_boxes() {
                 // Update the groups and redraw the groups
                 Groups.push(Assets[asset_id].group);
                 Groups = array_unique(Groups);
-                jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
                 draw_tab();
                 
                 jQuery( this ).dialog( "close" );
