@@ -47,16 +47,8 @@ $ny = $new_h;
         
 $modx->log(\modX::LOG_LEVEL_INFO,'New asset dimensions calculated: '.$nx, $ny,'','scale2h Output Filer');
 
-
-
-$A = new \Assman\Asset($modx);
-$url = $A->getThumbnailURL($Asset, $nx, $ny);
 $modx->setPlaceholder('asset_id.width', $ny);
-if ($modx->getOption('assman.url_override')) {
-    return $modx->getOption('assman.site_url') . $modx->getOption('assman.library_path').$url;
-}
-else {
-    return $modx->getOption('assets_url') . $modx->getOption('assman.library_path').$url;
-}
+return $Asset->getThumbnailURL($nx, $ny);
+
 
 /*EOF*/

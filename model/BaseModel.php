@@ -98,12 +98,14 @@ class BaseModel {
 
         }
         else {
-            $this->modelObj = $modx->newObject($this->xclass);
+            $this->modelObj = $modx->newObject($this->xclass); 
         }
         
+/*
         if (!$this->modelObj->isNew()) {
             $this->previous_vals = $this->modelObj->toArray();
         }
+*/
     }
 
     /**

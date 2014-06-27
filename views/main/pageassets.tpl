@@ -102,8 +102,6 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
                 </div>
 
             </div>
-
-
         </div>
 	</div>		
 

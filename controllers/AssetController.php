@@ -26,7 +26,7 @@ class AssetController extends APIController {
         )     
      */
     public function postCreate(array $scriptProperties = array()) {
-        $this->modx->setLogLevel(4);
+        //$this->modx->setLogLevel(4);
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API $_FILES: '.print_r($_FILES,true),'',__CLASS__,__FUNCTION__,__LINE__);
         $fieldname = $this->modx->getOption('fieldname', $scriptProperties,'file');

@@ -38,14 +38,8 @@ if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
     $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found.','','resize Output Filer');
     return \Assman\Asset::getMissingThumbnail($w,$h);
 }
-$A = new \Assman\Asset($modx);
-$url = $A->getThumbnailURL($Asset, $w, $h);
 
-if ($modx->getOption('assman.url_override')) {
-    return $modx->getOption('assman.site_url') . $modx->getOption('assman.library_path').$url;
-}
-else {
-    return $modx->getOption('assets_url') . $modx->getOption('assman.library_path').$url;
-}
+return $Asset->getThumbnailURL($w, $h);
+
 
 /*EOF*/

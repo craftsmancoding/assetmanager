@@ -47,15 +47,8 @@ $ny = floor($new_w * ($oy / $ox));
 
 $modx->log(\modX::LOG_LEVEL_INFO,'New asset dimensions calculated: '.$nx, $ny,'','scale2w Output Filer');
 
-
-$A = new \Assman\Asset($modx);
-$url = $A->getThumbnailURL($Asset, $nx, $ny);
 $modx->setPlaceholder('asset_id.height', $ny);
-if ($modx->getOption('assman.url_override')) {
-    return $modx->getOption('assman.site_url') . $modx->getOption('assman.library_path').$url;
-}
-else {
-    return $modx->getOption('assets_url') . $modx->getOption('assman.library_path').$url;
-}
+
+return $Asset->getThumbnailURL($Asset, $nx, $ny);
 
 /*EOF*/

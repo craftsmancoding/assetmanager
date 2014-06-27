@@ -11,7 +11,7 @@ $xpdo_meta_map['Asset']= array (
     'title' => NULL,
     'alt' => NULL,
     'url' => NULL,
-    'thumbnail_url' => NULL,
+    'thumbnail_override_url' => NULL,
     'path' => NULL,
     'width' => NULL,
     'height' => NULL,
@@ -65,7 +65,7 @@ $xpdo_meta_map['Asset']= array (
       'null' => false,
       'index' => 'index',
     ),
-    'thumbnail_url' => 
+    'thumbnail_override_url' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
