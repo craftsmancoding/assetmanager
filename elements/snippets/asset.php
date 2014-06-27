@@ -11,6 +11,12 @@
  * 
  * USAGE EXAMPLES
  * [[Asset? &asset_id=`123` &tpl=`<img src="[[+url]]"/>` &height=`100` &width=`100` ]]
+ * [[Asset? &asset_id=`123` &tpl=`<a href="[[+url]]"><img src="[[+thumbnail_url]]"/></a>` &height=`100` &width=`100` ]]
+ *
+ * USAGE EXAMPLES FOR NON-IMAGES ASSET
+ * width and height param doesnt work on non-images asset
+ * [[Asset? &asset_id=`123` &tpl=`<img src="[[+thumbnail_url]]"/>` ]]
+ * [[Asset? &asset_id=`123` &tpl=`<a href="[[+url]]"><img src="[[+thumbnail_url]]"/></a>` ]]
  *
  * Parameters
  * -----------------------------
