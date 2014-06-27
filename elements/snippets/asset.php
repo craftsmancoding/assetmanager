@@ -67,8 +67,7 @@ if($Asset->is_image) {
 		// Calculate the new dimensions
 		$nx = floor($height * ( $Asset->get('width') / $Asset->get('height') ));
 		$ny = $height;
-		$A = new \Assman\Asset($modx);
-		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
+		$url = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
 		$url = explode('/', $url);
 		unset($url[0]);
 		unset($url[1]);
@@ -82,8 +81,7 @@ if($Asset->is_image) {
 		// Calculate the new dimensions
 		$nx = $width;
 		$ny = floor($width * ($Asset->get('height') / $Asset->get('width')));
-		$A = new \Assman\Asset($modx);
-		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
+		$url = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
 		$url = explode('/', $url);
 		unset($url[0]);
 		unset($url[1]);
@@ -94,8 +92,7 @@ if($Asset->is_image) {
 	}
 
 	if( $height > 0 && $width > 0 ) {
-		$A = new \Assman\Asset($modx);
-		$url = $A->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
+		$url = $Asset->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
 		$url = explode('/', $url);
 		unset($url[0]);
 		unset($url[1]);

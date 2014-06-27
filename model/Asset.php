@@ -116,6 +116,7 @@ class Asset extends BaseModel {
      * @param integer $h (todo)
      * @return string relative URL to thumbnail, rel to $storage_basedir
      */
+/*
     public function getResizedImage($src, $asset_id,$w,$h) {
         $this->_validFile($src);
         $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
@@ -125,6 +126,7 @@ class Asset extends BaseModel {
         return \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
     }
     
+*/
     /**
      * Used if an image is missing
      *
