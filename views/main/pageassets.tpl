@@ -78,7 +78,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 
                     <div class="row-input">
                          <label class="row-lbl" for="modal_asset_thumbnail_override">Thumbnail Override</label>
-                        <input class="row-field" type="text" id="modal_asset_thumbnail_override" value="" placeholder="http://"/>
+                        <input class="row-field" type="text" id="modal_asset_thumbnail_override_url" value="" placeholder="http://"/>
                     </div>
 
                 </div>
