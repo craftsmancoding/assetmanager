@@ -14,10 +14,13 @@ Asset records are stored RELATIVE to a directory/URL that you define.
     	<field key="content_type_id" dbtype="int" precision="11" phptype="integer" null="false"/>
 		<field key="title" dbtype="varchar" precision="255" phptype="string" null="false" />
 		<field key="alt" dbtype="varchar" precision="255" phptype="string" null="false" />
-		<!-- stored URL relative to assman.library_path -->
+		<!-- stored URL relative to assman.library_path OR provide a full URL for remote assets -->
 		<field key="url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
-		<!-- For images, this will be a smaller version of the image, otherwise it'll be an icon for the content type -->
-		<field key="thumbnail_url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
+		<!-- 
+		For images, this will be a smaller version of the image, otherwise it'll be an icon for the content type 
+		thumbnail_url is a calculated field. See asset.class.php
+		-->
+		<field key="thumbnail_override_url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
 		<!-- stored URL relative to MODX_ASSET_PATH . assman.upload_dir 
 		This might be null if a foriegn image is referenced
 		-->

@@ -21,21 +21,6 @@ class Asset extends BaseModel {
 
     public $search_columns = array('title','alt','thumbnail_url','size'); 
     
-    /**
-     * We house our exceptional tantrums here.
-     * Use isNew()  getPK() -- gets the name  getPrimaryKey() -- gets the value
-     */
-    private function _validFile($src) {
-        if (!is_scalar($src)) {
-            throw new \Exception('Invalid data type for path');
-        }
-        if (!file_exists($src)) {
-            throw new \Exception('File not found '.$src);
-        }
-        if (is_dir($src)) {
-            throw new \Exception('File must not be a directory '.$src);
-        }    
-    }
 
     /**
      * Dictate related assets (e.g. to a current page).
@@ -123,59 +108,6 @@ class Asset extends BaseModel {
     }
 
     /**
-     * Enforces our naming convention for thumbnail images (or any resized images).
-     * Desired behavior is like this:
-     *
-     *  Original image: /lib/path/to/image/foo.jpg   (asset_id 123)
-     *  Resized         /lib/resized/123/250x100.jpg
-     *  ...etc...
-     *
-     * @param string $src full path to the original image
-     * @param string $subdir to define resized images will be written
-     * @param integer $w
-     * @param integer $h
-     * @return string
-     */
-    public function getThumbFilename($src,$asset_id,$w,$h) {
-        $storage_basedir = $this->modx->getOption('assets_path').rtrim($this->modx->getOption('assman.library_path'),'/').'/';
-        $dir = $storage_basedir.'resized/'.$asset_id.'/';
-        // dirname : omits trailing slash
-        // basename : same as basename()
-        // extension : omits period
-        // filename : w/o extension
-        $p = pathinfo($src);
-        return $dir . $w.'x'.$h.'.'.$p['extension'];
-//        return sprintf('%s/%s/%s.%sx%s.%s',$p['dirname'],$subdir,$p['filename'],$w,$h,$p['extension']);
-    }
-    
-    /**
-     * Get the URL for the thumbnail for a given asset.
-     * This will generate the thumbnail if necessary
-     *
-     * @param object xpdo object representing the asset
-     * @param integer $w (optional)
-     * @param integer $h (optional)
-     * @return string URL rel to library_path
-     */
-    public function getThumbnailURL($obj, $w=null, $h=null) {
-
-        $w = ($w) ? $w : $this->modx->getOption('assman.thumbnail_width');
-        $h = ($h) ? $h : $this->modx->getOption('assman.thumbnail_height');
-        
-        if (!$obj->get('is_image')) {
-            $ext = trim(strtolower(strrchr($obj->get('path'), '.')),'.');
-            return $this->getMissingThumbnail($w,$h, $ext);
-        }
-        
-        $thumbfile = $this->getResizedImage($obj->get('path'), $obj->get('asset_id'), $w, $h);
-        //$this->modx->log(4, 'Thumbnail: '.$thumbfile);
-        $prefix = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
-        return $this->getRelPath($thumbfile, $prefix);
-        
-        
-    }
-    
-    /**
      * Create a resized image for the given asset_id
      *
      * @param string $src fullpath to original image
@@ -184,6 +116,7 @@ class Asset extends BaseModel {
      * @param integer $h (todo)
      * @return string relative URL to thumbnail, rel to $storage_basedir
      */
+/*
     public function getResizedImage($src, $asset_id,$w,$h) {
         $this->_validFile($src);
         $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
@@ -193,6 +126,7 @@ class Asset extends BaseModel {
         return \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
     }
     
+*/
     /**
      * Used if an image is missing
      *
@@ -357,34 +291,6 @@ class Asset extends BaseModel {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Saved Asset: '.print_r($obj->toArray(), true),'',__CLASS__,__FUNCTION__,__LINE__);
         $classname = '\\Assman\\'.$this->xclass;
         return new $classname($this->modx, $obj); 
-    }
-    
-    
-    /**
-     * Given a full path to a file, this strips out the $prefix.
-     * (default if null: MODX_ASSET_PATH . assman.library_path)
-     * The result ALWAYS omits the leading slash, e.g. "/path/to/something.txt"
-     * stripped of "/path/to" becomes "something.txt"
-     *
-     * @param string $fullpath
-     * @param mixed $prefix to remove. Leave null to use MODX settings
-     */
-    public function getRelPath($fullpath, $prefix=null) {
-        if (!is_scalar($fullpath)) {
-            throw new \Exception('Invalid data type for path');
-        }
-        if (!$prefix) {
-            $prefix = $this->modx->getOption('assets_path').$this->modx->getOption('assman.library_path');
-        }
-        
-        if (substr($fullpath, 0, strlen($prefix)) == $prefix) {
-            return ltrim(substr($fullpath, strlen($prefix)),'/');
-        }
-        else {
-            // either the path was to some other place, or it has already been made relative??
-            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Prefix ('.$prefix.') not found in path ('.$fullpath.')','',__CLASS__,__FILE__,__LINE__);
-            throw new \Exception('Prefix not found in path');
-        }
     }
     
     /**
@@ -604,34 +510,5 @@ class Asset extends BaseModel {
         } 
     }
     
-    /**
-     * Save the asset to the defined storage directory. This means that various sub-directories
-     * will be created within the $storage_basedir.  In normal operation, pass this the 
-     * assman.library_path setting.
-     *
-     * @param string $storage_basedir full path
-     */
-    public function saveTo($storage_basedir) {
-        $storage_basedir = $this->preparePath($storage_basedir);
-
-        $src = $this->modelObj->get('src_file');
-        $basename = $this->modelObj->get('src_basename');
-
-        $this->_validFile($src);
-
-        $target_dir = $this->preparePath($storage_basedir.$this->getCalculatedSubdir());
-     
-        $dst = $this->getUniqueFilename($target_dir.$basename);
-        if(!rename($src,$dst)) {
-            throw new \Exception('Could not move file from '.$src.' to '.$dst);
-        }
-
-        $this->modelObj->set('path', $this->getRelPath($dst, $storage_basedir));
-        $this->modelObj->set('url', $this->getRelPath($dst, $storage_basedir));
-        $this->modelObj->set('thumbnail_url',$this->getResizedImage($dst, $storage_basedir));
-        
-        return $this->save();
-    }
-
 }
 /*EOF*/

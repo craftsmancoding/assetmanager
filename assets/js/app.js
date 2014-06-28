@@ -112,6 +112,7 @@ function define_dialog_boxes() {
             jQuery('#modal_asset_title').val(Assets[asset_id].title);
             jQuery('#modal_asset_alt').val(Assets[asset_id].alt);
             jQuery('#modal_asset_group').val(Assets[asset_id].group);
+            jQuery('#modal_asset_thumbnail_override_url').val(Assets[asset_id].thumbnail_override_url);
             jQuery('#modal_asset_width').text(Assets[asset_id].width);
             jQuery('#modal_asset_height').text(Assets[asset_id].height);
             if (Assets[asset_id].is_image) {

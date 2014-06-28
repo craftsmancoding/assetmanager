@@ -84,7 +84,37 @@ class assetTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(is_object($Asset));
 
         $this->assertTrue(file_exists($Asset->get('path')));
+    
+        
+    
 
+        // Test thumbnail_override_url
+        $actual = $Asset->get('thumbnail_override_url');
+        $this->assertEmpty($actual);
+        
+        $override = 'http://craftsmancoding.com/assets/test.jpg';
+        $Asset->set('thumbnail_override_url', $override);
+        $Asset->save();
+        $actual = $Asset->get('thumbnail_url');
+        $this->assertEquals($override,$actual);
+
+        $override = '/assets/test.jpg';
+        $Asset->set('thumbnail_override_url', $override);
+        $Asset->save();
+        $actual = $Asset->get('thumbnail_url');
+        $this->assertEquals(MODX_SITE_URL.ltrim($override,'/'),$actual);
+
+        $override = 'http://craftsmancoding.com/assets/test.jpg';
+        $Asset->set('url', $override);
+        $Asset->save();
+        $actual = $Asset->get('url');
+        $this->assertEquals($override,$actual);
+    
+        // Test normal thumbnail behavior        
+        $Asset->set('thumbnail_override_url', '');
+        $actual = $Asset->get('thumbnail_url');
+        $this->assertNotEmpty($actual);
+        
         $Asset->remove();
         @unlink($newfile);
     }
