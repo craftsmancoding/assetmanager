@@ -125,7 +125,7 @@ class Asset extends xPDOObject {
         }
         
         $thumbfile = $this->getResizedImage($this->get('path'), $this->get('asset_id'), $w, $h);
-        //$this->modx->log(4, 'Thumbnail: '.$thumbfile);
+        //$this->xpdo->log(4, 'Thumbnail: '.$thumbfile);
         $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
         $rel = $this->getRelPath($thumbfile, $prefix);
         if ($this->xpdo->getOption('assman.url_override')) {
@@ -205,5 +205,37 @@ class Asset extends xPDOObject {
         $p = pathinfo($src);
         return $dir . $w.'x'.$h.'.'.$p['extension'];
     }
+
+    /** 
+     * Override parent so we can clean out the asset files
+     *
+     */
+    public function remove() {
+        $storage_basedir = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
+        $this->xpdo->log(\modX::LOG_LEVEL_DEBUG, 'Removing Asset '.$this->getPrimaryKey().' with assets in storage_basedir '.$storage_basedir,'',__CLASS__,__FILE__,__LINE__);
+        
+        //$file = $storage_basedir.$this->modelObj->get('path');
+        $file = $this->get('path');        
+        if (file_exists($file)) {
+            if (!unlink($file)) {
+                $this->xpdo->log(\modX::LOG_LEVEL_ERROR, 'Failed to remove file asset for Asset '.$this->getPrimaryKey(). ': '.$file,'',__CLASS__,__FILE__,__LINE__);
+                throw new \Exception('Failed to delete asset file.');
+            }
+        }
+        else {
+            $this->xpdo->log(\modX::LOG_LEVEL_INFO, 'File does not exist for Asset '.$this->getPrimaryKey().': '.$file.' This could be because the file was manually deleted or because you did not pass the $storage_basedir parameter.','',__CLASS__,__FILE__,__LINE__);
+        }
+        // remove thumbnails
+/*
+        $file = $prefix.$this->modelObj->get('thumbnail_url');
+        if (file_exists($file)) {
+            if (!unlink($file)) {
+                throw new \Exception('Failed to delete thumbnail file.');
+            }
+        }
+*/
+        
+        return parent::remove();
+    } 
 
 }
