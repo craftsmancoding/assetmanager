@@ -123,7 +123,6 @@ class Asset extends xPDOObject {
             $ext = trim(strtolower(strrchr($this->get('path'), '.')),'.');
             return \Assman\Asset::getMissingThumbnail($w,$h, $ext);
         }
-        
         $thumbfile = $this->getResizedImage($this->get('path'), $this->get('asset_id'), $w, $h);
         //$this->xpdo->log(4, 'Thumbnail: '.$thumbfile);
         $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
@@ -146,6 +145,10 @@ class Asset extends xPDOObject {
      * @param mixed $prefix to remove. Leave null to use MODX settings
      */
     public function getRelPath($fullpath, $prefix=null) {
+        $asset_id = $this->get('asset_id');
+        if (!$asset_id) {
+            return '';
+        }
         if (!is_scalar($fullpath)) {
             throw new \Exception('Invalid data type for path');
         }
@@ -159,7 +162,7 @@ class Asset extends xPDOObject {
         else {
             // either the path was to some other place, or it has already been made relative??
             $this->xpdo->log(\modX::LOG_LEVEL_ERROR, 'Prefix ('.$prefix.') not found in path ('.$fullpath.')','',__CLASS__,__FILE__,__LINE__);
-            throw new \Exception('Prefix not found in path');
+            throw new \Exception('Prefix ('.$prefix.') not found in path ('.$fullpath.')');
         }
     }
     
@@ -173,6 +176,9 @@ class Asset extends xPDOObject {
      * @return string relative URL to thumbnail, rel to $storage_basedir
      */
     public function getResizedImage($src, $asset_id,$w,$h) {
+        if (!$asset_id) {
+            return '';
+        }
         $this->_validFile($src);
         $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
         if (file_exists($dst)) {
