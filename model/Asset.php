@@ -267,12 +267,14 @@ class Asset extends BaseModel {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to move asset file from '.$src.' to '.$dst,'',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Could not move file from '.$src.' to '.$dst);
         }
+        
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Moved file from '.$src.' to '.$dst,'',__CLASS__,__FILE__,__LINE__);
         @chmod($dst, 0666); // <-- config?
-
+        $path = $obj->getRelPath($dst, $storage_basedir);
+        $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Dst'.$dst.' Storage: '.$storage_basedir.' path:' .$path,'',__CLASS__,__FILE__,__LINE__);
         $obj->set('content_type_id', $C->get('id'));
-        $obj->set('path', $this->getRelPath($dst, $storage_basedir));
-        $obj->set('url', $this->getRelPath($dst, $storage_basedir));   
+        $obj->set('path', $path);
+        //$obj->set('url', $this->getRelPath($dst, $storage_basedir));   
         if ($info = $this->getImageInfo($dst)) {
             $obj->set('is_image', 1);
             $obj->set('width', $info['width']);
@@ -284,7 +286,7 @@ class Asset extends BaseModel {
         }
         
         if(!$obj->save()) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to save Asset. Errors: '.print_r($obj->errors,true),'',__CLASS__,__FILE__,__LINE__);
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Failed to save Asset. Errors: '.print_r($obj->errors,true). ' '.print_r($obj->toArray(),true),'',__CLASS__,__FILE__,__LINE__);
             throw new \Exception('Error saving to database.');
         }
         

@@ -145,10 +145,12 @@ class Asset extends xPDOObject {
      * @param mixed $prefix to remove. Leave null to use MODX settings
      */
     public function getRelPath($fullpath, $prefix=null) {
+/*
         $asset_id = $this->get('asset_id');
         if (!$asset_id) {
             return '';
         }
+*/
         if (!is_scalar($fullpath)) {
             throw new \Exception('Invalid data type for path');
         }
