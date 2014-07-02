@@ -18,6 +18,10 @@ class APIController extends \modExtraManagerController {
     public $templatesPaths = array();      
     public $model;
 
+    function __construct(\modX &$modx,$config = array()) {
+        parent::__construct($modx,$config);
+        header('Content-Type: application/json');
+    }
 
     /**
      * Catch all for bad function requests -- our 404
@@ -71,8 +75,7 @@ class APIController extends \modExtraManagerController {
      */
     public function postCreate(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
-        $classname = '\\Assman\\'.$this->model;
-        $Model = new $classname($this->modx);    
+        $Model = $this->modx->newObject('Asset');
         $Model->fromArray($scriptProperties);
         if (!$Model->save()) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR,'API: failed to create '.$this->model.' due to errors: '.print_r($Model->errors,true),'',__CLASS__,__FUNCTION__,__LINE__);
@@ -88,11 +91,10 @@ class APIController extends \modExtraManagerController {
      */
     public function postDelete(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
-        $classname = '\\Assman\\'.$this->model;
-        $Model = new $classname($this->modx);    
-        $id = (int) $this->modx->getOption($Model->getPK(),$scriptProperties);
 
-        if (!$Obj = $Model->find($id)) {
+        $id = (int) $this->modx->getOption('asset_id',$scriptProperties);
+
+        if (!$Obj = $this->modx->getObject('Asset', $id)) {
             return $this->sendFail(array('msg'=>sprintf('%s not found', $this->model)));
         }
 
@@ -109,15 +111,11 @@ class APIController extends \modExtraManagerController {
      */
     public function postEdit(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
-        // This doesn't work unless you add the namespace.
-        // Oddly, if you write it out (w/o a var), it works. wtf?
-        $classname = '\\Assman\\'.$this->model;
-        $Model = new $classname($this->modx);    
 
-        $id = (int) $this->modx->getOption($Model->getPK(),$scriptProperties);
+        $id = (int) $this->modx->getOption('asset_id',$scriptProperties);
 
-        if (!$Obj = $Model->find($id)) {
-            return $this->sendFail(array('msg'=>sprintf('%s not found', $this->model)));
+        if (!$Obj = $this->modx->getObject('Asset', $id)) {
+            return $this->sendFail(array('msg'=>'Asset not found'));
         }
         $Obj->fromArray($scriptProperties);
         if (!$Obj->save()) {
@@ -139,10 +137,7 @@ class APIController extends \modExtraManagerController {
      */
     public function postSearch(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG,'API: '.print_r($scriptProperties,true),'',__CLASS__,__FUNCTION__,__LINE__);
-        // This doesn't work unless you add the namespace.
-        // Oddly, if you write it out (w/o a var), it works. wtf?
-        $classname = '\\Assman\\'.$this->model;
-        $Model = new $classname($this->modx);    
+        $Model = $this->modx->newObject('Asset'); 
 
         $scriptProperties['limit'] = $this->modx->getOption('limit',$scriptProperties,25);
         //$results = $Model->all(array('name:like'=>'shirt','limit'=>25));

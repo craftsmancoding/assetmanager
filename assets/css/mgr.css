@@ -104,7 +104,7 @@ h2.assman_cmp_heading {
   margin-top: 10px;
 }
  */
-#assets_tab li.li_product_image {
+#assets_tab li.li_page_image {
   float: left;
   border: 1px solid #acacac;
   padding: 5px;
@@ -259,13 +259,13 @@ div > input.x-form-field {
 }
 
 
-.li_product_image .remove-img {
+.li_page_image .remove-img {
   position: absolute;
   top: -5px;
   right: -5px;
   width: 15px;
   height: 15px;
-  background: url('../images/remove-icon.png') no-repeat;
+/*   background: url('../images/remove-icon.png') no-repeat; */
   text-indent: -999999px;
   display: none;
 }
@@ -315,7 +315,7 @@ div > input.x-form-field {
 }
 
 .ui-dialog-titlebar-close {
-  background: #ddd url('../images/close-dialog.png') 4px 5px no-repeat;
+/*   background: #ddd url('../images/close-dialog.png') 4px 5px no-repeat; */
   border: 1px solid #bbb;
   border-radius: 2px;
   -moz-border-radius: 2px;

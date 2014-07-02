@@ -638,7 +638,44 @@ class Asset extends xPDOObject {
         return false;
     }
 
-
+    /**
+     * Convert data in an indexed structure to a recordset.
+     * This is necessary when processing forms with multiple records of data:
+     *
+     *     Record 1:
+     *      <input name="x[]" value="A"/>
+     *      <input name="y[]" value="B">
+     *     Record 2:
+     *      <input name="x[]" value="C"/>
+     *      <input name="y[]" value="D"/>
+     * 
+     * Data arrives indexed like this:
+     *      array( 'x' => array(0=>A, 1=>C) ),
+     *      array( 'y' => array(0=>B, 1=>D) ),
+     *
+     * Whereas we want it formatted as a recordset like this:
+     *      array(
+     *          array('x'=>'A', 'y' => 'B'),
+     *          array('x'=>'C', 'y' => 'D'),
+     *     )
+     *
+     * This function converts the format.  It also handles simple hashes: in that case,
+     * the simple hash is "wrapped" in array, thus returning a "record-set" with 1 record.
+     *
+     * @param array $indexed array
+     * @return array record set
+     */
+    public static function indexedToRecordset(array $indexed) {
+        $out = array();
+        foreach($indexed as $k => $v) {
+            $v = (array) $v;
+            foreach ($v as $i => $v2) {
+                $out[$i][$k] = $v[$i];
+            }
+        }
+        return $out;        
+    }
+    
     /**
      * Is the file binary?
      * From http://stackoverflow.com/questions/3872877/how-to-check-if-uploaded-file-is-binary-file

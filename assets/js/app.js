@@ -13,44 +13,28 @@ else {
     console.debug('[assman html client]: jQuery loaded.');
 }
 
-// Globals
-var template;
-var category_tpl;
-
 /**
- * Handlebars Parsing
- *
- * @param string CSS id of a handlebars template :<script id="entry-template" type="text/x-handlebars-template"> 
- * @param object data key/value pairs
+ * Draw assets tab
  */
-/*
-function parse_tpl(src,data) {
-    var source   = jQuery('#'+src).html();
-    //var template = Handlebars.compile(source);
-    return template(data);    
-}
-*/
 function draw_tab() {
     jQuery('#page_assets').html('');
     // JS Hashes do not preserve order. Thus the "Order" array
     Groups = [];
-    var arrayLength = Order.length;
+    var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
-        var asset_id = Order[i];
-        jQuery('#page_assets').append( template(Assets[asset_id]));
-        if (Assets[asset_id].group) {
-            Groups.push(Assets[asset_id].group);
+        jQuery('#page_assets').append( assman.tpls.page_asset(assman.PageAssets[i]));
+        if (assman.PageAssets[i].group) {
+            Groups.push(assman.PageAssets[i].group);
         }
     }
     
-    //Groups.push(Assets[asset_id].group);
     Groups = array_unique(Groups);
     
     jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
     var arrayLength = Groups.length;
     for (var i = 0; i < arrayLength; i++) {
         if (Groups[i]) {
-            jQuery('#asset_category_filters').append( category_tpl({"group": Groups[i]}));
+            jQuery('#asset_category_filters').append( assman.tpls.category({"group": Groups[i]}));
         }
     }  
 
@@ -64,7 +48,7 @@ function draw_tab() {
 
     // Filter page_assets
     // Clone page_assets items to get a second collection for Quicksand plugin (image gallery)
-    var $portfolioClone = $("#page_assets").clone();
+    var $portfolioClone = jQuery("#page_assets").clone();
     
     // Attempt to call Quicksand on every click event handler
     jQuery("#asset_category_filters a").click(function(e){
@@ -73,7 +57,7 @@ function draw_tab() {
         jQuery("#asset_category_filters li").removeClass("first"); 
         
         // Get the class attribute value of the clicked link
-        var $filterClass = $(this).parent().attr("class");
+        var $filterClass = jQuery(this).parent().attr("class");
 
         if ( $filterClass == "all" ) {
             var $filteredPortfolio = $portfolioClone.find("li");
@@ -92,70 +76,53 @@ function draw_tab() {
 }
 
 function define_dialog_boxes() {
-    // Edit Asset Form
-    // The trick here is reading data out of the JS "Assets" var and into the form when it is displayed,
-    // then from the form and back into the JS Assets var when the form is closed.
-    jQuery( "#asset_edit_form" ).dialog({
+    // Delete Asset
+    // jQuery.colorbox.close();
+    jQuery( "#delete_asset_modal" ).dialog({
         autoOpen: false,
-        height: 600,
-        width: 920,
-        modal: true,
-        closeOnEscape: true,        
-        open: function(event, ui) {
-            console.log('Open dialog');
-            // Sent the asset_id when the link is clicked, e.g. via
-            // onclick="javascript:jQuery('#asset_edit_form').data('asset_id', 123).dialog('open');"
-            var asset_id = $("#asset_edit_form").data('asset_id');
-            //console.log('opened...'+ asset_id);
-            console.debug(Assets[asset_id]);
-            // Write all values temporarily to the modal
-            jQuery('#modal_asset_title').val(Assets[asset_id].title);
-            jQuery('#modal_asset_alt').val(Assets[asset_id].alt);
-            jQuery('#modal_asset_group').val(Assets[asset_id].group);
-            jQuery('#modal_asset_thumbnail_override_url').val(Assets[asset_id].thumbnail_override_url);
-            jQuery('#modal_asset_width').text(Assets[asset_id].width);
-            jQuery('#modal_asset_height').text(Assets[asset_id].height);
-            if (Assets[asset_id].is_image) {
-                jQuery('#modal_asset_img').html('<img src="'+Assets[asset_id].url+'" style="max-width:770px; height:auto;margin: 0 auto;display: block;"/>');
-            }
-            else {
-                jQuery('#modal_asset_img').html(''); 
-            }
-            jQuery('#modal_asset_thumb').html('<img src="'+Assets[asset_id].thumbnail_url+'" style="max-width:500px; height:auto;"/>');
-            if (Assets[asset_id].is_active == 1) {  
-                jQuery('#modal_asset_is_active').prop('checked', true);
-            }
+        open: function( event, ui ) {
+            jQuery.colorbox.close();     
         },
+        height: 330,
+        width: 500,
+        modal: true,
+        closeOnEscape: true,
         buttons: {
-            "Save": function() {
-                // For meta-data specific to the *relation* (i.e. PageAsset), write the values back to the form (ugh)
-                // For data specific to the *asset*, we have to fire off an Ajax request
-                var asset_id = jQuery("#asset_edit_form").data('asset_id');
-                var is_active = jQuery('#modal_asset_is_active:checked').length;
-                // And back to the JSON (double-ouch)
-                Assets[asset_id].title = jQuery('#modal_asset_title').val();
-                Assets[asset_id].alt = jQuery('#modal_asset_alt').val();
-                Assets[asset_id].group = jQuery('#modal_asset_group').val(); 
-                Assets[asset_id].is_active = is_active;
-                jQuery('#asset_is_active_'+asset_id).val(is_active);
-                jQuery('#asset_group_'+asset_id).val(Assets[asset_id].group);
-                jQuery('#asset_title_'+asset_id).html(Assets[asset_id].title);
-                jQuery('#asset_group_vis_'+asset_id).html(Assets[asset_id].group);
-                console.log('#asset_is_active_'+asset_id+ ' set to '+is_active);
-                // This data here is specific to the Asset... be we can't post back everything:
-                // url, thumbnail_url, path will specifically get messed up if posted here.
-                // assapi('asset','edit',Assets[asset_id]); // <-- too much!
-                assapi('asset','edit', {
+            "Delete": function() {
+                //alert('Delete: '+ jQuery(this).data('asset_id'));
+                var asset_id = jQuery(this).data('asset_id');
+                console.log('Deleting: '+asset_id);
+                var page_id = assman.page_id;
+                assapi('pageasset','delete',{
                     asset_id: asset_id,
-                    title: Assets[asset_id].title,
-                    alt: Assets[asset_id].alt
+                    page_id: page_id
                 });
-                
-                // Update the groups and redraw the groups
-                //Groups.push(Assets[asset_id].group);
-                //Groups = array_unique(Groups);
-                draw_tab();
-                
+                var arrayLength = assman.PageAssets.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    if (assman.PageAssets[i].asset_id == asset_id) {
+                        assman.PageAssets.splice(i,1); // unset
+                    }
+                }
+          		jQuery('#page-asset-'+asset_id).remove();
+          		draw_tab();
+                jQuery( this ).dialog( "close" );
+            },
+            "Remove from Page": function() {
+                var asset_id = jQuery(this).data('asset_id');
+                console.log('Removing: '+asset_id);
+                var page_id = assman.page_id;
+                assapi('pageasset','remove',{
+                    asset_id: asset_id,
+                    page_id: page_id
+                });
+                var arrayLength = assman.PageAssets.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    if (assman.PageAssets[i].asset_id == asset_id) {
+                        assman.PageAssets.splice(i,1); // unset
+                    }
+                }
+          		jQuery('#page-asset-'+asset_id).remove();
+          		draw_tab();
                 jQuery( this ).dialog( "close" );
             },
             "Cancel": function() {
@@ -170,14 +137,13 @@ function define_dialog_boxes() {
         url: assman.controller_url+'&class=asset&method=create'
     });    
     // Refresh the list on success (append new tile to end)
+    // WARNING: if there's a fatal PHP error in the controller, you'll still end up here!
     myDropzone.on("success", function(file,response) {
-        response = jQuery.parseJSON(response);
         console.log('[Dropzone Success]', file, response);
         if (response.status == "success") {
             // Write data back to parent JS
             var asset_id = response.data.fields.asset_id;
-            Assets[asset_id] = response.data.fields;
-            Order.push(asset_id);
+            assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
             draw_tab();
             jQuery(".dz-preview").remove();
        } 
@@ -191,32 +157,70 @@ function define_dialog_boxes() {
     myDropzone.on("error", function(file,errorMessage) {
         console.log('[Dropzone Error]',file, errorMessage);
     });
+    // called after success
+    //myDropzone.on("complete", function(file,errorMessage) {
+    //    console.log('[Dropzone Complete]',file, errorMessage);
+    //});
 
 
     // Drag Drop Item Delete
-    $( "#trash-can" ).droppable({
+    jQuery( "#trash-can" ).droppable({
             
         over: function( event, ui ) {
-            $(this).addClass('over-trash');
+            jQuery(this).addClass('over-trash');
         },
         out: function(event, ui) {
-            var id = $(ui.draggable).attr('id');
-            $(this).removeClass('over-trash');
+            var id = jQuery(ui.draggable).attr('id');
+            jQuery(this).removeClass('over-trash');
         },
         drop: function( event, ui ) {
-            var id = $(ui.draggable).attr('id');
-            var asset_id = $(ui.draggable).find('img').data('asset_id');
+            var id = jQuery(ui.draggable).attr('id');
+            var asset_id = jQuery(ui.draggable).find('img').data('asset_id');
             if (confirm("Are you Sure you want to Delete this Image?")) {
-                $(this).removeClass('over-trash');
+                jQuery(this).removeClass('over-trash');
                 var result = assapi('asset','delete', {asset_id: asset_id} );
-                $('#'+id).hide();
+                jQuery('#'+id).hide();
             }
-            $(this).removeClass('over-trash');
+            jQuery(this).removeClass('over-trash');
             return false;
         }
-
     });
+}
 
+
+/**
+ * Open Asset colorbox
+ * This lets users edit a specific Asset
+ *
+ * @param integer asset_id
+ * @param url_target css selector where thumbnail img is to be shown
+ * @param val_target css selector where asset_id is to be written
+ */
+function open_asset_modal(asset_id) {
+    console.log('[open_asset_modal] asset_id: '+ asset_id);
+    var Asset = '';
+    var arrayLength = assman.PageAssets.length;
+    for (var i = 0; i < arrayLength; i++) {
+        if (assman.PageAssets[i].asset_id == asset_id) {
+            Asset = assman.PageAssets[i];
+        }
+    }
+    
+    jQuery.colorbox({
+        inline:false, 
+        width: "850",
+        height: function(){
+            if (Asset.Asset.is_image) {
+                return "90%";
+            }
+            else {
+                return "50%";
+            }
+        },
+        html:function(){
+            return assman.tpls.asset_modal(Asset);
+        }
+    });
 }
 
 /**
@@ -226,10 +230,10 @@ function define_dialog_boxes() {
 function page_init() {
     console.debug('[page_init]');
     inited = 1; // flag it as having been initialized
-    
-    var source   = jQuery('#page_asset_tpl').html();
-    template = Handlebars.compile(source);
-    category_tpl = Handlebars.compile(jQuery('#asset_group_tpl').html());
+    assman['tpls'] = {};
+    assman.tpls.page_asset = Handlebars.compile(jQuery('#page_asset_tpl').html());
+    assman.tpls.category = Handlebars.compile(jQuery('#asset_group_tpl').html());
+    assman.tpls.asset_modal = Handlebars.compile(jQuery('#asset_modal_tpl').html());
     
     draw_tab();
     define_dialog_boxes();
@@ -237,6 +241,40 @@ function page_init() {
 }
 
 
+/**
+ * Update an asset and its related data with data in the referenced form
+ */
+function update_asset(form_id) {
+    var ModalData = form2js(form_id, '.', false);
+    console.log('[update_asset] Modal Data:',ModalData);
+    var arrayLength = assman.PageAssets.length;
+    for (var i = 0; i < arrayLength; i++) {
+        if (assman.PageAssets[i].asset_id == ModalData.asset_id) {
+            console.log('Updating Asset: '+ModalData.asset_id);
+            
+            // This data here is specific to the Asset (not to the PageAsset relation)
+            assapi('asset','edit',ModalData.Asset);
+            
+            for (var key in ModalData.Asset) {
+                assman.PageAssets[i].Asset[key] = ModalData.Asset[key];
+            }
+            delete ModalData.Asset;
+
+            for (var key in ModalData) {
+                assman.PageAssets[i][key] = ModalData[key];
+            }
+            update_page_assets(ModalData);
+            break;
+        }
+    }
+    draw_tab();
+    jQuery.colorbox.close();
+}
+
+// TODO: save this back to the db (separately from the parent page)
+function update_page_assets(x) {
+    console.log('[update_page_assets]',x);
+}
 
 /**
  * Asset Manager API

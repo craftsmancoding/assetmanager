@@ -33,12 +33,16 @@ class PageController extends BaseController {
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/mgr.css');
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/dropzone.css');
         $this->modx->regClientCSS('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+        $this->modx->regClientCSS($this->config['assets_url'].'css/colorbox.css');        
 //        $this->modx->regClientCSS($this->config['assets_url'].'css/jquery-ui.css'); // smoothness        
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
+//        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.min.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery-ui.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/handlebars.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/dropzone.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/bootstrap.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/form2js.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.colorbox.js');                      
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.quicksand.js');      
     }
@@ -124,38 +128,11 @@ class PageController extends BaseController {
         $this->config['page_id'] = $page_id;
         $this->setPlaceholder('page_id', $page_id);
         $this->scriptProperties['_nolayout'] = true;
-
-        $A = $this->modx->getObject('Asset');
-        $c = $this->modx->newQuery('PageAsset');
-        $c->where(array('PageAsset.page_id' => $page_id));
-        $c->sortby('PageAsset.seq','ASC');
-        $PA = $this->modx->getCollectionGraph('PageAsset','{"Asset":{}}',$c);
-        $json = array();
-        $order = array();
-        $groups = array();
-        foreach ($PA as $p) {
-            $array = $p->Asset->toArray();
-            $g = trim($p->get('group'));
-            $array['group'] = '';
-            if($g) {
-                $array['group'] = $g;
-                $groups[ $p->get('group') ] = true;
-            }
-            $array['is_active'] = $p->get('is_active');
-            $json[ $p->get('asset_id') ] = $array;            
-            $order[] = $p->get('asset_id');
-            
-        }
-        $groups = array_keys($groups);
-        sort($groups);
         
-        // We always want a hash, not an array
-        if ($json) {
-            $Assets = json_encode($json);
-        }
-        else {
-            $Assets = '{}';
-        }
+        $PA = $this->modx->newObject('PageAsset');
+        $this->config['PageAssets'] = $PA->getAssets($page_id);
+//        print '<pre>'; print_r($complete); print '</pre>'; exit;
+//        print '<pre>'; print_r($this->config); print '</pre>'; exit;        
 
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
         $out = file_get_contents($path.'main/pageassets.tpl');
@@ -166,9 +143,6 @@ class PageController extends BaseController {
 
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->config).';
-            var Assets = '.$Assets.';
-            var Order = '.json_encode($order).';
-            var Groups = '.json_encode($groups).';
             var inited = 0;
             MODx.on("ready",function() {
                 console.log("[assman] on ready...");

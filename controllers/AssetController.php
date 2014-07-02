@@ -43,22 +43,23 @@ class AssetController extends APIController {
         }        
         
         try {
-            $Model = $this->modx->getObject('Asset');
+            $Model = $this->modx->newObject('Asset');
             $Asset = $Model->fromFile($_FILES[$fieldname]);
+            
+            if ($Asset->save()) {
+                return $this->sendSuccess(array(
+                    'msg' => sprintf('%s created successfully.',$this->model),
+                    'class' => $this->model,
+                    'fields' => $Asset->toArray()
+                ));
+            }
+            $this->modx->log(\modX::LOG_LEVEL_ERROR,'Error saving Asset '.print_r($_FILES[$fieldname],true).' '.print_r($Model->errors,true),'',__CLASS__,__FUNCTION__,__LINE__);            
+            return $this->sendFail(array('errors'=> $Model->errors));      
         }
         catch (\Exception $e) {
             return $this->sendFail(array('msg'=> $e->getMessage()));    
         }  
         
-        if (!$Asset->save()) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR,'Error saving Asset '.print_r($_FILES[$fieldname],true).' '.print_r($Model->errors,true),'',__CLASS__,__FUNCTION__,__LINE__);
-            return $this->sendFail(array('errors'=> $Model->errors));
-        }            
-        return $this->sendSuccess(array(
-            'msg' => sprintf('%s created successfully.',$this->model),
-            'class' => $this->model,
-            'fields' => $Asset->toArray()
-        ));
     }
 
 }
