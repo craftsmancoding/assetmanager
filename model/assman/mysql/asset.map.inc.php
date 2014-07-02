@@ -10,9 +10,9 @@ $xpdo_meta_map['Asset']= array (
     'content_type_id' => NULL,
     'title' => NULL,
     'alt' => NULL,
-    'url' => NULL,
-    'thumbnail_override_url' => NULL,
-    'path' => NULL,
+    'manual_url' => NULL,
+    'thumbnail_manual_url' => NULL,
+    'stub' => NULL,
     'width' => NULL,
     'height' => NULL,
     'size' => NULL,
@@ -57,7 +57,7 @@ $xpdo_meta_map['Asset']= array (
       'phptype' => 'string',
       'null' => false,
     ),
-    'url' => 
+    'manual_url' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
@@ -65,7 +65,7 @@ $xpdo_meta_map['Asset']= array (
       'null' => false,
       'index' => 'index',
     ),
-    'thumbnail_override_url' => 
+    'thumbnail_manual_url' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
@@ -73,7 +73,7 @@ $xpdo_meta_map['Asset']= array (
       'null' => false,
       'index' => 'index',
     ),
-    'path' => 
+    'stub' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
@@ -253,22 +253,6 @@ $xpdo_meta_map['Asset']= array (
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',
-    ),
-  ),
-  'validation' => 
-  array (
-    'rules' => 
-    array (
-      'url' => 
-      array (
-        'minlength' => 
-        array (
-          'type' => 'xPDOValidationRule',
-          'rule' => 'xPDOMinLengthValidationRule',
-          'value' => '3',
-          'message' => 'URL must be at least 3 characters.',
-        ),
-      ),
     ),
   ),
 );

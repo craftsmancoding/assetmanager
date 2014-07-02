@@ -24,7 +24,7 @@
  * See http://stackoverflow.com/questions/10504129/when-using-self-parent-static-and-how
  */
 namespace Assman;
-class BaseModel {
+class BaseModelOFF {
 
     public $modx;
     public $pk = 'id'; // Define the primary key for the table object defined in $xclass
@@ -51,33 +51,6 @@ class BaseModel {
     // Search columns
     public $search_columns = array(); 
 
-    /**
-     * Special words reserved for use by the Foxycart- and local-API
-     *
-     * From https://wiki.foxycart.com/v/1.1/cheat_sheet
-     * 1:, 2:, 3:, 4:, etc
-     * h: session variables
-     */
-    public $reserved_words = array(
-        // Foxycart reserves some words
-        'name','price','image','url','code','quantity','quantity_max','quantity_min',
-        'category','weight','length','width','height','shipto','id',
-        'discount_quantity_amount','discount_quantity_percentage','discount_price_amount',
-        'discount_price_percentage','allunits','incremental','repeat','single','sub_frequency',
-        'sub_startdate','sub_enddate','sub_token','sub_cancel','cart','empty','coupon','redirect',
-        'output','callback','fc_auth_token','customer_email','customer_first_name','shipping_first_name',
-        'customer_last_name','shipping_last_name','customer_address1','shipping_address1','customer_address2',
-        'shipping_address2','customer_phone','shipping_phone','customer_company','shipping_company',
-        'customer_city','shipping_city','customer_postal_code','shipping_postal_code','customer_state',
-        'shipping_state','customer_country','shipping_country',
-        // Plus any fields that are columns of the main products table, including calc'd columns!
-        'product_id','store_id','parent_id','template_id','asset_id','name','title','description',
-        'content','type','sku','sku_vendor','variant_matrix','alias','uri','track_inventory','qty_inventory',
-        'qty_alert','qty_min','qty_max','qty_backorder_max','price','price_strike_thru','price_sale',
-        'weight','sale_start','sale_end','category','is_active','in_menu','billing_unit','billing_interval',
-        'duration_unit','duration_interval','user_group_id','role_id','author_id','timestamp_created','timestamp_modified',
-        'seq', 'calculated_price','cache_lifetime'
-    );
     
     /** 
      * We set $this->modelObj here instead of extending the base xpdoObject class because

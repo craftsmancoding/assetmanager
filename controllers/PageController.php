@@ -54,7 +54,7 @@ class PageController extends BaseController {
      */
     public function getAssets(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $Obj = new Asset($this->modx);
+        $A = $this->modx->getObject('Asset');
         $results = $Obj->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
@@ -67,7 +67,7 @@ class PageController extends BaseController {
  
      public function getAssetCreate(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $Obj = new Asset($this->modx);
+        $Obj = $this->modx->getObject('Asset');
         $results = $Obj->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
@@ -77,7 +77,7 @@ class PageController extends BaseController {
     public function getAssetEdit(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $asset_id = (int) $this->modx->getOption('asset_id',$scriptProperties);
-        $Obj = new Asset($this->modx);    
+        $Obj = $this->modx->getObject('Asset');    
         if (!$result = $Obj->find($asset_id)) {
             return $this->sendError('Page not found.');
         }
@@ -109,10 +109,6 @@ class PageController extends BaseController {
         return $this->fetchTemplate('main/settings.php');
      
     }
-
-    public function getTest(array $scriptProperties = array()) {
-        return 'Test...';
-    }
     
     //------------------------------------------------------------------------------
     //! Page
@@ -122,14 +118,14 @@ class PageController extends BaseController {
      * @param array $scriptProperties
      */
     public function getPageAssetsTab(array $scriptProperties = array()) {
-        $this->modx->setLogLevel(4);
+        //$this->modx->setLogLevel(4);
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $page_id = (int) $this->modx->getOption('page_id', $scriptProperties);
         $this->config['page_id'] = $page_id;
         $this->setPlaceholder('page_id', $page_id);
         $this->scriptProperties['_nolayout'] = true;
 
-        $A = new Asset($this->modx);
+        $A = $this->modx->getObject('Asset');
         $c = $this->modx->newQuery('PageAsset');
         $c->where(array('PageAsset.page_id' => $page_id));
         $c->sortby('PageAsset.seq','ASC');

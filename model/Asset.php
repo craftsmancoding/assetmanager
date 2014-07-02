@@ -10,7 +10,7 @@
  */
 namespace Assman;
 
-class Asset extends BaseModel {
+class AssetOFF extends BaseModel {
 
     public $xclass = 'Asset';
     public $default_sort_col = 'title';

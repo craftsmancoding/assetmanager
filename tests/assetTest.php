@@ -61,15 +61,16 @@ class assetTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-
     public function testFromFile() {
-        $A = new Asset(self::$modx);
+        $A = self::$modx->newObject('Asset');
         $file = dirname(__FILE__).'/assets/image.jpg';
         $this->assertTrue(file_exists($file));
         $newfile = dirname(__FILE__).'/assets/image2.jpg';
-        $result = copy($file, $newfile);
-        $this->assertTrue($result, 'Failed copying '.$file.' to '.$newfile);
-        $this->assertTrue(file_exists($newfile));
+        if (!file_exists($newfile)) {
+            $result = copy($file, $newfile);
+            $this->assertTrue($result, 'Failed copying '.$file.' to '.$newfile);
+            $this->assertTrue(file_exists($newfile));
+        }
         $finfo = new \finfo(FILEINFO_MIME);
                         
         $FILE = array(
@@ -88,30 +89,30 @@ class assetTest extends \PHPUnit_Framework_TestCase {
         
     
 
-        // Test thumbnail_override_url
-        $actual = $Asset->get('thumbnail_override_url');
-        $this->assertEmpty($actual);
+        // Test thumbnail_manual_url
+        $actual = $Asset->get('thumbnail_manual_url');
+        $this->assertEquals('',$actual);
         
         $override = 'http://craftsmancoding.com/assets/test.jpg';
-        $Asset->set('thumbnail_override_url', $override);
+        $Asset->set('thumbnail_manual_url', $override);
         $Asset->save();
         $actual = $Asset->get('thumbnail_url');
         $this->assertEquals($override,$actual);
 
         $override = '/assets/test.jpg';
-        $Asset->set('thumbnail_override_url', $override);
+        $Asset->set('thumbnail_manual_url', $override);
         $Asset->save();
         $actual = $Asset->get('thumbnail_url');
         $this->assertEquals(MODX_SITE_URL.ltrim($override,'/'),$actual);
 
         $override = 'http://craftsmancoding.com/assets/test.jpg';
-        $Asset->set('url', $override);
+        $Asset->set('manual_url', $override);
         $Asset->save();
         $actual = $Asset->get('url');
         $this->assertEquals($override,$actual);
     
         // Test normal thumbnail behavior        
-        $Asset->set('thumbnail_override_url', '');
+        $Asset->set('thumbnail_manual_url', '');
         $actual = $Asset->get('thumbnail_url');
         $this->assertNotEmpty($actual);
         
@@ -120,7 +121,7 @@ class assetTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testRelation() {
-        $A = new Asset(self::$modx);
+        $A = self::$modx->newObject('Asset');
         $file = dirname(__FILE__).'/assets/image.jpg';
         $this->assertTrue(file_exists($file));
         $newfile = dirname(__FILE__).'/assets/image2.jpg';

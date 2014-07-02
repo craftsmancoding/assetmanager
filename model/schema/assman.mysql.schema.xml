@@ -8,23 +8,27 @@ Asset records are stored RELATIVE to a directory/URL that you define.
 
     
 	<!-- ! Asset -->
-	<!-- Freedom -->
+	<!-- 
+	calculated fields:
+	   url : either manual_url OR assets_url + assman.library_path + stub
+	   path: assets_path + assman.library_path
+    -->
 	<object class="Asset" table="assets" extends="xPDOObject">
     	<field key="asset_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk"  generated="native" />
     	<field key="content_type_id" dbtype="int" precision="11" phptype="integer" null="false"/>
 		<field key="title" dbtype="varchar" precision="255" phptype="string" null="false" />
 		<field key="alt" dbtype="varchar" precision="255" phptype="string" null="false" />
-		<!-- stored URL relative to assman.library_path OR provide a full URL for remote assets -->
-		<field key="url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
+		<!-- for remote assets -->
+		<field key="manual_url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
 		<!-- 
 		For images, this will be a smaller version of the image, otherwise it'll be an icon for the content type 
 		thumbnail_url is a calculated field. See asset.class.php
 		-->
-		<field key="thumbnail_override_url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
-		<!-- stored URL relative to MODX_ASSET_PATH . assman.upload_dir 
-		This might be null if a foriegn image is referenced
+		<field key="thumbnail_manual_url" dbtype="varchar" precision="255" phptype="string" null="false" index="index"/>
+		<!-- the stub field is the raw material for url and path calcs.
+		This might be null if a foriegn image is referenced via manual_url
 		-->
-		<field key="path" dbtype="varchar" precision="255" phptype="string" null="true" index="index"/>
+		<field key="stub" dbtype="varchar" precision="255" phptype="string" null="true" index="index"/>
 		<field key="width" dbtype="int" precision="4" phptype="integer" null="false" />
 		<field key="height" dbtype="int" precision="4" phptype="integer" null="false" />
 		<field key="size" dbtype="int" precision="11" phptype="integer" null="false" comment="In Bytes"/>
@@ -54,10 +58,7 @@ Asset records are stored RELATIVE to a directory/URL that you define.
 
         <composite alias="Pages" class="PageAsset" local="asset_id" foreign="asset_id" cardinality="many" owner="local" />
         <aggregate alias="ContentType" class="modContentType" local="content_type_id" foreign="id" cardinality="one" owner="foreign" />
-        
-		<validation>
-            <rule field="url" name="minlength" type="xPDOValidationRule" rule="xPDOMinLengthValidationRule" value="3" message="URL must be at least 3 characters."/>
-        </validation>
+    
 	</object>
 
 
@@ -78,6 +79,4 @@ Asset records are stored RELATIVE to a directory/URL that you define.
         <aggregate alias="Asset" class="Asset" local="asset_id" foreign="asset_id" cardinality="one" owner="foreign" />
                
 	</object>
-
-
 </model>
