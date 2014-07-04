@@ -89,12 +89,10 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
                 </div>
         	</div>
         </div>
-    	<div class="moxy-modal-controls">
+    	<div class="asset-modal-controls pull-right">
             <span class="btn" onclick="javascript:update_asset('asset_modal_form');">Save</span>
+            <span class="btn btn-danger" onclick="javascript:jQuery('#delete_asset_modal').data('asset_id', '{{asset_id}}').dialog('open');">Delete</span>
             <span class="btn" onclick="javascript:jQuery.colorbox.close();">Cancel</span>
-            <div style="float:right; padding-right:20px;">
-                <span class="btn" onclick="javascript:jQuery('#delete_asset_modal').data('asset_id', '{{asset_id}}').dialog('open');">Delete</span>
-            </div>
         </div>
 
     </form>
