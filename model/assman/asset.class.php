@@ -271,7 +271,6 @@ class Asset extends xPDOObject {
         $this->xpdo->log(\modX::LOG_LEVEL_DEBUG, 'Moved file from '.$src.' to '.$dst,'',__CLASS__,__FILE__,__LINE__);
         @chmod($dst, 0666); // <-- config?
         $stub = $this->getRelPath($dst, $storage_basedir);
-//        $this->xpdo->log(\modX::LOG_LEVEL_ERROR, 'Dst'.$dst.' Storage: '.$storage_basedir.' path:' .$stub,'',__CLASS__,__FILE__,__LINE__);
         $this->set('content_type_id', $C->get('id'));
         $this->set('stub', $stub);
         if ($info = $this->getMediaInfo($dst)) {
@@ -376,7 +375,6 @@ class Asset extends xPDOObject {
             return $this->getMissingThumbnail($w,$h, $ext);
         }
         $thumbfile = $this->getResizedImage($this->get('path'), $this->get('asset_id'), $w, $h);
-        //$this->xpdo->log(4, 'Thumbnail: '.$thumbfile);
         $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
         $rel = $this->getRelPath($thumbfile, $prefix);
         if ($this->xpdo->getOption('assman.url_override')) {
@@ -397,12 +395,6 @@ class Asset extends xPDOObject {
      * @param mixed $prefix to remove. Leave null to use MODX settings
      */
     public function getRelPath($fullpath, $prefix=null) {
-/*
-        $asset_id = $this->get('asset_id');
-        if (!$asset_id) {
-            return '';
-        }
-*/
         if (!is_scalar($fullpath)) {
             throw new \Exception('Invalid data type for path');
         }
@@ -498,26 +490,6 @@ class Asset extends xPDOObject {
         return $filename;
     }
 
-    /**
-     * Create a resized image for the given asset_id
-     *
-     * @param string $src fullpath to original image
-     * @param integer $asset_id primary key
-     * @param integer $w
-     * @param integer $h (todo)
-     * @return string relative URL to thumbnail, rel to $storage_basedir
-     */
-/*
-    public function getResizedImage($src, $asset_id,$w,$h) {
-        $this->_validFile($src);
-        $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
-        if (file_exists($dst)) {
-            return $dst;
-        }
-        return \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
-    }
-    
-*/
     /**
      * Used if an image is missing
      *
@@ -742,11 +714,10 @@ class Asset extends xPDOObject {
     /** 
      * We override the parent func so we can clean out the asset files
      */
-    public function remove() {
-        $storage_basedir = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
+    public function remove(array $ancestors) {
+        $storage_basedir = $this->xpdo->getOption('assets_path').rtrim($this->xpdo->getOption('assman.library_path'),'/').'/';
         $this->xpdo->log(\modX::LOG_LEVEL_DEBUG, 'Removing Asset '.$this->getPrimaryKey().' with assets in storage_basedir '.$storage_basedir,'',__CLASS__,__FILE__,__LINE__);
         
-        //$file = $storage_basedir.$this->modelObj->get('path');
         $file = $this->get('path');        
         if (file_exists($file)) {
             if (!unlink($file)) {
@@ -757,17 +728,13 @@ class Asset extends xPDOObject {
         else {
             $this->xpdo->log(\modX::LOG_LEVEL_INFO, 'File does not exist for Asset '.$this->getPrimaryKey().': '.$file.' This could be because the file was manually deleted or because you did not pass the $storage_basedir parameter.','',__CLASS__,__FILE__,__LINE__);
         }
-        // remove thumbnails
-/*
-        $file = $prefix.$this->modelObj->get('thumbnail_url');
-        if (file_exists($file)) {
-            if (!unlink($file)) {
-                throw new \Exception('Failed to delete thumbnail file.');
-            }
-        }
-*/
         
-        return parent::remove();
+        // remove thumbnails
+        $storage_basedir = $this->xpdo->getOption('assets_path').rtrim($this->xpdo->getOption('assman.library_path'),'/').'/';
+        $dir = $storage_basedir.'resized/'.$this->get('asset_id').'/';
+        self::rrmdir($dir);
+                
+        return parent::remove($ancestors);
     } 
 
     /** 

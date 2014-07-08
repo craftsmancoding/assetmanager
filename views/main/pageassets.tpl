@@ -132,4 +132,5 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
         <p class="danger">Deleting cannot be undone!</p>
     </div>
     
+    <div id="assman_copyright">&copy; 2014 and beyond by <a href="http://craftsmancoding.com/">Craftsman Coding</a></div>
 </div>

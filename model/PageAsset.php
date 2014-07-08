@@ -4,9 +4,6 @@
  * For asset management
  *
  * Configuration (via MODX System Settings)
- *
- *
- *
  */
 namespace Assman;
 

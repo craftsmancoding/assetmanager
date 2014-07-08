@@ -1,6 +1,8 @@
 <?php 
 /**
- * BaseClass for Asset Manager Snippets
+ * Base Class for Asset Manager Snippets
+ *
+ * @package assman
  */
 namespace Assman;
 class Snippet {

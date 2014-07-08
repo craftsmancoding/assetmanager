@@ -14,11 +14,10 @@ else {
 }
 
 /**
- * Draw assets tab
+ * Wipe the tab clean and (re)draw the assets tab including groups for assets.
  */
 function draw_tab() {
     jQuery('#page_assets').html('');
-    // JS Hashes do not preserve order. Thus the "Order" array
     Groups = [];
     var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
@@ -77,7 +76,6 @@ function draw_tab() {
 
 function define_dialog_boxes() {
     // Delete Asset
-    // jQuery.colorbox.close();
     jQuery( "#delete_asset_modal" ).dialog({
         autoOpen: false,
         open: function( event, ui ) {
