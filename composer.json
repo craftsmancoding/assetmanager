@@ -1,7 +1,7 @@
 {
     "name": "craftsmancoding/assetmanager",
     "description": "Asset Manager Media Library for MODX Revolution.",
-    "type": "library",
+    "type": "modx-package",
     "keywords": ["modx","assets","manager","thumbnails","cropping"], 
     "license": "GPL-2.0",
     "authors": [
