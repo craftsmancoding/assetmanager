@@ -16,12 +16,14 @@ using MIGX), but the user interface and backend data model is cleaner.
 - Supports complex search criteria to find assets 
 - Galleries of Images
 - Drag and drop images to upload them using Dropzone
-- Crop and resize images via the manager UI using jCrop
 - Output filters for easy image resizing (like pThumb, but better), including scale-to-width, scale-to-height, thumbnails and cropping.
 - Relies on standard Packagist packages to conduct image manipulation
 
 ![The Asset Manager in Action](https://raw.githubusercontent.com/wiki/craftsmancoding/assetmanager/images/asset-manager-tab-w-images.jpg "The Asset Manager in Action")
 
+## Limits:
+
+This is the first public release.  It does not yet support image cropping.
 
 
 ## Technical Note:
