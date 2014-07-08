@@ -69,8 +69,9 @@ h2.assman_cmp_heading {
 
 #assman_copyright {
     color: #727272;
-    margin-top: 6px;
+    margin-top: 15px;
     font-style: italic;
+    text-align: center;
 }
 
 #assman_buttons {
