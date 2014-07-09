@@ -3,7 +3,7 @@
     <span class="btn" onclick="javascript:add_group();">Add Group</span>
     <ul id="asset_groups">
     {{#each Groups}}    
-        <li><input type="text" name="groups[]" class="" value="{{this}}"/></li>
+        <li class="row-input"><input type="text" name="groups[]" class="row-field" value="{{this}}"/></li>
     {{/each}}
     </ul>
 
@@ -27,7 +27,7 @@ jQuery(document).ready(function(){
 });
 
 function add_group() {
-    jQuery('#asset_groups').append('<li><input type="text" name="groups[]" class="" value="" /></li>');
+    jQuery('#asset_groups').append('<li class="row-input"><input type="text" name="groups[]" class="row-field" value="" /></li>');
 }
 </script>
 
