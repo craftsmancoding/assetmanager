@@ -4,7 +4,7 @@
  * @description Returns a single asset
  *
  *
- * If no &height or &width arguments are passed, then return the full size of the original asset image.
+ * If no &height or &width arguments are passed, then no resizing takes place: return the full size of the original asset image.
  * If the snippet call sets a &width but no &height, then return a scaled version of the asset scaled to the desired width.
  * If the snippet call sets a &height but no &width, then return a scaled version of the asset scaled to the desired height.
  * If both &height and &width are set, then do what the "scale" Snippet does and scale asset to the desired dimensions

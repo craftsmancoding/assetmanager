@@ -18,7 +18,7 @@ else {
  */
 function draw_tab() {
     jQuery('#page_assets').html('');
-    Groups = [];
+    var Groups = [];
     var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
         jQuery('#page_assets').append( assman.tpls.page_asset(assman.PageAssets[i]));
@@ -33,10 +33,10 @@ function draw_tab() {
     var arrayLength = Groups.length;
     for (var i = 0; i < arrayLength; i++) {
         if (Groups[i]) {
-            jQuery('#asset_category_filters').append( assman.tpls.category({"group": Groups[i]}));
-        }
+            jQuery('#asset_category_filters').append( assman.tpls.category({"group": Groups[i]}));        }
     }  
-
+    assman.Groups = Groups;
+    
     jQuery("#page_assets").sortable({
         change: function( event, ui ) {
             console.log(ui);
@@ -203,7 +203,7 @@ function open_asset_modal(asset_id) {
             Asset = assman.PageAssets[i];
         }
     }
-    
+    Asset['Groups'] = assman.Groups;
     jQuery.colorbox({
         inline:false, 
         width: "850",
@@ -331,6 +331,11 @@ function array_unique(a) {
     for (var k in temp)
         r.push(k);
     return r;
+}
+
+function select_group(group) {
+    //var group = jQuery('#asset_groups').val();
+    jQuery('#modal_asset_group').val(group);
 }
 
 /**

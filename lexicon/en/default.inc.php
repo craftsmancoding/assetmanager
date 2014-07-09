@@ -41,6 +41,10 @@ $_lang['setting_assman.thumbnail_width_desc'] = 'Used when calculating thumbnail
 $_lang['setting_assman.thumbnail_height'] = 'Thumbnail Height';
 $_lang['setting_assman.thumbnail_height_desc'] = 'Used when calculating thumbnails when assets are first uploaded via the Asset Manager';
 
+$_lang['setting_assman.groups'] = 'Asset Groups';
+$_lang['setting_assman.groups_desc'] = 'JSON array of names, used to group assets in the manager and in the front end.';
+
+
 $_lang['setting_assman.class_keys'] = 'Class Keys';
 $_lang['setting_assman.class_keys_desc'] = 'JSON array listing class names of MODX resources that will get the "Assets" tab added. Default is modDocument. Other possible values include modStaticResource, modSymLink, modWebLink, and any custom resource classes you may have defined.';
 

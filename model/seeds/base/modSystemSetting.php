@@ -61,6 +61,12 @@ return array(
 		'namespace' => 'assman',
 		'area' => 'assman:default'
     ),
-
+    array(
+        'key'  =>     'assman.groups',
+		'value'=>     '',
+		'xtype'=>     'textfield',
+		'namespace' => 'assman',
+		'area' => 'assman:default'
+    ),
 );
 /*EOF*/
