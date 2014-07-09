@@ -345,6 +345,8 @@ select {
 
 select {
   width: 50%;
+  height: 30px;
+  padding: 0px;
 }
 
 .row-input .non-input {
