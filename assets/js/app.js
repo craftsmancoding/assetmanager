@@ -18,24 +18,22 @@ else {
  */
 function draw_tab() {
     jQuery('#page_assets').html('');
-    var Groups = [];
     var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
         jQuery('#page_assets').append( assman.tpls.page_asset(assman.PageAssets[i]));
         if (assman.PageAssets[i].group) {
-            Groups.push(assman.PageAssets[i].group);
+            assman.Groups.push(assman.PageAssets[i].group);
         }
     }
     
-    Groups = array_unique(Groups);
+    assman.Groups = array_unique(assman.Groups);
     
     jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
-    var arrayLength = Groups.length;
+    var arrayLength = assman.Groups.length;
     for (var i = 0; i < arrayLength; i++) {
-        if (Groups[i]) {
-            jQuery('#asset_category_filters').append( assman.tpls.category({"group": Groups[i]}));        }
+        if (assman.Groups[i]) {
+            jQuery('#asset_category_filters').append( assman.tpls.category({"group": assman.Groups[i]}));        }
     }  
-    assman.Groups = Groups;
     
     jQuery("#page_assets").sortable({
         change: function( event, ui ) {

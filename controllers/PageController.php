@@ -122,7 +122,7 @@ class PageController extends BaseController {
      * @param array $scriptProperties
      */
     public function getPageAssetsTab(array $scriptProperties = array()) {
-        //$this->modx->setLogLevel(4);
+
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $page_id = (int) $this->modx->getOption('page_id', $scriptProperties);
         $this->config['page_id'] = $page_id;
@@ -131,8 +131,8 @@ class PageController extends BaseController {
         
         $PA = $this->modx->newObject('PageAsset');
         $this->config['PageAssets'] = $PA->getAssets($page_id);
-//        print '<pre>'; print_r($complete); print '</pre>'; exit;
-//        print '<pre>'; print_r($this->config); print '</pre>'; exit;        
+        $groups = $this->modx->getOption('assman.groups');
+        $this->config['Groups'] = (!empty($groups)) ? json_decode($groups) : array();
 
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
         $out = file_get_contents($path.'main/pageassets.tpl');
