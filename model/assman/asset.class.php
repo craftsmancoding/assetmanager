@@ -353,6 +353,21 @@ class Asset extends xPDOObject {
         return $raw;
     }
 
+    /**
+     *
+     *
+     */
+    public function getAssetGroups() {
+        $groups = trim($this->xpdo->getOption('assman.groups'));
+        $groups = (!empty($groups)) ? json_decode($groups) : array();
+        if (empty($groups)) {
+            $sql = "SELECT DISTINCT `group` FROM ass_page_assets WHERE 'group' != ''";
+            foreach ($this->xpdo->query($sql) as $row) {
+                $groups[] = $row['group'];
+            }
+        }
+        return $groups;
+    }
 
     /**
      * Get the URL for the thumbnail for a given asset.

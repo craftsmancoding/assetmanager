@@ -202,6 +202,7 @@ function open_asset_modal(asset_id) {
         }
     }
     Asset['Groups'] = assman.Groups;
+    
     jQuery.colorbox({
         inline:false, 
         width: "850",

@@ -1,8 +1,8 @@
 <div class="assman_canvas_inner">
-    <h2 class="assman_cmp_heading">Moxycart Settings</h2>
+    <h2 class="assman_cmp_heading">Asset Manager Settings</h2>
 </div>
 
-<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>MODX Settings are hierarchical: they can be overridden by Content Settings.</p></div>
+<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p></p></div>
 
 <div class="assman_canvas_inner">
 

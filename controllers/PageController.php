@@ -64,36 +64,11 @@ class PageController extends BaseController {
         $this->setPlaceholders($scriptProperties);
         return $this->fetchTemplate('main/assets.php');
     }
-
-    public function postAssets(array $scriptProperties = array()) {
-        return $this->getAssets($scriptProperties);
-    }
- 
-     public function getAssetCreate(array $scriptProperties = array()) {
-        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $Obj = $this->modx->getObject('Asset');
-        $results = $Obj->all($scriptProperties);
-        $this->setPlaceholder('results', $results);
-        $this->setPlaceholders($scriptProperties);
-        return $this->fetchTemplate('asset/create.php');
-    }    
-
-    public function getAssetEdit(array $scriptProperties = array()) {
-        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $asset_id = (int) $this->modx->getOption('asset_id',$scriptProperties);
-        $Obj = $this->modx->getObject('Asset');    
-        if (!$result = $Obj->find($asset_id)) {
-            return $this->sendError('Page not found.');
-        }
-        $this->setPlaceholders($scriptProperties);
-        $this->setPlaceholders($result->toArray());
-        $this->setPlaceholder('result',$result);
-        return $this->fetchTemplate('asset/edit.php');
-    }
-
     
+    //------------------------------------------------------------------------------
+    //! Index
+    //------------------------------------------------------------------------------
     /**
-     * 
      * @param array $scriptProperties
      */
     public function getIndex(array $scriptProperties = array()) {
@@ -101,6 +76,41 @@ class PageController extends BaseController {
         return $this->fetchTemplate('main/index.php');
     }
 
+    //------------------------------------------------------------------------------
+    //! Groups
+    //------------------------------------------------------------------------------
+    public function getGroups(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $A = $this->modx->newObject('Asset');
+        $this->config['Groups'] = $A->getAssetGroups();
+        $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+            var assman = '.json_encode($this->config).';
+        </script>');
+        
+        return $this->fetchTemplate('group/manage.php');
+    }
+    
+    public function postGroups(array $scriptProperties = array()) {
+        $groups = $this->modx->getOption('groups', $scriptProperties);
+        $groups = array_unique($groups);
+        $groups = array_filter($groups);
+        if (!$Setting = $this->modx->getObject('modSystemSetting', 'assman.groups')) {
+            $Setting = $this->modx->newObject('modSystemSetting');
+            $Setting->set('key', 'assman.groups');
+            $Setting->set('xtype','textfield');
+            $Setting->set('namespace','assman');
+            $Setting->set('area','assman:default');       
+        }
+        $Setting->set('value', json_encode($groups));
+        if (!$Setting->save()) {
+        
+        }
+        // Clear cache
+        $cacheRefreshOptions =  array( 'system_settings' => array() );
+        $this->modx->cacheManager->refresh($cacheRefreshOptions);
+        return $this->getGroups();
+    }
+    
     
     //------------------------------------------------------------------------------
     //! Settings
@@ -130,9 +140,9 @@ class PageController extends BaseController {
         $this->scriptProperties['_nolayout'] = true;
         
         $PA = $this->modx->newObject('PageAsset');
+        $A = $this->modx->newObject('Asset');
         $this->config['PageAssets'] = $PA->getAssets($page_id);
-        $groups = $this->modx->getOption('assman.groups');
-        $this->config['Groups'] = (!empty($groups)) ? json_decode($groups) : array();
+        $this->config['Groups'] = $A->getAssetGroups();
 
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
         $out = file_get_contents($path.'main/pageassets.tpl');

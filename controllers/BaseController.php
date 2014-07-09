@@ -111,26 +111,6 @@ class BaseController extends \modExtraManagerController {
         return true; // TODO
     }
 
-/*
-    // This seems to fail.  
-    public function loadCustomCssJs() {
-        $this->addCss($this->config['assets_url'] . 'css/mgr.css');
-        $this->addCss($this->config['assets_url'] . 'css/dropzone.css');
-        $this->addCss($this->config['assets_url'].'css/datepicker.css');
-        //$this->addCss('//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); // doubleslash doesn't work for addCSS() ?
-        $this->addJavascript($this->config['assets_url'].'js/jquery.min.js');
-        $this->addJavascript($this->config['assets_url'].'js/jquery-ui.js');
-        $this->addJavascript($this->config['assets_url'].'js/jquery.tabify.js');  
-        $this->addJavascript($this->config['assets_url'].'js/dropzone.js');
-        $this->addJavascript($this->config['assets_url'].'js/bootstrap.js');
-        $this->addJavascript($this->config['assets_url'].'js/multisortable.js');
-
-        $this->addJavascript($this->config['assets_url'].'js/script.js');        
-        $this->addJavascript($this->config['assets_url'].'js/handlebars.js');
-          
-    }
-*/
-
     /**
      * Override parent function. 
      * Override Smarty. I don't wants it. But BEWARE: the loadHeader and loadFooter bits require 

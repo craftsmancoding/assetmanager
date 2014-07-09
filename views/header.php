@@ -5,9 +5,12 @@
         </li>
 
          <li class="assman_nav_item">
-            <!--span class="linklike" onclick="javascript:paint('settings');">Settings</span-->
             <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>">Settings</a>
-        </li>
+         </li>
+
+         <li class="assman_nav_item">
+            <a class="<?php print ($_GET['method'] == 'groups') ? 'current' : '' ; ?>" href="<?php print self::page('groups'); ?>">Groups</a>
+         </li>
 
        
     </ul>
