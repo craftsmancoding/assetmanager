@@ -48,18 +48,12 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
         
                             <div class="row-input">
                                  <label class="row-lbl" for="modal_asset_group">Group</label>
-                                <input class="row-field" type="text" name="group" id="modal_asset_group" value="{{group}}" />
+                                 <select name="group" id="group-select">
+                                    <option value="tes1">Test 1</option>
+                                    <option value="tes2">Test 2</option>
+                                 </select>
+                                <a href="#" class="btn">Manage Group</a>
                             </div>
-
-                            <div class="row-input">
-                             <label class="row-lbl" for="modal_asset_group">Categories: </label>
-                                 <ul class="asset_category_modal clearfix">
-                                    {{#each Groups}}
-                                        <li class="{{group}}"><a onclick="javascript:select_group('{{this}}');" href="#">{{this}}</a></li>
-                                    {{/each}}
-                                </ul>
-                            </div>
-                           <div class="clear">&nbsp;</div>
                             
                             <div class="row-input">
                                 <label class="row-lbl" for="modal_asset_is_active">Is Active?</label>
