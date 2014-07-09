@@ -49,13 +49,17 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
                             <div class="row-input">
                                  <label class="row-lbl" for="modal_asset_group">Group</label>
                                 <input class="row-field" type="text" name="group" id="modal_asset_group" value="{{group}}" />
-
-                                {{#each Groups}}
-                                    <span onclick="javascript:select_group('{{this}}');" class="">{{this}}</span>
-                                {{/each}}
-
                             </div>
-                           
+
+                            <div class="row-input">
+                             <label class="row-lbl" for="modal_asset_group">Categories: </label>
+                                 <ul class="asset_category_modal clearfix">
+                                    {{#each Groups}}
+                                        <li class="{{group}}"><a onclick="javascript:select_group('{{this}}');" href="#">{{this}}</a></li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                           <div class="clear">&nbsp;</div>
                             
                             <div class="row-input">
                                 <label class="row-lbl" for="modal_asset_is_active">Is Active?</label>
@@ -108,13 +112,14 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 <!-- ========================================= CONTENT ======================================== -->
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
-
     <ul id="asset_category_filters"> 
         <li class="all first"><a href="#">All</a></li> 
     </ul>
 
-    <div class="dropzone-wrap clearfix" id="asset_upload">
 
+    <div class="dropzone-wrap clearfix" id="asset_upload">
+        <a href="#" class="btn pull-right">Browse Assets</a>
+        <div class="clear">&nbsp;</div>
     	<ul class="clearfix" id="page_assets"></ul>
     	
         <div class="dz-link-wrap clearfix">

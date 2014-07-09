@@ -153,6 +153,7 @@ h2.assman_cmp_heading {
   color: #53595f;
   font: bold 11px tahoma,verdana,helvetica,sans-serif;
   text-shadow: 0 1px 0 #fcfcfc;
+  text-decoration: none;
 }
 
 .assman-btn {
@@ -381,11 +382,23 @@ div > input.x-form-field {
     -moz-border-radius: 3px;
 }
 
+.asset_category_modal {
+  padding: 5px 0px;
+  width: 75%;
+  float: right;
+}
+
+.asset_category_modal li {
+  float: left;
+  margin: 7px 2px;
+}
+
 #asset_category_filters li {
   display: inline-block;
   margin-bottom: 20px;
 }
 
+.asset_category_modal li a,
 #asset_category_filters li a {
   padding: 5px 10px;
   border: 1px solid #d8d8d8;
