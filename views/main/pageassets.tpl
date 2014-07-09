@@ -108,7 +108,7 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 <!-- ========================================= CONTENT ======================================== -->
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
-    <a href="#" class="btn pull-right" style="margin-top:-5px;">Browse Assets</a>
+    <!--span class="btn pull-right" style="margin-top:-5px;" onclick="javascript:open_browse_assets_modal();">Browse Assets</span-->
     <ul id="asset_category_filters"> 
         <li class="all first"><a href="#">All</a></li> 
     </ul>
@@ -138,6 +138,19 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
         or you can <strong>delete</strong> the asset.</p>
         <p class="danger">Deleting cannot be undone!</p>
     </div>
+
+    <div id="assman_footer">
     
-    <div id="assman_copyright">&copy; 2014 and beyond by <a href="http://craftsmancoding.com/">Craftsman Coding</a></div>
+    	<ul>
+    		<li class="assman_nav_item"><a class="assman_donation_link" href="#">Make a Donation</a></li>
+    		<li class="assman_nav_item"><a class="assman_bug_link" href="https://github.com/craftsmancoding/assetmanager/issues/new">Report a Bug</a></li>
+    		<li class="assman_nav_item"><a class="assman_wiki_link" href="https://github.com/craftsmancoding/assetmanager/wiki">Wiki</a></li>
+    		<li class="assman_nav_item"><a class="assman_support_link" href="http://craftsmancoding.com/contact">Get Paid Support</a></li>
+    		
+    	</ul>
+       
+        <div id="assman_copyright">&copy; 2014 and beyond by <a href="http://craftsmancoding.com/">Craftsman Coding</a></div>
+    </div>
+        
+
 </div>

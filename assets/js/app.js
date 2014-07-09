@@ -189,8 +189,6 @@ function define_dialog_boxes() {
  * This lets users edit a specific Asset
  *
  * @param integer asset_id
- * @param url_target css selector where thumbnail img is to be shown
- * @param val_target css selector where asset_id is to be written
  */
 function open_asset_modal(asset_id) {
     console.log('[open_asset_modal] asset_id: '+ asset_id);
@@ -221,6 +219,17 @@ function open_asset_modal(asset_id) {
 }
 
 /**
+ * Open Browse Assets colorbox
+ */
+function open_browse_assets_modal() {
+    
+    jQuery.colorbox({
+        inline:false, 
+        href: assman.controller_url +'&class=page&method=assets&_nolayout=1'
+    });
+}
+
+/**
  * Draw our tab, formatting data using handlebarsjs
  *
  */
@@ -234,7 +243,6 @@ function page_init() {
     
     draw_tab();
     define_dialog_boxes();
-    
 }
 
 
