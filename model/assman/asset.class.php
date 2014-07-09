@@ -25,6 +25,10 @@ require_once dirname(dirname(dirname(__FILE__))).'/vendor/autoload.php';
 
 class Asset extends xPDOObject {
 
+    public $default_sort_col = 'seq';
+    // You can't search on calculated columns
+    public $search_columns = array('title','alt','stub');
+    
     /**
      * Ye olde Calculated fields (aka Accessors)
      */
@@ -92,9 +96,9 @@ class Asset extends xPDOObject {
         $select_cols = $this->xpdo->getOption('select',$args);
         
         // Clear out non-filter criteria
-        $args = self::getFilters($args); 
+        $args = $this->getFilters($args); 
             
-        $criteria = $this->xpdo->newQuery($this->xclass);
+        $criteria = $this->xpdo->newQuery('Asset');
 
         if ($args) {
             if (isset($args['searchterm'])) {
@@ -133,7 +137,7 @@ class Asset extends xPDOObject {
             $criteria->select($select_cols);
         }
         // Workaround for issue https://github.com/modxcms/revolution/issues/11373
-        $collection = $this->xpdo->getIterator($this->xclass,$criteria);
+        $collection = $this->xpdo->getIterator('Asset',$criteria);
         foreach ($collection as $c) {
             $collection->rewind();           
             return $collection;
@@ -369,6 +373,31 @@ class Asset extends xPDOObject {
         return $groups;
     }
 
+
+    /**
+     * Handle saving an array of asset $groups
+     */
+    public function setAssetGroups($groups) {
+        $groups = array_unique($groups);
+        $groups = array_filter($groups);
+        if (!$Setting = $this->xpdo->getObject('modSystemSetting', 'assman.groups')) {
+            $Setting = $this->xpdo->newObject('modSystemSetting');
+            $Setting->set('key', 'assman.groups');
+            $Setting->set('xtype','textfield');
+            $Setting->set('namespace','assman');
+            $Setting->set('area','assman:default');       
+        }
+        $value = json_encode($groups);
+        $Setting->set('value', $value);
+        if (!$Setting->save()) {
+            $this->xpdo->log(\modX::LOG_LEVEL_ERROR, 'Could not save System Setting','','Asset::'.__FUNCTION__);    
+        }
+        // Clear cache
+        $cacheRefreshOptions =  array( 'system_settings' => array() );
+        $this->xpdo->cacheManager->refresh($cacheRefreshOptions);
+        $this->xpdo->setOption('assman.groups',$value);
+            
+    }
     /**
      * Get the URL for the thumbnail for a given asset.
      * This will generate the thumbnail if necessary
@@ -528,8 +557,7 @@ class Asset extends xPDOObject {
     public function getExisting($src) {
         $this->_validFile($src);
         if ($obj = $this->xpdo->getObject('Asset',array('sig'=>md5_file($src)))) {
-            $classname = '\\Assman\\'.$this->xclass;        
-            return new $classname($this->modx, $obj); 
+            return $obj; 
         }
             
         return false;
@@ -604,6 +632,39 @@ class Asset extends xPDOObject {
      */
     public function getExt($filename) {
         return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * Remove any "control" arguments and return only "filter" arguments
+     * with some convenience bits for searches. Controls are things like limit, offset,
+     * or other things that control HOW the results are returned whereas filters determine
+     * WHAT gets returned.
+     *
+     * @param array
+     * @return array
+     */
+    public function getFilters($array) {
+        foreach ($this->control_params as $p) {
+            unset($array[$p]);
+        }
+        
+        foreach ($array as $k => $v) {
+            // For convenience, we add in the %'s
+            if (strtoupper(substr($k,-5)) == ':LIKE') $array[$k] = '%'.$v.'%';
+            if (strtoupper(substr($k,-9)) == ':NOT LIKE') $array[$k] = '%'.$v.'%';
+            if (strtoupper(substr($k,-12)) == ':STARTS WITH') {
+                unset($array[$k]);
+                $array[substr($k,0,-12).':LIKE'] = $v.'%';
+            }
+            if (strtoupper(substr($k,-10)) == ':ENDS WITH') {
+                unset($array[$k]);
+                $array[substr($k,0,-10).':LIKE'] = '%'.$v;
+            }
+
+            // Remove any simple array stuff
+            if (is_integer($k)) unset($array[$k]);
+        }
+        return $array;
     }
 
     /**
@@ -724,6 +785,23 @@ class Asset extends xPDOObject {
         unlink($tmpfile);
         
         return $path;
+    }
+
+    /**
+     * Some strings like "group" will fail if you try to use them as a sort column, e.g.
+     *      SELECT * FROM table ORDER BY group ASC LIMIT 20 
+     * So this will properly quote a SQL column. 
+     *      group --> `group`
+     *      `group` --> `group` (unchanged)
+     *      tbl.col --> `tbl`.`col`
+     */
+    public function quoteSort($str) {
+        if (!is_scalar($str)) {
+            throw new \Exception('quoteSort expects string');
+        }
+        $parts = explode('.',$str);
+        $parts = array_map(function($v){ return '`'.trim($v,'`').'`'; }, $parts);
+        return implode('.',$parts);
     }
     
     /** 

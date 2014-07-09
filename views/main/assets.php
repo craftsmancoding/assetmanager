@@ -6,13 +6,13 @@ print $this->getMsg();
     <h2 class="assman_cmp_heading" id="assman_pagetitle">Manage Assets</h2>
 </div>
 
-<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Here you can Manage your Products Assets.</p></div>
+<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Browse your asset library.</p></div>
 
 <div class="assman_canvas_inner">
 
 <div class="clearfix">
 
-    <span class="button btn assman-btn pull-left" onclick="javascript:paint('fieldcreate');">Add Asset</span>
+    <!--span class="button btn assman-btn pull-left" onclick="javascript:paint('fieldcreate');">Add Asset</span-->
 
         <div class="pull-right">   
             <form action="<?php print static::page('assets'); ?>" method="post">

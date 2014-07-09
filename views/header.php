@@ -5,6 +5,10 @@
         </li>
 
          <li class="assman_nav_item">
+            <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>">Library</a>
+         </li>
+
+         <li class="assman_nav_item">
             <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>">Settings</a>
          </li>
 

@@ -45,6 +45,7 @@ class PageController extends BaseController {
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.colorbox.js');                      
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.quicksand.js');      
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');        
     }
 
 
@@ -58,8 +59,16 @@ class PageController extends BaseController {
      */
     public function getAssets(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $A = $this->modx->getObject('Asset');
-        $results = $Obj->all($scriptProperties);
+        $A = $this->modx->newObject('Asset');
+        $results = $A->all($scriptProperties);
+        $this->setPlaceholder('results', $results);
+        $this->setPlaceholders($scriptProperties);
+        return $this->fetchTemplate('main/assets.php');
+    }
+    public function postAssets(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $A = $this->modx->newObject('Asset');
+        $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
         return $this->fetchTemplate('main/assets.php');
@@ -92,22 +101,8 @@ class PageController extends BaseController {
     
     public function postGroups(array $scriptProperties = array()) {
         $groups = $this->modx->getOption('groups', $scriptProperties);
-        $groups = array_unique($groups);
-        $groups = array_filter($groups);
-        if (!$Setting = $this->modx->getObject('modSystemSetting', 'assman.groups')) {
-            $Setting = $this->modx->newObject('modSystemSetting');
-            $Setting->set('key', 'assman.groups');
-            $Setting->set('xtype','textfield');
-            $Setting->set('namespace','assman');
-            $Setting->set('area','assman:default');       
-        }
-        $Setting->set('value', json_encode($groups));
-        if (!$Setting->save()) {
-        
-        }
-        // Clear cache
-        $cacheRefreshOptions =  array( 'system_settings' => array() );
-        $this->modx->cacheManager->refresh($cacheRefreshOptions);
+        $A = $this->modx->newObject('Asset');
+        $A->setAssetGroups($groups);
         return $this->getGroups();
     }
     
@@ -167,7 +162,7 @@ class PageController extends BaseController {
                 }
             });                
         </script>');
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');
+        
 
     }            
 }
