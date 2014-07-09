@@ -112,13 +112,14 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 <!-- ========================================= CONTENT ======================================== -->
 <div id="assets_tab" class="content">	
     <div id="assman_msg"></div>
+    <a href="#" class="btn pull-right" style="margin-top:-5px;">Browse Assets</a>
     <ul id="asset_category_filters"> 
         <li class="all first"><a href="#">All</a></li> 
     </ul>
 
 
     <div class="dropzone-wrap clearfix" id="asset_upload">
-        <a href="#" class="btn pull-right">Browse Assets</a>
+        
         <div class="clear">&nbsp;</div>
     	<ul class="clearfix" id="page_assets"></ul>
     	
