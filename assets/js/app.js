@@ -7,10 +7,10 @@
  */
  
 if (typeof jQuery == 'undefined') {
-    alert('jQuery is not loaded. Assman HTML client cannot load.');
+    alert('jQuery is not loaded. Asset Manager HTML client cannot load.');
 }
 else {
-    console.debug('[assman html client]: jQuery loaded.');
+    console.debug('[Asset Manager]: jQuery loaded.');
 }
 
 /**
@@ -36,8 +36,14 @@ function draw_tab() {
     }  
     
     jQuery("#page_assets").sortable({
-        change: function( event, ui ) {
-            console.log(ui);
+        // Save new order
+        stop: function( event, ui ) {
+            var newOrder = [];
+            jQuery('input.asset_id').each(function(){
+                //console.log( jQuery(this).val() );
+                newOrder.push(jQuery(this).val());
+            });
+            update_asset_order(newOrder);
         }
     });
     jQuery("#page_assets").disableSelection();
@@ -378,4 +384,24 @@ function show_success(msg) {
 function remove_me(event,parent) {
     console.debug('[remove_me] parent: '+parent);
     jQuery(this).closest(parent).remove();
+}
+
+/**
+ * Shuffle around the 
+ *
+ * @param array asset_ids defining the new order
+ */
+function update_asset_order(asset_ids) {
+    console.log('[update_asset_order]',asset_ids);
+    var length1 = asset_ids.length;
+    var length2 = assman.PageAssets.length;
+    var tmp = [];
+    for (var i1 = 0; i1 < length1; i1++) {
+        for (var i2 = 0; i2 < length2; i2++) {
+            if (asset_ids[i1] == assman.PageAssets[i2].asset_id) {
+                tmp.push(assman.PageAssets[i2]);
+            }
+        }
+    }
+    assman.PageAssets = tmp;
 }
