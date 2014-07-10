@@ -31,7 +31,7 @@ switch ($modx->event->name) {
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
         $classes = json_decode($modx->getOption('assman.class_keys'),true);
-
+        // New Resource?
         if (empty($resource)) {
             $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';
             $page_id = 0;

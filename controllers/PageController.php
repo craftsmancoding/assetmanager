@@ -139,30 +139,48 @@ class PageController extends BaseController {
         $this->config['PageAssets'] = $PA->getAssets($page_id);
         $this->config['Groups'] = $A->getAssetGroups();
 
-        $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
-        $out = file_get_contents($path.'main/pageassets.tpl');
-
         // Wedge the output into the tab
         $this->modx->lexicon->load('assman:default');
         $title = $this->modx->lexicon('assets_tab');
 
-        $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
-            var assman = '.json_encode($this->config).';
-            var inited = 0;
-            MODx.on("ready",function() {
-                console.log("[assman] on ready...");
-                MODx.addTab("modx-resource-tabs",{
-                    title: '.json_encode($title).',
-                    id: "assets-resource-tab",
-                    width: "95%",
-                    html: '.json_encode($out).'
-                });
-                if (inited==0) {
-                    page_init();
-                }
-            });                
-        </script>');
-        
+        $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
+        if ($page_id) {
+            $out = file_get_contents($path.'main/pageassets.tpl');
+            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+                var assman = '.json_encode($this->config).';
+                var inited = 0;
+                MODx.on("ready",function() {
+                    console.log("[assman] on ready...");
+                    MODx.addTab("modx-resource-tabs",{
+                        title: '.json_encode(utf8_encode($title)).',
+                        id: "assets-resource-tab",
+                        width: "95%",
+                        html: '.json_encode(utf8_encode($out)).'
+                    });
+                    if (inited==0) {
+                        page_init();
+                    }
+                });                
+            </script>');
+
+        }
+        else {
+            $out = file_get_contents($path.'main/pageassets_new.tpl');
+            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+                var assman = '.json_encode($this->config).';
+                var inited = 0;
+                MODx.on("ready",function() {
+                    console.log("[assman] on ready...");
+                    MODx.addTab("modx-resource-tabs",{
+                        title: '.json_encode(utf8_encode($title)).',
+                        id: "assets-resource-tab",
+                        width: "95%",
+                        html: '.json_encode(utf8_encode($out)).'
+                    });
+                });                
+            </script>');
+        }
+
 
     }            
 }

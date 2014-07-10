@@ -36,6 +36,7 @@ class Asset extends xPDOObject {
         parent::__construct($xpdo);
         $this->_fields['url'] = $this->get('url');
         $this->_fields['path'] = $this->get('path');
+        $this->_fields['basename'] = $this->get('basename');
         $this->_fields['thumbnail_url'] = $this->get('thumbnail_url');
         $this->_fields['thumbnail_width'] = $this->get('thumbnail_width');
         $this->_fields['thumbnail_height'] = $this->get('thumbnail_height');
@@ -335,6 +336,9 @@ class Asset extends xPDOObject {
                 $this->xpdo->log(\modX::LOG_LEVEL_ERROR,'Asset does not exist: '.$path,'',__CLASS__.'::'.__FUNCTION__,__LINE__);
             }
             return null; // No path yet
+        }
+        elseif ($k=='basename') {
+            return basename($this->get('stub'));
         }
         elseif ($k=='thumbnail_url') {
             $override = $this->get('thumbnail_manual_url');
