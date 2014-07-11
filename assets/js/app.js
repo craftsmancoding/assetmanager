@@ -204,7 +204,7 @@ function open_asset_modal(asset_id) {
         }
     }
     Asset['Groups'] = assman.Groups;
-    
+    Asset['manage_groups_url'] = assman.controller_url +"&class=page&method=groups";
     jQuery.colorbox({
         inline:false, 
         width: "850",
