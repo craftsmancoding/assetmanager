@@ -8,6 +8,7 @@ First public release!  Finally, we got a streamlined way to manage your MODX Med
 Features include:
 
     - Drag and Drop image uploading
+    - Sorting animation using Quicksand (http://razorjack.net/quicksand/)
     - Avoid duplicate uploads automatically (file signatures calculated on the fly)
     - Image paths and URLs are not hard-coded, so migrating your site and assets is easy.
     - Included Snippets allow you to display any asset at any size. 
