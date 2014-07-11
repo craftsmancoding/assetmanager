@@ -57,11 +57,11 @@ class Snippet {
      * @param string formatting $outerTpl formatting string OR chunk name (optional)
      * @return string
      */
-    public function format($records,$innerTpl,$outerTpl=null) {
+    public function format($records,$innerTpl,$outerTpl=null,$firstTpl=null,$lastTpl=null,$onOne='innerTpl',$cnt=0) {
         if (empty($records)) {
             return '';
         }
-        
+
         // A Chunk Name was passed
         $use_tmp_chunk = false;
         if (!$innerChunk = $this->modx->getObject('modChunk', array('name' => $innerTpl))) {
@@ -69,19 +69,65 @@ class Snippet {
         }
         
         $out = '';
+        $i = 1;
         foreach ($records as $r) {
             if (is_object($r)) $r = $r->toArray('',false,false,true); // Handle xPDO objects
-            // Use a temporary Chunk when dealing with raw formatting strings
-            if ($use_tmp_chunk) {
-                $uniqid = uniqid();
-                $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
-                $innerChunk->setCacheable(false);    
-                $out .= $innerChunk->process($r, $innerTpl);
+            if ($cnt == 1) {
+                // Real Chunk
+                if ($singleChunk = $this->modx->getObject('modChunk', array('name' => $onOne))) {
+                    $out .= $this->modx->getChunk($onOne, $r);
+                }
+                // Formatting String
+                else {
+                    $uniqid = uniqid();
+                    $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
+                    $singleChunk->setCacheable(false);    
+                    $out .= $singleChunk->process($r, $$onOne); // <-- gulp.
+                }
+                break;
             }
-            // Use getChunk when a chunk name was passed
+            // First
+            if ($i == 1) {
+                // Real Chunk
+                if ($singleChunk = $this->modx->getObject('modChunk', array('name' => $firstTpl))) {
+                    $out .= $this->modx->getChunk($firstTpl, $r);
+                }
+                // Formatting String
+                else {
+                    $uniqid = uniqid();
+                    $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
+                    $singleChunk->setCacheable(false);    
+                    $out .= $singleChunk->process($r, $firstTpl);                    
+                }          
+            }
+            // Last
+            elseif ($i == $cnt) {
+                // Real Chunk
+                if ($singleChunk = $this->modx->getObject('modChunk', array('name' => $lastTpl))) {
+                    $out .= $this->modx->getChunk($lastTpl, $r);
+                }
+                // Formatting String
+                else {
+                    $uniqid = uniqid();
+                    $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
+                    $singleChunk->setCacheable(false);    
+                    $out .= $singleChunk->process($r, $lastTpl);                    
+                }            
+            }
             else {
-                $out .= $this->modx->getChunk($innerTpl, $r);
+                // Use a temporary Chunk when dealing with raw formatting strings
+                if ($use_tmp_chunk) {
+                    $uniqid = uniqid();
+                    $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
+                    $innerChunk->setCacheable(false);    
+                    $out .= $innerChunk->process($r, $innerTpl);
+                }
+                // Use getChunk when a chunk name was passed
+                else {
+                    $out .= $this->modx->getChunk($innerTpl, $r);
+                }
             }
+            $i++;
         }
         
         if ($outerTpl) {

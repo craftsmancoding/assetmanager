@@ -37,11 +37,16 @@
  * @param integer $page_id of the page whose images you want. Defaults to the current page.
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
  * @param string $innerTpl Format the Inner Item of List
+ * @param string $firstTpl Format the first Item of List (optional : defaults to innerTpl)
+ * @param string $lastTpl Format the last Item of List (optional : defaults to innerTpl)
+ * @param string $onOne which tpl to use if there is only 1 result: innerTpl, firstTpl, or lastTpl. Default: innerTpl
  * @param string $group optional: limit the results to the specified group
  * @param boolean $is_active Get all active records only
  * @param boolean $is_image if true, return only images, if false, only other assets. If not set, we get everything.
  * @param int $limit Limit the records to be shown (if set to 0, all records will be pulled)
-// * @param int $firstClass set CSS class name on the first item (Optional)
+ * @param string $sort which column should we sort by?  Default: Product.seq
+ * @param string $dir which direction should results be returned?  ASC or DESC (optional)
+
  *
  * Variables
  * ---------
@@ -66,6 +71,12 @@ $Snippet->log('getProductImages',$scriptProperties);
 // Formatting Arguments:
 $innerTpl = $modx->getOption('innerTpl', $scriptProperties, '<li><img src="[[+Asset.url]]" width="[[+Asset.width]]" height="[[+Asset.height]]" alt="[[+Asset.alt]]" /></li>');
 $outerTpl = $modx->getOption('outerTpl', $scriptProperties, '<ul>[[+content]]</ul>');
+$firstTpl = $modx->getOption('firstTpl', $scriptProperties, $innerTpl);
+$lastTpl = $modx->getOption('lastTpl', $scriptProperties, $innerTpl);
+$onOne = $modx->getOption('onOne', $scriptProperties, 'innerTpl');
+
+$sort = $modx->getOption('sort', $scriptProperties, 'PageAsset.seq');
+$dir = $modx->getOption('dir', $scriptProperties);
 
 // Default Arguments:
 $scriptProperties['is_active'] = (bool) $modx->getOption('is_active',$scriptProperties, 1);
@@ -95,14 +106,21 @@ if (isset($scriptProperties['group'])) {
 
 $c = $modx->newQuery('PageAsset');
 $c->where($criteria);
-$c->sortby('PageAsset.seq','ASC');
+if ($sort && $dir) {
+    $c->sortby($sort,$dir);
+}
+elseif($sort) {
+    $c->sortby($sort);
+}
 if ($scriptProperties['limit']) {
     $c->limit($scriptProperties['limit']);
 }
+$cnt = $modx->getCount('PageAsset',$c);
+
 $ProductAssets = $modx->getCollectionGraph('PageAsset','{"Asset":{}}', $c);
 
 if ($ProductAssets) {
-    return $Snippet->format($ProductAssets,$innerTpl,$outerTpl);    
+    return $Snippet->format($ProductAssets,$innerTpl,$outerTpl,$firstTpl,$lastTpl,$onOne,$cnt);    
 }
 
 $modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','getPageAssets',__LINE__);
