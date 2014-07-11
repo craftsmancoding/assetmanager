@@ -376,14 +376,10 @@ function select_group(group) {
 }
 
 /**
- * Show a simple error message, then fade it out and clear it so we can reuse the div.
+ * Show a simple error message... we don't fade it out because it may contain important info.
  */
 function show_error(msg) {
-    jQuery('#assman_msg').html('<div class="danger">'+msg+'</div>')
-    .delay(3000).fadeOut(function() {
-        jQuery(this).html('');
-        jQuery(this).show(); 
-    });
+    jQuery('#assman_msg').html('<div class="danger">'+msg+'</div>');
 }
 
 
