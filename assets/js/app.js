@@ -14,6 +14,28 @@ else {
 }
 
 /**
+ * When upload happens (via dropzone), we need to add the asset and its info to the
+ * mix.  This must avoid duplicates!
+ * @param object fields asset data
+ */
+function add_asset(fields) {
+    console.log('[add_asset]', fields);
+    var arrayLength = assman.PageAssets.length;
+    for (var i = 0; i < arrayLength; i++) {
+        if (assman.PageAssets[i].asset_id == fields.asset_id) {
+            return; // already exists        
+        }
+    }
+    console.log('[add_asset] New asset - adding '+fields.asset_id);
+    // Add it on!
+    assman.PageAssets.push({
+        asset_id: fields.asset_id,
+        is_active: 1,
+        Asset: fields 
+    });
+}
+
+/**
  * Wipe the tab clean and (re)draw the assets tab including groups for assets.
  */
 function draw_tab() {
@@ -151,8 +173,9 @@ function define_dialog_boxes() {
         console.log('[Dropzone Success]', file, response);
         if (response.status == "success") {
             // Write data back to parent JS
-            var asset_id = response.data.fields.asset_id;
-            assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
+            //var asset_id = response.data.fields.asset_id;
+            //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
+            add_asset(response.data.fields);
             draw_tab();
             jQuery(".dz-preview").remove();
        } 
