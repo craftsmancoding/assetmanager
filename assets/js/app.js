@@ -241,6 +241,9 @@ function open_asset_modal(asset_id) {
         },
         html:function(){
             return assman.tpls.asset_modal(Asset);
+        },
+        onComplete: function() {
+            jQuery('#group-select').val(Asset.group);
         }
     });
 }
