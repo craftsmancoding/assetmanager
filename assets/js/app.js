@@ -201,7 +201,7 @@ function define_dialog_boxes() {
             jQuery(this).removeClass('over-trash');
         },
         drop: function( event, ui ) {
-            var asset_id = jQuery(ui.draggable).attr('data-asset_id');
+            var asset_id = jQuery(ui.draggable).attr('data-id');
             console.log('Trash can drop delete: '+asset_id, assman.PageAssets);
             jQuery('#delete_asset_modal').data('asset_id', asset_id).dialog('open');
             jQuery(this).removeClass('over-trash');
