@@ -3,9 +3,20 @@ Changelog for Asset Manager
 Asset Manager 1.0.0
 ---------------------------------
 
-First public release
+First public release!  Finally, we got a streamlined way to manage your MODX Media Library! 
 
-Not supported in version 1:
+Features include:
 
-- Image cropping
-- Image rotation
+    - Drag and Drop image uploading
+    - Avoid duplicate uploads automatically (file signatures calculated on the fly)
+    - Image paths and URLs are not hard-coded, so migrating your site and assets is easy.
+    - Included Snippets allow you to display any asset at any size. 
+    - Output filters allow you to filter any asset to any size.  No more phpThumb!
+
+
+NOT supported in version 1:
+
+    - Image cropping
+    - Image rotation
+    - Renaming of images
+    - Searching of library

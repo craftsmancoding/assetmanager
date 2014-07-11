@@ -3,7 +3,7 @@ The following script is a handlebarjs template.
 Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 -->
 <script id="page_asset_tpl" type="text/x-handlebars-template">
-<li class="li_page_image" data-id="id-{{asset_id}}" data-type="{{group}}" id="page-asset-{{asset_id}}" style="cursor:pointer;">
+<li class="li_page_image" data-asset_id="{{asset_id}}" data-type="{{group}}" id="page-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
         <img src="{{Asset.thumbnail_url}}" alt="{{Asset.alt}}" width="{{Asset.thumbnail_width}}" height="{{Asset.thumbnail_height}}" onclick="javascript:open_asset_modal('{{Asset.asset_id}}');" class="{{#unless is_active}}inactive{{/unless}}" style="cursor:pointer;"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" class="asset_id" value="{{asset_id}}" />

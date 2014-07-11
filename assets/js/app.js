@@ -111,14 +111,20 @@ function define_dialog_boxes() {
             },
             "Remove from Page": function() {
                 var asset_id = jQuery(this).data('asset_id');
-                console.log('Removing: '+asset_id);
+                console.log('Removing: '+asset_id, assman.PageAssets);
                 var page_id = assman.page_id;
                 assapi('pageasset','remove',{
                     asset_id: asset_id,
                     page_id: page_id
                 });
+                console.log(assman.PageAssets);
                 var arrayLength = assman.PageAssets.length;
+                console.log('arrayLength: '+arrayLength);
                 for (var i = 0; i < arrayLength; i++) {
+                    // WTF? During drag and drop, this would sometimes error out as undefined
+                    if (typeof assman.PageAssets[i] == 'undefined') {
+                        continue;
+                    }
                     if (assman.PageAssets[i].asset_id == asset_id) {
                         assman.PageAssets.splice(i,1); // unset
                     }
@@ -126,6 +132,7 @@ function define_dialog_boxes() {
           		jQuery('#page-asset-'+asset_id).remove();
           		draw_tab();
                 jQuery( this ).dialog( "close" );
+
             },
             "Cancel": function() {
                 jQuery( this ).dialog( "close" );
@@ -159,11 +166,6 @@ function define_dialog_boxes() {
     myDropzone.on("error", function(file,errorMessage) {
         console.log('[Dropzone Error]',file, errorMessage);
     });
-    // called after success
-    //myDropzone.on("complete", function(file,errorMessage) {
-    //    console.log('[Dropzone Complete]',file, errorMessage);
-    //});
-
 
     // Drag Drop Item Delete
     jQuery( "#trash-can" ).droppable({
@@ -176,13 +178,9 @@ function define_dialog_boxes() {
             jQuery(this).removeClass('over-trash');
         },
         drop: function( event, ui ) {
-            var id = jQuery(ui.draggable).attr('id');
-            var asset_id = jQuery(ui.draggable).find('img').data('asset_id');
-            if (confirm("Are you Sure you want to Delete this Image?")) {
-                jQuery(this).removeClass('over-trash');
-                var result = assapi('asset','delete', {asset_id: asset_id} );
-                jQuery('#'+id).hide();
-            }
+            var asset_id = jQuery(ui.draggable).attr('data-asset_id');
+            console.log('Trash can drop delete: '+asset_id, assman.PageAssets);
+            jQuery('#delete_asset_modal').data('asset_id', asset_id).dialog('open');
             jQuery(this).removeClass('over-trash');
             return false;
         }
