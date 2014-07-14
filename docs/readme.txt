@@ -3,6 +3,8 @@ Asset Manager
 
 Asset Manager Media Library for MODX Revolution
 
+Watch the video: https://www.youtube.com/watch?v=EPOBgHL--MM&feature=youtu.be
+
 This package adds asset management functionality to MODX Revolution so you can easily upload and edit images and other assets
 and attach them to any MODX page.  Because it stores all asset data in a custom database table, you can easily search for assets
 by complex criteria or manipulate the search queries for custom reporting.
