@@ -35,7 +35,7 @@ if (!is_numeric($new_h)) {
 
 if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
     $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found: '.$asset_id,'','scale2h Output Filer');
-    return \Assman\Asset::getMissingThumbnail($new_h,$new_h); //square
+    return $Asset->getMissingThumbnail($new_h,$new_h); //square
 }
 
 // Calculate the new dimensions

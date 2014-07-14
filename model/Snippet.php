@@ -79,7 +79,7 @@ class Snippet {
                 }
                 // Formatting String
                 else {
-                    $uniqid = uniqid();
+                    $uniqid = uniqid() . $i;
                     $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                     $singleChunk->setCacheable(false);    
                     $out .= $singleChunk->process($r, $$onOne); // <-- gulp.
@@ -94,7 +94,7 @@ class Snippet {
                 }
                 // Formatting String
                 else {
-                    $uniqid = uniqid();
+                    $uniqid = uniqid() . $i;
                     $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                     $singleChunk->setCacheable(false);    
                     $out .= $singleChunk->process($r, $firstTpl);                    
@@ -108,7 +108,7 @@ class Snippet {
                 }
                 // Formatting String
                 else {
-                    $uniqid = uniqid();
+                    $uniqid = uniqid() . $i;
                     $singleChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                     $singleChunk->setCacheable(false);    
                     $out .= $singleChunk->process($r, $lastTpl);                    
@@ -117,7 +117,7 @@ class Snippet {
             else {
                 // Use a temporary Chunk when dealing with raw formatting strings
                 if ($use_tmp_chunk) {
-                    $uniqid = uniqid();
+                    $uniqid = uniqid() . $i;
                     $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                     $innerChunk->setCacheable(false);    
                     $out .= $innerChunk->process($r, $innerTpl);

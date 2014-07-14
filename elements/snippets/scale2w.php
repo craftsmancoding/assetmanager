@@ -24,7 +24,7 @@ $asset_id = $input;
 $new_w = $options;
 
 if (!is_numeric($asset_id)) {
-    $modx->log(\modX::LOG_LEVEL_ERROR,'Invalid input. Integer asset ID required. ' .print_r($scriptProperties,true),'','scale2w Output Filer');
+    $modx->log(\modX::LOG_LEVEL_ERROR,'Invalid input. Integer asset ID required. '.$asset_id .print_r($scriptProperties,true),'','scale2w Output Filer');
     return;
 } 
 
@@ -35,7 +35,7 @@ if (!is_numeric($new_w)) {
 
 if (!$Asset = $modx->getObject('Asset', array('asset_id' => $asset_id))) {
     $modx->log(\modX::LOG_LEVEL_ERROR,'Asset not found: '. $asset_id,'','scale2w Output Filer');
-    return \Assman\Asset::getMissingThumbnail($new_w,$new_w); // square.
+    return $Asset->getMissingThumbnail($new_w,$new_w); // square.
 }
 
 // Calculate the new dimensions
@@ -49,6 +49,6 @@ $modx->log(\modX::LOG_LEVEL_INFO,'New asset dimensions calculated: '.$nx, $ny,''
 
 $modx->setPlaceholder('asset_id.height', $ny);
 
-return $Asset->getThumbnailURL($Asset, $nx, $ny);
+return $Asset->getThumbnailURL($nx, $ny);
 
 /*EOF*/
