@@ -39,6 +39,7 @@ function add_asset(fields) {
  * Wipe the tab clean and (re)draw the assets tab including groups for assets.
  */
 function draw_tab() {
+    console.log('[draw_tab]');
     jQuery('#page_assets').html('');
     var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
