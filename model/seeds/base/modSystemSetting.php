@@ -36,7 +36,7 @@ return array(
     array(
         'key'  =>     'assman.class_keys',
 		'value'=>     '["modDocument"]',
-		'xtype'=>     'text',
+		'xtype'=>     'textfield',
 		'namespace' => 'assman',
 		'area' => 'assman:default'
     ),
