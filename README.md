@@ -26,6 +26,16 @@ using MIGX), but the user interface and backend data model is cleaner.
 This is the first public release.  It does not yet support image cropping.
 
 
+## Thanks To
+
+This package would not be possible without the beautiful and brilliant work of other coders. 
+
+- [Dropzone](http://www.dropzonejs.com/) -- a brilliant drag and drop file uploader with image previews.
+- [Quicksand](http://razorjack.net/quicksand/) -- a great sorting/animation jQuery library.
+- [jCrop](http://deepliquid.com/content/Jcrop.html) -- provides image cropping functionality.
+- [Placehold.it](http://placehold.it/) -- a quick and simple image placeholding service.
+
+
 ## Technical Note:
 
 The Asset Manager helps maintain an ordered folder structure for your images and other assets while 
