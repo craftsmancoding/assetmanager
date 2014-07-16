@@ -20,9 +20,19 @@
     },    
     "require": {
         "php": ">=5.3",
-        "craftsmancoding/image": "dev-master"
+        "craftsmancoding/image": "dev-master",
+        "craftsmancoding/formbuilder": "dev-master",
+        "craftsmancoding/pagination": "dev-master"
     },
-    "repositories": [    
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:craftsmancoding/formbuilder.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:craftsmancoding/pagination.git"
+        }
     ],
     "autoload": {
         "classmap":[

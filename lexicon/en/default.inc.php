@@ -31,7 +31,7 @@ $_lang['assets_tab'] = 'Assets';
 // Description: setting_ + Key + _desc
 //---------------------------------------
 $_lang['setting_assman.library_path'] = 'Library Path';
-$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_BASE_PATH where your media assets will be stored. This directory will be fully under Asset Manager's control and off-limits to manual uploads and other hanky-panky.";
+$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_ASSETS_PATH where your media assets will be stored. This should be a dedicated directory that can be fully under Asset Manager's control.";
 $_lang['setting_assman.url_override'] = 'URL Override';
 $_lang['setting_assman.url_override_desc'] = 'If checked, the "Asset Manager Site URL" will be used instead of the MODX_ASSET_URL when calculating asset URLs. Check this if your Asset Manager URL needs to a custom sub-domain or port to serve your images/assets.';
 $_lang['setting_assman.site_url'] = 'Asset Manager Site URL';

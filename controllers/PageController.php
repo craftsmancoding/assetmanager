@@ -113,11 +113,47 @@ class PageController extends BaseController {
     /**
      * @param array $scriptProperties
      */
-    public function getSettings(array $scriptProperties = array()) {
+    public function getSettings(array $scriptProperties = array(),$msg='') {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $this->setPlaceholder('msg', $msg);
+        $this->setPlaceholder('library_path', $this->modx->getOption('assman.library_path'));
+        $this->setPlaceholder('url_override', $this->modx->getOption('assman.url_override'));
+        $this->setPlaceholder('site_url', $this->modx->getOption('assman.site_url'));
+        $this->setPlaceholder('class_keys', $this->modx->getOption('assman.class_keys'));
+        $this->setPlaceholder('thumbnail_width', $this->modx->getOption('assman.thumbnail_width'));
+        $this->setPlaceholder('thumbnail_height', $this->modx->getOption('assman.thumbnail_height'));
+        $this->setPlaceholder('autocreate_content_type', $this->modx->getOption('assman.autocreate_content_type'));
+        
         return $this->fetchTemplate('main/settings.php');
      
     }
+    
+    /**
+     * Save the posted settings.
+     *
+     */
+    public function postSettings(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);    
+        //return '<pre>'.print_r($scriptProperties,true).'</pre>';
+        $settings = array('library_path','url_override','site_url','class_keys','thumbnail_width',
+            'thumbnail_height','autocreate_content_type');
+        foreach ($settings as $s) {
+            $value = $this->modx->getOption($s, $scriptProperties);
+            if ($Setting = $this->modx->getObject('modSystemSetting', 'assman.'.$s)) {
+                $Setting->set('value', $value);       
+            }
+            if (!$Setting->save()) {
+                $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Could not save System Setting','','Asset::'.__FUNCTION__);    
+                continue;
+            }
+            $Setting->setOption('assman.'.$s, $value);
+        }
+        // Clear cache
+        $this->modx->cacheManager->refresh(array( 'system_settings' => array() ));
+        return $this->getSettings(array(),'<div class="success">Your settings have been saved.</div>');
+
+    }
+
     
     //------------------------------------------------------------------------------
     //! Page

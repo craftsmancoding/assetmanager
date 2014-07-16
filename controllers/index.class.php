@@ -65,7 +65,7 @@
  */
  
 // Gotta do this here because we don't have a reliable event for this. 
-require_once dirname(__FILE__) .'/vendor/autoload.php';
+require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
 class IndexManagerController extends \Assman\BaseController {
 
     /**
@@ -80,7 +80,7 @@ class IndexManagerController extends \Assman\BaseController {
      * @param array array config
      * @return instance of a controller object
      */
-    public static function getInstance(\modX &$modx, $className, array $config = array()) {
+    public static function getInstanceDeprecated(\modX &$modx, $className, array $config = array()) {
 
         $config['method'] = (isset($_REQUEST['method'])) ? $_REQUEST['method'] : 'index';
         $class = (isset($_REQUEST['class'])) ? $_REQUEST['class'] : 'Page'; // Default Controller
