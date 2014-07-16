@@ -142,11 +142,15 @@ class PageController extends BaseController {
             if ($Setting = $this->modx->getObject('modSystemSetting', 'assman.'.$s)) {
                 $Setting->set('value', $value);       
             }
+            else {
+                $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Could not load System Setting assman.'.$s,'','Asset::'.__FUNCTION__);                    
+                continue;
+            }
             if (!$Setting->save()) {
                 $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Could not save System Setting','','Asset::'.__FUNCTION__);    
                 continue;
             }
-            $Setting->setOption('assman.'.$s, $value);
+            $this->modx->setOption('assman.'.$s, $value);
         }
         // Clear cache
         $this->modx->cacheManager->refresh(array( 'system_settings' => array() ));
