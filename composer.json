@@ -53,7 +53,7 @@
         "orm_path": "model/",
         "assets_path" : "assets/",
         "seeds_path": ["model/seeds/base"],
-        "omit": ["assets/","screenshots/","tests/","composer.json","composer.lock","builds/"],
+        "omit": ["assets/","screenshots/","tests/","composer.json","composer.lock","builds/","phpunit.xml",".git"],
         "packages":[
             {
                 "pkg":"assman",
