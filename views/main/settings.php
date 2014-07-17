@@ -6,7 +6,7 @@
 
     <?php print (isset($data['msg'])) ? $data['msg'] : ''; ?>
     
-    <form action="" method="post">
+    <form action="" method="post" id="assman_settings">
 
         <h3>Thumbnail Dimensions</h3>
         <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>These settings affect the size of thumbnails displayed on the "Assets" tab.</p>

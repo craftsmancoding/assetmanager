@@ -5,10 +5,11 @@ Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
 <script id="page_asset_tpl" type="text/x-handlebars-template">
 <li class="li_page_image" data-id="{{asset_id}}" data-type="{{group}}" id="page-asset-{{asset_id}}" style="cursor:pointer;">
 	<div class="img-info-wrap" onclick="javascript:jQuery('#asset_edit_form').data('asset_id', '{{asset_id}}').dialog('open');">  
+
         <img src="{{Asset.thumbnail_url}}" alt="{{Asset.alt}}" width="{{Asset.thumbnail_width}}" height="{{Asset.thumbnail_height}}" onclick="javascript:open_asset_modal('{{Asset.asset_id}}');" class="{{#unless is_active}}inactive{{/unless}}" style="cursor:pointer;"/>
 	    <input type="hidden" name="PageAssets[asset_id][]" class="asset_id" value="{{asset_id}}" />
         <input type="hidden" id="asset_group_{{asset_id}}" name="PageAssets[group][]" value="{{group}}"/>
-        <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="1" />
+        <input type="hidden" id="asset_is_active_{{asset_id}}" name="PageAssets[is_active][]" class="asset_is_active" value="{{is_active}}" />
         <div class="img-info-inner">
             <p class="asset-id-ph"><span id="asset_title_{{asset_id}}">{{group}}</span> ({{asset_id}})</p>
             <p class="asset-title-ph" id="asset_group_vis_{{asset_id}}"><strong>{{Asset.basename}}</strong></p>

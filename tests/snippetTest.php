@@ -3,12 +3,12 @@
  *
  * To run these tests, pass the test directory as the 1st argument to phpunit:
  *
- *   phpunit path/to/moxycart/core/components/assman/tests
+ *   phpunit path/to/core/components/assman/tests
  *
  * or if you're having any trouble running phpunit, download its .phar file, and 
  * then run the tests like this:
  *
- *  php phpunit.phar path/to/moxycart/core/components/moxycart/tests
+ *  php phpunit.phar path/to/core/components/assman/tests
  *
  *
  GOTCHAS:

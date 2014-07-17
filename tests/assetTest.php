@@ -12,7 +12,7 @@
  *
  * To run these tests, pass the test directory as the 1st argument to phpunit:
  *
- *   phpunit path/to/moxycart/core/components/assetmanager/tests
+ *   phpunit path/to/core/components/assetmanager/tests
  *
  * or if you're having any trouble running phpunit, download its .phar file, and 
  * then run the tests like this:

@@ -52,7 +52,7 @@ switch ($modx->event->name) {
         if ($pageassets = $resource->get('PageAssets')) {
             $A = $modx->newObject('Asset');
             $data = $A->indexedToRecordset($pageassets);
-            $modx->log(modX::LOG_LEVEL_DEBUG,print_r($data,true),'','Assman');
+            $modx->log(modX::LOG_LEVEL_ERROR,print_r($data,true),'','Assman');
             $A->dictateRelations($data,$resource->get('id'));
         }
         break;
