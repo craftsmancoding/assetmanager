@@ -48,7 +48,7 @@
         <?php
         print \Formbuilder\Form::checkbox('autocreate_content_type', $data['autocreate_content_type'], array('label' => 'Auto-create'));
         ?>    
-        
+        </div>
         <br/>
         <input class="btn assman-btn" type="submit" value="Update Settings" />
 
