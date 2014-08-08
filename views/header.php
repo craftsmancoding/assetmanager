@@ -10,15 +10,15 @@
                         </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>">Library</a>
+                            <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>"><?php print $data['menu.library']; ?></a>
                          </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>">Settings</a>
+                            <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>"><?php print $data['menu.settings']; ?></a>
                          </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'groups') ? 'current' : '' ; ?>" href="<?php print self::page('groups'); ?>">Groups</a>
+                            <a class="<?php print ($_GET['method'] == 'groups') ? 'current' : '' ; ?>" href="<?php print self::page('groups'); ?>"><?php print $data['menu.groups']; ?></a>
                          </li>
 
                        

@@ -130,7 +130,9 @@ class BaseController extends \modExtraManagerController {
         
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
 
+        $this->global_placeholders();
         $data = $this->getPlaceholders();
+        
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'View: ' .$file.' data: '.print_r($data,true),'','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
 		if (!is_file($path.$file)) {
     		$this->modx->log(\modX::LOG_LEVEL_ERROR, 'View file does not exist: '. $file, '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
@@ -152,6 +154,20 @@ class BaseController extends \modExtraManagerController {
 		$content = ob_get_clean();
 
         return $content;		
+    }
+
+    /**
+     * Set Global Placeholders
+     */
+    public function global_placeholders() {
+        $this->setPlaceholder('menu.manage', $this->modx->lexicon('assman.menu.manage'));
+        $this->setPlaceholder('menu.library', $this->modx->lexicon('assman.menu.library'));
+        $this->setPlaceholder('menu.settings', $this->modx->lexicon('assman.menu.settings'));
+        $this->setPlaceholder('menu.groups', $this->modx->lexicon('assman.menu.groups'));
+        $this->setPlaceholder('menu.donation', $this->modx->lexicon('assman.menu.donation'));
+        $this->setPlaceholder('menu.bug', $this->modx->lexicon('assman.menu.bug'));
+        $this->setPlaceholder('menu.wiki', $this->modx->lexicon('assman.menu.wiki'));
+        $this->setPlaceholder('menu.support', $this->modx->lexicon('assman.menu.support'));
     }
         
     /**

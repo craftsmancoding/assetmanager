@@ -54,18 +54,24 @@ $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content
 
 
 //---------------------------------------
-// CM Pages and other content related text
-// Name: assman.page.name
+// CM Pages Menu
 //---------------------------------------
-$_lang['assman.menu.manage'] = 'Manage Menu';
+$_lang['assman.menu.manage'] = 'Manage';
+$_lang['assman.menu.library'] = 'Library';
+$_lang['assman.menu.settings'] = 'Settings';
+$_lang['assman.menu.groups'] = 'Groups';
+$_lang['assman.menu.donation'] = 'Make a Donation';
+$_lang['assman.menu.bug'] = 'Report a Bug';
+$_lang['assman.menu.wiki'] = 'Wiki';
+$_lang['assman.menu.support'] = 'Get Paid Support';
 
+//---------------------------------------
+// CM Pages and other content related text
+//---------------------------------------
 $_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
 $_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
-
 $_lang['assman.assets.pagetitle'] = 'Manage Assets';
 $_lang['assman.assets.subtitle'] = 'Browse your asset library..';
-
 $_lang['assman.settings.pagetitle'] = 'Asset Manager Settings';
-
 $_lang['assman.groups.pagetitle'] = 'Asset Groups';
 $_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group for page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';
