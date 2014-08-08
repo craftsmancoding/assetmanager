@@ -65,8 +65,16 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
+
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
         $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
+
+        $this->setPlaceholder('lbl.thumbnail', $this->modx->lexicon('assman.lbl.thumbnail'));
+        $this->setPlaceholder('lbl.title', $this->modx->lexicon('assman.lbl.title'));
+        $this->setPlaceholder('lbl.alt', $this->modx->lexicon('assman.lbl.alt'));
+        $this->setPlaceholder('lbl.size', $this->modx->lexicon('assman.lbl.size'));
+        $this->setPlaceholder('lbl.action', $this->modx->lexicon('assman.lbl.action'));
+
         return $this->fetchTemplate('main/assets.php');
     }
     public function postAssets(array $scriptProperties = array()) {

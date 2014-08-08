@@ -168,6 +168,11 @@ class BaseController extends \modExtraManagerController {
         $this->setPlaceholder('menu.bug', $this->modx->lexicon('assman.menu.bug'));
         $this->setPlaceholder('menu.wiki', $this->modx->lexicon('assman.menu.wiki'));
         $this->setPlaceholder('menu.support', $this->modx->lexicon('assman.menu.support'));
+        $this->setPlaceholder('btn.search', $this->modx->lexicon('assman.btn.search'));
+        $this->setPlaceholder('btn.showall', $this->modx->lexicon('assman.btn.showall'));
+        $this->setPlaceholder('btn.edit', $this->modx->lexicon('assman.btn.edit'));
+        $this->setPlaceholder('btn.delete', $this->modx->lexicon('assman.btn.delete'));
+
     }
         
     /**

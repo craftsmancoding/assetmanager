@@ -52,6 +52,23 @@ $_lang['setting_assman.autocreate_content_type'] = 'Auto-Create Content Types';
 $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in the content_type table, the Asset Manager will attempt to intelligently create it based on the file extension and detected mime-type. If you disable this setting, uploads may fail when a user tries to upload an allowed file type (via the upload_files setting), but no corresponding content type is defined.';
 
 
+//---------------------------------------
+// CMP label
+//---------------------------------------
+$_lang['assman.lbl.thumbnail'] = 'THUMBNAIL';
+$_lang['assman.lbl.title'] = 'TITLE';
+$_lang['assman.lbl.alt'] = 'ALT';
+$_lang['assman.lbl.size'] = 'SIZE';
+$_lang['assman.lbl.action'] = 'ACTION';
+
+//---------------------------------------
+// CMP Buttons
+//---------------------------------------
+$_lang['assman.btn.search'] = 'Search';
+$_lang['assman.btn.showall'] = 'Show All';
+$_lang['assman.btn.edit'] = 'Edit';
+$_lang['assman.btn.delete'] = 'Delete';
+
 
 //---------------------------------------
 // CM Pages Menu
