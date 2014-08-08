@@ -45,7 +45,10 @@ class PageController extends BaseController {
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.colorbox.js');                      
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.quicksand.js');      
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');        
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');  
+
+        // Set global placeholder
+        $this->setPlaceholder('menu.manage', $this->modx->lexicon('assman.menu.manage'));   
     }
 
 

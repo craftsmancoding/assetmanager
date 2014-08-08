@@ -57,6 +57,8 @@ $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content
 // CM Pages and other content related text
 // Name: assman.page.name
 //---------------------------------------
+$_lang['assman.menu.manage'] = 'Manage Menu';
+
 $_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
 $_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
 

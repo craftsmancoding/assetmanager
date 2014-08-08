@@ -6,7 +6,7 @@
                 <div id="assman_header" class="clearfix">
                     <ul id="assman_nav">
                         <li class="assman_nav_item">
-                            <strong>Manage:</strong>
+                            <strong><?php print $data['menu.manage']; ?></strong>
                         </li>
 
                          <li class="assman_nav_item">
