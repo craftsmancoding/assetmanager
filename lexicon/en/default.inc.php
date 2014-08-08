@@ -1,6 +1,6 @@
 <?php
 /**
- * en default topic lexicon file for asset manager extra
+ * en default topic lexicon file for moxycart extra
  *
  * Copyright 2013 by Everett Griffiths everett@craftsmancoding.com
  * Created on 07-05-2013
@@ -15,7 +15,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * asset manager; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * moxycart; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package assman
@@ -31,7 +31,7 @@ $_lang['assets_tab'] = 'Assets';
 // Description: setting_ + Key + _desc
 //---------------------------------------
 $_lang['setting_assman.library_path'] = 'Library Path';
-$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_ASSETS_PATH where your media assets will be stored. This should be a dedicated directory that can be fully under Asset Manager's control.";
+$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_BASE_PATH where your media assets will be stored. This directory will be fully under Asset Manager's control and off-limits to manual uploads and other hanky-panky.";
 $_lang['setting_assman.url_override'] = 'URL Override';
 $_lang['setting_assman.url_override_desc'] = 'If checked, the "Asset Manager Site URL" will be used instead of the MODX_ASSET_URL when calculating asset URLs. Check this if your Asset Manager URL needs to a custom sub-domain or port to serve your images/assets.';
 $_lang['setting_assman.site_url'] = 'Asset Manager Site URL';
@@ -51,3 +51,19 @@ $_lang['setting_assman.class_keys_desc'] = 'JSON array listing class names of MO
 $_lang['setting_assman.autocreate_content_type'] = 'Auto-Create Content Types';
 $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in the content_type table, the Asset Manager will attempt to intelligently create it based on the file extension and detected mime-type. If you disable this setting, uploads may fail when a user tries to upload an allowed file type (via the upload_files setting), but no corresponding content type is defined.';
 
+
+
+//---------------------------------------
+// CM Pages and other content related text
+// Name: assman.page.name
+//---------------------------------------
+$_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
+$_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
+
+$_lang['assman.assets.pagetitle'] = 'Manage Assets';
+$_lang['assman.assets.subtitle'] = 'Browse your asset library..';
+
+$_lang['assman.settings.pagetitle'] = 'Asset Manager Settings';
+
+$_lang['assman.groups.pagetitle'] = 'Asset Groups';
+$_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group for page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';

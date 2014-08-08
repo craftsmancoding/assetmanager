@@ -32,10 +32,10 @@ function add_group() {
 </script>
 
 <div class="assman_canvas_inner">
-    <h2 class="assman_cmp_heading">Asset Groups</h2>
+    <h2 class="assman_cmp_heading"><?php print $data['pagetitle']; ?></h2>
 </div>
 
-<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Use groups to help organize your assets within a page.  Each asset may belong to only one group for page.  If an asset is used on multiple pages, it may belong to a different group on each page where it is used.</p></div>
+<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['subtitle']; ?></p></div>
 
 <div class="assman_canvas_inner" id="manage_groups">
 

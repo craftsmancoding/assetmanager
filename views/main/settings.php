@@ -1,5 +1,5 @@
 <div class="assman_canvas_inner">
-    <h2 class="assman_cmp_heading">Asset Manager Settings</h2>
+    <h2 class="assman_cmp_heading"><?php print $data['pagetitle']; ?></h2>
 </div>
 
 <div class="assman_canvas_inner">

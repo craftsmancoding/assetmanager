@@ -63,6 +63,8 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
         return $this->fetchTemplate('main/assets.php');
     }
     public function postAssets(array $scriptProperties = array()) {
@@ -71,6 +73,8 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
         return $this->fetchTemplate('main/assets.php');
     }
     
@@ -82,6 +86,8 @@ class PageController extends BaseController {
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.index.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.index.subtitle'));
         return $this->fetchTemplate('main/index.php');
     }
 
@@ -95,7 +101,8 @@ class PageController extends BaseController {
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->config).';
         </script>');
-        
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.groups.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.groups.subtitle'));
         return $this->fetchTemplate('group/manage.php');
     }
     
@@ -123,7 +130,7 @@ class PageController extends BaseController {
         $this->setPlaceholder('thumbnail_width', $this->modx->getOption('assman.thumbnail_width'));
         $this->setPlaceholder('thumbnail_height', $this->modx->getOption('assman.thumbnail_height'));
         $this->setPlaceholder('autocreate_content_type', $this->modx->getOption('assman.autocreate_content_type'));
-        
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.settings.pagetitle'));
         return $this->fetchTemplate('main/settings.php');
      
     }
