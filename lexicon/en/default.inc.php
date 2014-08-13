@@ -55,11 +55,17 @@ $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content
 //---------------------------------------
 // CMP label
 //---------------------------------------
-$_lang['assman.lbl.thumbnail'] = 'THUMBNAIL';
-$_lang['assman.lbl.title'] = 'TITLE';
-$_lang['assman.lbl.alt'] = 'ALT';
-$_lang['assman.lbl.size'] = 'SIZE';
-$_lang['assman.lbl.action'] = 'ACTION';
+$_lang['assman.lbl.thumbnail'] = 'Thumbnail';
+$_lang['assman.lbl.title'] = 'Title';
+$_lang['assman.lbl.alt'] = 'Alt';
+$_lang['assman.lbl.size'] = 'Size';
+$_lang['assman.lbl.action'] = 'Action';
+$_lang['assman.lbl.thumbwidth'] = 'Thumbnail Width';
+$_lang['assman.lbl.thumbheight'] = 'Thumbnail height';
+$_lang['assman.lbl.classkeys'] = 'Class Keys';
+$_lang['assman.lbl.librarypath'] = 'Library Path';
+$_lang['assman.lbl.override'] = 'URL Override';
+$_lang['assman.lbl.autocreate'] = 'Auto Create';
 
 //---------------------------------------
 // CMP Buttons
@@ -68,6 +74,8 @@ $_lang['assman.btn.search'] = 'Search';
 $_lang['assman.btn.showall'] = 'Show All';
 $_lang['assman.btn.edit'] = 'Edit';
 $_lang['assman.btn.delete'] = 'Delete';
+$_lang['assman.btn.updatesettings'] = 'Update Settings';
+$_lang['assman.btn.seesettings'] = 'See all Settings';
 
 
 //---------------------------------------
@@ -92,3 +100,15 @@ $_lang['assman.assets.subtitle'] = 'Browse your asset library..';
 $_lang['assman.settings.pagetitle'] = 'Asset Manager Settings';
 $_lang['assman.groups.pagetitle'] = 'Asset Groups';
 $_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group for page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';
+
+$_lang['assman.settings.thumbnail.title'] = 'Thumbnail Dimensions';
+$_lang['assman.settings.thumbnail.desc'] = 'These settings affect the size of thumbnails displayed on the "Assets" tab.';
+$_lang['assman.settings.resourcetype.title'] = 'Resource Types';
+$_lang['assman.settings.resourcetype.desc'] = 'The Asset Manager can be attached to any valid MODX Resource Class, e.g. [[+modweblink]], [[+symlink]], [[+modstaticresource]], and [[+moddocument]] (the default).  List these as a JSON array.';
+$_lang['assman.settings.storage.title'] = 'Storage';
+$_lang['assman.settings.storage.path.desc'] = 'Several settings relate to where the Asset Manager stores its files and how they are accessed.';
+$_lang['assman.settings.storage.path.note'] = 'Relative to the [[+modxassetsurl]]';
+$_lang['assman.settings.storage.override.desc'] = 'Normally, asset URLS are calculated as [[+modxassetsurl]] + [[+librarypath]] + Asset stub.  If URL override is enabled, the URLS are calculated as [[+siteurl]] + [[+librarypath]] + Asset stub.';
+$_lang['assman.settings.storage.override.note'] = 'Used to calculate URLs When the URL Override is checked.';
+$_lang['assman.settings.contenttype.desc'] = 'By default, the Asset Manager will detect the MIME types of uploaded files and create a [[+contenttype]] object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.';
+$_lang['assman.settings.contenttype.title'] = 'Content Types';
