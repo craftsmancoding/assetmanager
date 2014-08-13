@@ -113,6 +113,7 @@ class PageController extends BaseController {
         </script>');
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.groups.pagetitle'));
         $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.groups.subtitle'));
+        $this->setPlaceholder('btn.addgroup', $this->modx->lexicon('assman.btn.addgroup'));
         return $this->fetchTemplate('group/manage.php');
     }
     

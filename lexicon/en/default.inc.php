@@ -70,12 +70,15 @@ $_lang['assman.lbl.autocreate'] = 'Auto Create';
 //---------------------------------------
 // CMP Buttons
 //---------------------------------------
+$_lang['assman.btn.save'] = 'Save';
+$_lang['assman.btn.cancel'] = 'Cancel';
 $_lang['assman.btn.search'] = 'Search';
 $_lang['assman.btn.showall'] = 'Show All';
 $_lang['assman.btn.edit'] = 'Edit';
 $_lang['assman.btn.delete'] = 'Delete';
 $_lang['assman.btn.updatesettings'] = 'Update Settings';
 $_lang['assman.btn.seesettings'] = 'See all Settings';
+$_lang['assman.btn.addgroup'] = 'Add Group';
 
 
 //---------------------------------------

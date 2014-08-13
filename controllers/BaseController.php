@@ -172,6 +172,8 @@ class BaseController extends \modExtraManagerController {
         $this->setPlaceholder('btn.showall', $this->modx->lexicon('assman.btn.showall'));
         $this->setPlaceholder('btn.edit', $this->modx->lexicon('assman.btn.edit'));
         $this->setPlaceholder('btn.delete', $this->modx->lexicon('assman.btn.delete'));
+        $this->setPlaceholder('btn.save', $this->modx->lexicon('assman.btn.save'));
+        $this->setPlaceholder('btn.cancel', $this->modx->lexicon('assman.btn.cancel'));
 
     }
         

@@ -1,14 +1,14 @@
 <script id="asset_groups_tpl" type="text/x-handlebars-template">
 <form method="post" action="">
-    <span class="btn" onclick="javascript:add_group();">Add Group</span>
+    <span class="btn" onclick="javascript:add_group();"><?php print $data['btn.addgroup']; ?></span>
     <ul id="asset_groups">
     {{#each Groups}}    
         <li class="row-input"><input type="text" name="groups[]" class="row-field" value="{{this}}"/> <span class="btn" onclick="javascript:remove_me.call(this,event,'li');">x</span></li>
     {{/each}}
     </ul>
 
-    <input type="submit" class="btn assman-btn" value="Save"/>
-    <a class="btn" href="{{controller_url}}">Cancel</a>
+    <input type="submit" class="btn assman-btn" value="<?php print $data['btn.save']; ?>"/>
+    <a class="btn" href="{{controller_url}}"><?php print $data['btn.cancel']; ?></a>
 </form>
 </script>
 
