@@ -115,3 +115,9 @@ $_lang['assman.settings.storage.override.desc'] = 'Normally, asset URLS are calc
 $_lang['assman.settings.storage.override.note'] = 'Used to calculate URLs When the URL Override is checked.';
 $_lang['assman.settings.contenttype.desc'] = 'By default, the Asset Manager will detect the MIME types of uploaded files and create a [[+contenttype]] object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.';
 $_lang['assman.settings.contenttype.title'] = 'Content Types';
+
+
+//---------------------------------------
+// Assets Tab
+//---------------------------------------
+$_lang['assman.assettab.drop'] = 'Drop files here to upload or';

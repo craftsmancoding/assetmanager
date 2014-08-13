@@ -230,6 +230,8 @@ class PageController extends BaseController {
         $title = $this->modx->lexicon('assets_tab');
 
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
+
+        $this->setPlaceholder('assettab.drop', $this->modx->lexicon('assman.assettab.drop'));
         if ($page_id) {
             $out = file_get_contents($path.'main/pageassets.tpl');
             $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
