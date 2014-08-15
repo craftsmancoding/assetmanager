@@ -1,5 +1,7 @@
 <?php
 /**
+ * MODX 2.3.x
+ *
  * This is what MODX calls our "base controller". Per MODx parlance, this file must reside in the 
  * directory defined as the namespace's core path.  After that tip-of-the-hat politeness to the MODX
  * "rules", we head off the map on our own custom path: all manager requests to our own classes (see 

@@ -65,7 +65,7 @@
             "Asset": {
                 "preserve_keys": true,
                 "update_object": true, 
-                "unique_key": "path"
+                "unique_key": "stub"
             },
             "PageAsset": {
                 "preserve_keys": true,

@@ -67,15 +67,15 @@ class Snippet {
         if (!$innerChunk = $this->modx->getObject('modChunk', array('name' => $innerTpl))) {
             $use_tmp_chunk = true;
         }
-        
+
         $out = '';
         $i = 1;
         foreach ($records as $r) {
             if (is_object($r)) $r = $r->toArray('',false,false,true); // Handle xPDO objects
             if ($cnt == 1) {
                 // Real Chunk
-                if ($singleChunk = $this->modx->getObject('modChunk', array('name' => $onOne))) {
-                    $out .= $this->modx->getChunk($onOne, $r);
+                if ($singleChunk = $this->modx->getObject('modChunk', array('name' => $$onOne))) {
+                    $out .= $this->modx->getChunk($$onOne, $r);
                 }
                 // Formatting String
                 else {
