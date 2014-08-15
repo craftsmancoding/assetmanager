@@ -1,6 +1,7 @@
 <!-- 
 The following script is a handlebarjs template.
-Note: handlebars cannot use placeholders with periods (e.g. {{Asset.url}} fails)
+Note: placeholders with periods map to specific nodes of the object (e.g. {{Asset.url}} fails unless your data has 
+an Assets node with a url key)
 -->
 <script id="page_asset_tpl" type="text/x-handlebars-template">
 <li class="li_page_image" data-id="{{asset_id}}" data-type="{{group}}" id="page-asset-{{asset_id}}" style="cursor:pointer;">

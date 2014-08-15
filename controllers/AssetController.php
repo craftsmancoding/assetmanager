@@ -59,8 +59,28 @@ class AssetController extends APIController {
         catch (\Exception $e) {
             return $this->sendFail(array('msg'=> $e->getMessage()));    
         }  
+    }
+    
+
+    /** 
+     * Delete the asset and remove any associations
+     */
+    public function postDelete(array $scriptProperties = array()) {    
+
+        $asset_id = (int) $this->modx->getOption('asset_id', $scriptProperties);
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, print_r($scriptProperties,true),'','Assman AssetController:'.__FUNCTION__);
+        
+        if (!$Asset = $this->modx->getObject('Asset', $asset_id)) {
+            return $this->sendFail(array('msg'=>'Record not found for asset_id '.$asset_id));
+        }
+        $Asset->remove();
+
+        return $this->sendSuccess(array(
+            'msg' => 'Asset Deleted successfully'
+        ));
         
     }
+    
 
 }
 /*EOF*/

@@ -101,6 +101,38 @@ function draw_tab() {
     })
 }
 
+// Used only in the CMP
+function define_delete_asset_dialog() {
+    // Delete Asset
+    jQuery( "#delete_asset_modal" ).dialog({
+        autoOpen: false,
+        open: function( event, ui ) {
+            jQuery.colorbox.close();     
+        },
+        height: 330,
+        width: 500,
+        modal: true,
+        closeOnEscape: true,
+        buttons: {
+            "Delete": function() {
+                //alert('Delete: '+ jQuery(this).data('asset_id'));
+                var asset_id = jQuery(this).data('asset_id');
+                console.log('Deleting asset_id: '+asset_id);
+                assapi('asset','delete',{
+                    asset_id: asset_id
+                });
+          		jQuery('#page-asset-'+asset_id).remove();
+
+                jQuery( this ).dialog( "close" );
+            },
+            "Cancel": function() {
+                jQuery( this ).dialog( "close" );
+            }
+        }   
+    });
+
+}
+
 function define_dialog_boxes() {
     // Delete Asset
     jQuery( "#delete_asset_modal" ).dialog({

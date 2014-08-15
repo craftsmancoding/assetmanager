@@ -17,15 +17,15 @@ class PageassetController extends APIController {
 
         $page_id = (int) $this->modx->getOption('page_id', $scriptProperties);
         $asset_id = (int) $this->modx->getOption('asset_id', $scriptProperties);
-        $this->modx->log(\modX::LOG_LEVEL_DEBUG, print_r($scriptProperties,true),'','Assman OptionController:'.__FUNCTION__);
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, print_r($scriptProperties,true),'','Assman PageassetController:'.__FUNCTION__);
         
         // We must delete these separately because the relationship is not defined 
         if ($PA = $this->modx->getObject('PageAsset', array('page_id'=> $page_id, 'asset_id'=>$asset_id))) {
             $PA->remove();
         }
         else {
-            // You may end up here if you attempt to delete an asset before the product has been saved.  I.e. the asset exists,
-            // but not the PageAsset pivot record.  But we're not gonna could this condition as an error though.
+            // You may end up here if you attempt to delete an asset before the page has been saved.  I.e. the asset exists,
+            // but not the PageAsset pivot record.  But we do not consider this condition an error.
             // return $this->sendFail(array('msg'=>'Record not found for page_id '.$page_id .' and asset_id '.$asset_id));        
         }
 

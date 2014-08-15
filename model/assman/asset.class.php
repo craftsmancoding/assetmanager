@@ -28,12 +28,14 @@ class Asset extends xPDOObject {
     public $default_sort_col = 'seq';
     // You can't search on calculated columns
     public $search_columns = array('title','alt','stub');
-    
+    public static $errors = array(); // used when crawling dirs
+    public static $x;
     /**
      * Ye olde Calculated fields (aka Accessors)
      */
     public function __construct(xPDO & $xpdo) { 
         parent::__construct($xpdo);
+        self::$x = $xpdo;
         $this->_fields['url'] = $this->get('url');
         $this->_fields['path'] = $this->get('path');
         $this->_fields['basename'] = $this->get('basename');
@@ -146,6 +148,21 @@ class Asset extends xPDOObject {
         return array();
     }
 
+    /**
+     * Get a collection as an array, not as an iterator, e.g. to print as JSON
+     *
+     */
+    public function allAsArray($args) {
+        // Package up assest as json
+        $Assets = array();
+        $results = $this->all($args);
+        foreach($results as $r) {
+            $Assets[] = $r->toArray();
+        }    
+        return $Assets;
+    }
+
+    
     /**
      * Dictate related assets (e.g. to a current page).
      * The $data array should describe the *relations*, not the parent asset.  E.g. PageAsset objects,
@@ -863,5 +880,112 @@ class Asset extends xPDOObject {
         } 
     }
     
+    /**
+     * Verify that each asset in the DB references a file that exists.
+     * We should run this before verifying files because we want to ensure that md5 signatures are 
+     * correct.
+     */
+    public function verifyDB(){
+        $errors = array();
+        $Assets = $this->xpdo->getIterator('Asset');
+        foreach ($Assets as $A) {
+            // Missing File
+            if (!file_exists($A->get('path'))) {
+                $errors[] = array(
+                    'status' => 'error',
+                    'code' => 'missing_file',
+                    'message' => 'File does not exist',
+                    'data' => $A->toArray()
+                );
+                continue;
+            }
+            // Verify signature
+            $actual = md5_file($A->get('path'));
+            if ($actual != $A->get('sig')) {
+                $errors[] = array(
+                    'status' => 'error',
+                    'code' => 'incorrect_signature',
+                    'message' => 'File has been modified. Signature incorrect.',
+                    'data' => $A->toArray()
+                );            
+            }
+            
+        }
+        return $errors;
+    }
+    
+    /**
+     * Crawl the directories, verify that no extra files are there, or that nothing has been moved.
+     */
+    public function verifyFiles() {
+        // Check main lib
+        $path = $this->xpdo->getOption('assets_path') . $this->xpdo->getOption('assman.library_path').$stub;
+        if (!file_exists($path)) {
+            $this->xpdo->log(\modX::LOG_LEVEL_ERROR,'Asset does not exist: '.$path,'',__CLASS__.'::'.__FUNCTION__,__LINE__);
+            return;
+        }
+        
+        self::crawlDir($path);
+        // Check thumb dirs too?
+        return self::$errors;
 
+    }
+
+    /**
+     * @param string $dir name
+     */
+    public static function crawlDir($dir) {
+        if (is_dir($dir)) { 
+            $dir = rtrim($dir,'/');
+            $objects = scandir($dir); 
+            foreach ($objects as $object) { 
+                if ($object != '.' && $object != '..') { 
+                    if (filetype($dir.'/'.$object) == 'dir') {
+                        self::crawlDir($dir.'/'.$object); 
+                    }
+                    else {
+                        self::checkFile($dir.'/'.$object); 
+                    }
+                } 
+            } 
+            reset($objects); 
+        } 
+    
+        // unaccounted for file... do we have a matching signature?
+        // 
+        // self::$errors[] = array();    
+    }
+    
+    public static function checkFile($file) {
+        // Who are you?
+        $sig = md5_file($file);
+        $Asset = self::$x->getObject('Asset', array('sig'=>$sig));
+        if ($Asset) {
+            // are you where you are supposed to be?
+            if ($Asset->get('path') != $file) {
+                self::$errors[] = array(
+                    'status' => 'error',
+                    'code' => 'incorrect_location',
+                    'message' => 'File has been moved to '.$file,
+                    'data' => $A->toArray()
+                );
+            }
+        }
+        // Intruder! (or the sig in the db is incorrect)
+        else {
+            self::$errors[] = array(
+                'status' => 'error',
+                'code' => 'untracked_file',
+                'message' => 'Untracked file: '.$file,
+                'data' => $A->toArray()
+            );
+        }
+        //$storage_basedir = $this->xpdo->getOption('assets_path').rtrim($this->xpdo->getOption('assman.library_path'),'/').'/';
+        //$stub = $this->getRelPath($dst, $storage_basedir);
+        // unaccounted for file... do we have a matching signature?
+        
+        // 
+        // self::$errors[] = array();    
+    
+    }
 }

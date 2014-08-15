@@ -1,8 +1,13 @@
 <?php
 /**
- * @name Asset
- * @description Returns a single asset
+ * @name src
+ * @description Returns the URL to the asset (specified by asset_id). This may also be used as an Output Filter.
  *
+ * This Snippet is intended as a simpler alternative to the Asset Snippet. 
+ * The Asset Snippet offers more functionality because it can return all of an asset's properties,
+ * whereas the src Snippet returns ONLY the URL (i.e. the src).
+ *
+ * All parameters are optional, but for image assets, you can pass &height and/or &width parameters to trigger resizing.
  *
  * If no &height or &width arguments are passed, then no resizing takes place: return the full size of the original asset image.
  * If the snippet call sets a &width but no &height, then return a scaled version of the asset scaled to the desired width.
@@ -10,20 +15,26 @@
  * If both &height and &width are set, then do what the "scale" Snippet does and scale asset to the desired dimensions
  * 
  * USAGE EXAMPLES
- * [[Asset? &asset_id=`123` &tpl=`<img src="[[+url]]"/>` &height=`100` &width=`100` ]]
- * [[Asset? &asset_id=`123` &tpl=`<a href="[[+url]]"><img src="[[+thumbnail_url]]"/></a>` &height=`100` &width=`100` ]]
+ *      <img src="[[src? &asset_id=`123`]]"/>
+ *      <a href="[[src? &asset_id=`123`]]">Download<a/>
  *
- * USAGE EXAMPLES FOR NON-IMAGE ASSETS
- * Width and height params do not work on non-image assets, but a default thumbnail url will be generated.
- * [[Asset? &asset_id=`123` &tpl=`<img src="[[+thumbnail_url]]"/>` ]]
- * [[Asset? &asset_id=`123` &tpl=`<a href="[[+url]]"><img src="[[+thumbnail_url]]"/></a>` ]]
+ * AS AN OUTPUT FILTER
+ *  
+ * This can only be used to format an asset_id in the same ways and places as the scale2h and scale2w Snippets, e.g.
+ * in the innerTpl of the getPageAssets Snippet:
+ *      [[getPageAssets? &innerTpl=`myChunk`]]
+ *
+ * myChunk:
+ *  [[+Asset.title]] <a href="[[+asset_id:src]]">View</a>
+ * or:
+ *  [[+Asset.title]] <img src="[[+asset_id:src=`300x200`]]" width="300" height="200"/>
+ *    
  *
  * Parameters
  * -----------------------------
- * @param integer &asset_id 
- * @param integer &width in pixels
- * @param integer &height in pixels
- * @param string &tpl either a MODX chunk or a formatting string
+ * @param integer &asset_id (required)
+ * @param integer &width in pixels (optional)
+ * @param integer &height in pixels (optional)
  *
  * Variables
  * ---------
@@ -35,18 +46,25 @@
 $core_path = $modx->getOption('assman.core_path', null, MODX_CORE_PATH.'components/assman/');
 require_once $core_path .'vendor/autoload.php';
 $Snippet = new \Assman\Snippet($modx);
-$Snippet->log('Asset',$scriptProperties);
+$Snippet->log('src',$scriptProperties);
 
 
 $asset_id = (int) $modx->getOption('asset_id', $scriptProperties);
 $width = (int) $modx->getOption('width', $scriptProperties);
 $height = (int) $modx->getOption('height', $scriptProperties);
-$tpl = $modx->getOption('tpl', $scriptProperties, '<img src="[[+url]]" width="[[+width]]" height="[[+height]]" alt="[[+alt]]" />');
+
+// called as output filter?
+if (isset($input) && isset($options)) {
+    $asset_id = (int) $input;
+    if (strpos($options, 'x') !== false) {
+        list($width, $height) = explode('x',$options);
+    }
+}
 
 $Asset = $modx->getObject('Asset', $asset_id);
 
 if(!$Asset) {
-	$modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','Asset',__LINE__);
+	$modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','src',__LINE__);
 	return;
 }
 
@@ -67,32 +85,19 @@ if($Asset->is_image) {
 		// Calculate the new dimensions
 		$nx = floor($height * ( $Asset->get('width') / $Asset->get('height') ));
 		$ny = $height;
-		$ass_props['url'] = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
-		$ass_props['width'] = $nx;
-		$ass_props['height'] = $ny;
+        return $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
 	}
 
 	if( $height == 0 && $width > 0 ) {
 		// Calculate the new dimensions
 		$nx = $width;
 		$ny = floor($width * ($Asset->get('height') / $Asset->get('width')));
-		$ass_props['url'] = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
-		$ass_props['width'] = $nx;
-		$ass_props['height'] = $ny;
+        return $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
 	}
 
 	if( $height > 0 && $width > 0 ) {
-		$ass_props['url'] = $Asset->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
-		$ass_props['width'] = $width;
-		$ass_props['height'] = $height;
+		return $Asset->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
 	}
 }
 
-// Create the temporary chunk
-$uniqid = uniqid();
-$chunk = $modx->newObject('modChunk', array('name' => "{tmp}-{$uniqid}"));
-$chunk->setCacheable(false);
- 
-$output = $chunk->process($ass_props, $tpl);
-
-return $output;
+return $Asset->get('url');

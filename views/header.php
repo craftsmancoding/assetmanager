@@ -6,19 +6,23 @@
                 <div id="assman_header" class="clearfix">
                     <ul id="assman_nav">
                         <li class="assman_nav_item">
-                            <strong><?php print $data['menu.manage']; ?></strong>
+                            <strong><?php print $this->modx->lexicon('assman.menu.manage'); ?>:</strong>
                         </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>"><?php print $data['menu.library']; ?></a>
+                            <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>"><?php print $this->modx->lexicon('assman.menu.library'); ?></a>
                          </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>"><?php print $data['menu.settings']; ?></a>
+                            <a class="<?php print ($_GET['method'] == 'verify') ? 'current' : '' ; ?>" href="<?php print self::page('verify'); ?>"><?php print $this->modx->lexicon('assman.menu.verify'); ?></a>
                          </li>
 
                          <li class="assman_nav_item">
-                            <a class="<?php print ($_GET['method'] == 'groups') ? 'current' : '' ; ?>" href="<?php print self::page('groups'); ?>"><?php print $data['menu.groups']; ?></a>
+                            <a class="<?php print ($_GET['method'] == 'settings') ? 'current' : '' ; ?>" href="<?php print self::page('settings'); ?>"><?php print $this->modx->lexicon('assman.menu.settings'); ?></a>
+                         </li>
+
+                         <li class="assman_nav_item">
+                            <a class="<?php print ($_GET['method'] == 'groups') ? 'current' : '' ; ?>" href="<?php print self::page('groups'); ?>"><?php print $this->modx->lexicon('assman.menu.groups'); ?></a>
                          </li>
 
                        

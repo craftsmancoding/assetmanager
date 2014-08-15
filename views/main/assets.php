@@ -1,7 +1,9 @@
-<?php
-$a = (int) $_GET['a'];
-print $this->getMsg();
-?>
+<script type="text/javascript">
+    var assman = <?php print json_encode($this->config); ?>;
+    Ext.onReady(function() {
+        define_delete_asset_dialog();
+    });
+</script>
 <div class="assman_canvas_inner">
     <h2 class="assman_cmp_heading" id="assman_pagetitle"><?php print $data['pagetitle']; ?></h2>
 </div>
@@ -16,9 +18,9 @@ print $this->getMsg();
 
         <div class="pull-right">   
             <form action="<?php print static::page('assets'); ?>" method="post">
-                <input type="text" name="searchterm" placeholder="<?php print $data['btn.search']; ?>..." value="<?php print $data['searchterm']; ?>"/>    
-                <input type="submit" class="button btn assman-btn" value="<?php print $data['btn.search']; ?>"/>
-                <a href="<?php print static::page('assets'); ?>" class="btn"><?php print $data['btn.showall']; ?></a>
+                <input type="text" name="searchterm" placeholder="<?php print $this->modx->lexicon('assman.btn.search'); ?>..." value="<?php print $data['searchterm']; ?>"/>    
+                <input type="submit" class="button btn assman-btn" value="<?php print $this->modx->lexicon('assman.btn.search'); ?>"/>
+                <a href="<?php print static::page('assets'); ?>" class="btn"><?php print $this->modx->lexicon('assman.btn.showall'); ?></a>
             </form>
             
         </div>
@@ -45,7 +47,7 @@ print $this->getMsg();
     </thead>
     <tbody>
 <?php foreach ($data['results'] as $r) :?>
-    <tr>
+    <tr id="page-asset-<?php print $r->get('asset_id'); ?>">
         <td><?php 
             //print $r->get('path'); 
             print $this->modx->runSnippet('Asset', array('asset_id'=>$r->get('asset_id'),'width'=>$this->modx->getOption('assman.thumbnail_width'),'tpl'=>'<img src="[[+url]]" width="'.$this->modx->getOption('assman.thumbnail_width').'" height="[[+asset_id.height]]" />'));
@@ -56,8 +58,8 @@ print $this->getMsg();
         <td><?php print $r->get('size'); ?>
         </td>
         <td>
-            <span class="button btn" onclick="javascript:paint('assetedit',{asset_id:<?php print $r->get('asset_id'); ?>});"><?php print $data['btn.edit']; ?></span>
-            <span class="button btn" onclick="javascript:mapi('asset','delete',{asset_id:<?php print $r->get('asset_id'); ?>},'assets');"><?php print $data['btn.delete']; ?></span>
+            <span class="button btn" onclick="javascript:open_asset_modal('<?php print $r->get('asset_id'); ?>');"><?php print $this->modx->lexicon('assman.btn.edit'); ?></span>
+            <span class="button btn" onclick="javascript:jQuery('#delete_asset_modal').data('asset_id', '<?php print $r->get('asset_id'); ?>').dialog('open');"><?php print $this->modx->lexicon('assman.btn.delete'); ?></span>
         </td>
     </tr>
 <?php endforeach; ?>
@@ -78,3 +80,10 @@ print \Pagination\Pager::links($data['count'], $offset, $results_per_page)
     ->setBaseUrl($data['baseurl']);
 ?>
 </div>
+
+
+
+    <div id="delete_asset_modal" title="Delete Asset">
+        <p>Deleting the asset will remove it permanently from your site.</p>
+        <p class="danger">Deleting cannot be undone!</p>
+    </div>

@@ -63,10 +63,12 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $A = $this->modx->newObject('Asset');
         $results = $A->all($scriptProperties);
+        $this->config['Assets'] = $A->allAsArray($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
         $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));        
+
         return $this->fetchTemplate('main/assets.php');
     }
     
@@ -77,12 +79,35 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $A = $this->modx->newObject('Asset');
         $results = $A->all($scriptProperties);
+        $this->config['Assets'] = $A->allAsArray($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
         $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
         return $this->fetchTemplate('main/assets.php');
     }
+ 
+ 
+     public function getVerify(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $A = $this->modx->newObject('Asset');
+        $this->setPlaceholders($scriptProperties);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.verify.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.verify.subtitle'));        
+
+        return $this->fetchTemplate('main/verify.php');
+    }
+
+    public function postVerify(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $A = $this->modx->newObject('Asset');
+        $db_errors = $A->verifyDB();
+//        return '<pre>'.print_r($db_errors,true);
+        $file_errors = $A->verifyFiles();
+        $this->setPlaceholders($scriptProperties);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.verify.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.verify.subtitle'));
+    } 
     
     //------------------------------------------------------------------------------
     //! Index
