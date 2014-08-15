@@ -324,6 +324,7 @@ class Asset extends xPDOObject {
                 return $this->xpdo->getOption('assman.site_url') . $this->xpdo->getOption('assman.library_path').$this->get('stub');
             }
             else {
+
                 return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$this->get('stub');
             }
         }
@@ -422,15 +423,8 @@ class Asset extends xPDOObject {
             $ext = trim(strtolower(strrchr($this->get('path'), '.')),'.');
             return $this->getMissingThumbnail($w,$h, $ext);
         }
-        $thumbfile = $this->getResizedImage($this->get('path'), $this->get('asset_id'), $w, $h);
-        $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
-        $rel = $this->getRelPath($thumbfile, $prefix);
-        if ($this->xpdo->getOption('assman.url_override')) {
-            return $this->xpdo->getOption('assman.site_url') . $this->xpdo->getOption('assman.library_path').$rel;
-        }
-        else {
-            return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$rel;
-        }
+        
+        return $this->getResizedImage($this->get('path'), $this->get('asset_id'), $w, $h);
     }
 
     /**
@@ -443,13 +437,14 @@ class Asset extends xPDOObject {
      * @param mixed $prefix to remove. Leave null to use MODX settings
      */
     public function getRelPath($fullpath, $prefix=null) {
+
         if (!is_scalar($fullpath)) {
             throw new \Exception('Invalid data type for path');
         }
         if (!$prefix) {
             $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
         }
-        
+
         if (substr($fullpath, 0, strlen($prefix)) == $prefix) {
             return ltrim(substr($fullpath, strlen($prefix)),'/');
         }
@@ -467,7 +462,7 @@ class Asset extends xPDOObject {
      * @param integer $asset_id primary key
      * @param integer $w
      * @param integer $h (todo)
-     * @return string relative URL to thumbnail, rel to $storage_basedir
+     * @return string URL to thumbnail, according to settings (e.g. subdir, override url)
      */
     public function getResizedImage($src, $asset_id,$w,$h) {
         if (!$asset_id) {
@@ -475,10 +470,21 @@ class Asset extends xPDOObject {
         }
         $this->_validFile($src);
         $dst = $this->getThumbFilename($src, $asset_id,$w,$h);
-        if (file_exists($dst)) {
-            return $dst;
+
+        if (!file_exists($dst)) {
+            $dst = \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
         }
-        return \Craftsmancoding\Image::thumbnail($src,$dst,$w,$h);
+
+        $prefix = $this->xpdo->getOption('assets_path').$this->xpdo->getOption('assman.library_path');
+        $rel = $this->getRelPath($dst, $prefix);
+        if ($this->xpdo->getOption('assman.url_override')) {
+            return $this->xpdo->getOption('assman.site_url') . $this->xpdo->getOption('assman.library_path').$rel;
+        }
+        else {
+            return $this->xpdo->getOption('assets_url') . $this->xpdo->getOption('assman.library_path').$rel;
+        }
+        
+        
     }
 
     /**

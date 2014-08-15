@@ -46,7 +46,11 @@ print $this->getMsg();
     <tbody>
 <?php foreach ($data['results'] as $r) :?>
     <tr>
-        <td><?php print $r->get('thumbnail_url'); ?></td>
+        <td><?php 
+            //print $r->get('path'); 
+            print $this->modx->runSnippet('Asset', array('asset_id'=>$r->get('asset_id'),'width'=>$this->modx->getOption('assman.thumbnail_width'),'tpl'=>'<img src="[[+url]]" width="'.$this->modx->getOption('assman.thumbnail_width').'" height="[[+asset_id.height]]" />'));
+            ?>
+        </td>
         <td><?php print $r->get('title'); ?></td>
         <td><?php print $r->get('alt'); ?></td>
         <td><?php print $r->get('size'); ?>

@@ -81,23 +81,13 @@ if($Asset->is_image) {
 		// Calculate the new dimensions
 		$nx = $width;
 		$ny = floor($width * ($Asset->get('height') / $Asset->get('width')));
-		$url = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
-		$url = explode('/', $url);
-		unset($url[0]);
-		unset($url[1]);
-		unset($url[2]);
-		$ass_props['url'] = '/'.implode('/', $url);
+		$ass_props['url'] = $Asset->getResizedImage($Asset->get('path'), $asset_id,$nx,$ny);
 		$ass_props['width'] = $nx;
 		$ass_props['height'] = $ny;
 	}
 
 	if( $height > 0 && $width > 0 ) {
-		$url = $Asset->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
-		$url = explode('/', $url);
-		unset($url[0]);
-		unset($url[1]);
-		unset($url[2]);
-		$ass_props['url'] = '/'.implode('/', $url);
+		$ass_props['url'] = $Asset->getResizedImage($Asset->get('path'), $asset_id,$width,$height);
 		$ass_props['width'] = $width;
 		$ass_props['height'] = $height;
 	}
