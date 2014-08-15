@@ -1,6 +1,6 @@
 <?php
 /**
- * en default topic lexicon file for asset manager extra
+ * en default topic lexicon file for moxycart extra
  *
  * Copyright 2013 by Everett Griffiths everett@craftsmancoding.com
  * Created on 07-05-2013
@@ -15,7 +15,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * asset manager; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * moxycart; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package assman
@@ -31,7 +31,7 @@ $_lang['assets_tab'] = 'Assets';
 // Description: setting_ + Key + _desc
 //---------------------------------------
 $_lang['setting_assman.library_path'] = 'Library Path';
-$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_ASSETS_PATH where your media assets will be stored. This should be a dedicated directory that can be fully under Asset Manager's control.";
+$_lang['setting_assman.library_path_desc'] = "Set a path relative to MODX_BASE_PATH where your media assets will be stored. This directory will be fully under Asset Manager's control and off-limits to manual uploads and other hanky-panky.";
 $_lang['setting_assman.url_override'] = 'URL Override';
 $_lang['setting_assman.url_override_desc'] = 'If checked, the "Asset Manager Site URL" will be used instead of the MODX_ASSET_URL when calculating asset URLs. Check this if your Asset Manager URL needs to a custom sub-domain or port to serve your images/assets.';
 $_lang['setting_assman.site_url'] = 'Asset Manager Site URL';
@@ -51,3 +51,73 @@ $_lang['setting_assman.class_keys_desc'] = 'JSON array listing class names of MO
 $_lang['setting_assman.autocreate_content_type'] = 'Auto-Create Content Types';
 $_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in the content_type table, the Asset Manager will attempt to intelligently create it based on the file extension and detected mime-type. If you disable this setting, uploads may fail when a user tries to upload an allowed file type (via the upload_files setting), but no corresponding content type is defined.';
 
+
+//---------------------------------------
+// CMP label
+//---------------------------------------
+$_lang['assman.lbl.thumbnail'] = 'Thumbnail';
+$_lang['assman.lbl.title'] = 'Title';
+$_lang['assman.lbl.alt'] = 'Alt';
+$_lang['assman.lbl.size'] = 'Size';
+$_lang['assman.lbl.action'] = 'Action';
+$_lang['assman.lbl.thumbwidth'] = 'Thumbnail Width';
+$_lang['assman.lbl.thumbheight'] = 'Thumbnail height';
+$_lang['assman.lbl.classkeys'] = 'Class Keys';
+$_lang['assman.lbl.librarypath'] = 'Library Path';
+$_lang['assman.lbl.override'] = 'URL Override';
+$_lang['assman.lbl.autocreate'] = 'Auto Create';
+
+//---------------------------------------
+// CMP Buttons
+//---------------------------------------
+$_lang['assman.btn.save'] = 'Save';
+$_lang['assman.btn.cancel'] = 'Cancel';
+$_lang['assman.btn.search'] = 'Search';
+$_lang['assman.btn.showall'] = 'Show All';
+$_lang['assman.btn.edit'] = 'Edit';
+$_lang['assman.btn.delete'] = 'Delete';
+$_lang['assman.btn.updatesettings'] = 'Update Settings';
+$_lang['assman.btn.seesettings'] = 'See all Settings';
+$_lang['assman.btn.addgroup'] = 'Add Group';
+
+
+//---------------------------------------
+// CM Pages Menu
+//---------------------------------------
+$_lang['assman.menu.manage'] = 'Manage';
+$_lang['assman.menu.library'] = 'Library';
+$_lang['assman.menu.settings'] = 'Settings';
+$_lang['assman.menu.groups'] = 'Groups';
+$_lang['assman.menu.donation'] = 'Make a Donation';
+$_lang['assman.menu.bug'] = 'Report a Bug';
+$_lang['assman.menu.wiki'] = 'Wiki';
+$_lang['assman.menu.support'] = 'Get Paid Support';
+
+//---------------------------------------
+// CM Pages and other content related text
+//---------------------------------------
+$_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
+$_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
+$_lang['assman.assets.pagetitle'] = 'Manage Assets';
+$_lang['assman.assets.subtitle'] = 'Browse your asset library..';
+$_lang['assman.settings.pagetitle'] = 'Asset Manager Settings';
+$_lang['assman.groups.pagetitle'] = 'Asset Groups';
+$_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group for page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';
+
+$_lang['assman.settings.thumbnail.title'] = 'Thumbnail Dimensions';
+$_lang['assman.settings.thumbnail.desc'] = 'These settings affect the size of thumbnails displayed on the "Assets" tab.';
+$_lang['assman.settings.resourcetype.title'] = 'Resource Types';
+$_lang['assman.settings.resourcetype.desc'] = 'The Asset Manager can be attached to any valid MODX Resource Class, e.g. [[+modweblink]], [[+symlink]], [[+modstaticresource]], and [[+moddocument]] (the default).  List these as a JSON array.';
+$_lang['assman.settings.storage.title'] = 'Storage';
+$_lang['assman.settings.storage.path.desc'] = 'Several settings relate to where the Asset Manager stores its files and how they are accessed.';
+$_lang['assman.settings.storage.path.note'] = 'Relative to the [[+modxassetsurl]]';
+$_lang['assman.settings.storage.override.desc'] = 'Normally, asset URLS are calculated as [[+modxassetsurl]] + [[+librarypath]] + Asset stub.  If URL override is enabled, the URLS are calculated as [[+siteurl]] + [[+librarypath]] + Asset stub.';
+$_lang['assman.settings.storage.override.note'] = 'Used to calculate URLs When the URL Override is checked.';
+$_lang['assman.settings.contenttype.desc'] = 'By default, the Asset Manager will detect the MIME types of uploaded files and create a [[+contenttype]] object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.';
+$_lang['assman.settings.contenttype.title'] = 'Content Types';
+
+
+//---------------------------------------
+// Assets Tab
+//---------------------------------------
+$_lang['assman.assettab.drop'] = 'Drop files here to upload or';

@@ -1,5 +1,5 @@
 <div class="assman_canvas_inner">
-    <h2 class="assman_cmp_heading">Asset Manager Settings</h2>
+    <h2 class="assman_cmp_heading"><?php print $data['pagetitle']; ?></h2>
 </div>
 
 <div class="assman_canvas_inner">
@@ -8,54 +8,55 @@
     
     <form action="" method="post" id="assman_settings">
 
-        <h3>Thumbnail Dimensions</h3>
-        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>These settings affect the size of thumbnails displayed on the "Assets" tab.</p>
+
+        <h3><?php print $data['settings.thumbnail.title']; ?></h3>
+        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['settings.thumbnail.desc']; ?></p>
         <?php
-        print \Formbuilder\Form::text('thumbnail_width', $data['thumbnail_width'], array('label' => 'Thumbnail Width'));
+        print \Formbuilder\Form::text('thumbnail_width', $data['thumbnail_width'], array('label' => $data['lbl.thumbwidth']));
         ?>    
         <?php
-        print \Formbuilder\Form::text('thumbnail_height', $data['thumbnail_height'], array('label' => 'Thumbnail Height'));
+        print \Formbuilder\Form::text('thumbnail_height', $data['thumbnail_height'], array('label' => $data['lbl.thumbheight']));
         ?>    
         </div>
     
-        <h3>Resource Types</h3>
+        <h3><?php print $data['settings.resourcetype.title']; ?></h3>
 
-        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>The Asset Manager can be attached to any valid MODX Resource Class, e.g. <code>modWebLink</code>, <code>modSymLink</code>, <code>modStaticResource</code>, and <code>modDocument</code> (the default).  List these as a JSON array.</p>
+        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['settings.resourcetype.desc']; ?></p>
         <?php
-        print \Formbuilder\Form::text('class_keys', $data['class_keys'], array('label' => 'Class Keys','size'=>'200'));
+        print \Formbuilder\Form::text('class_keys', $data['class_keys'], array('label' => $data['lbl.classkeys'],'size'=>'200'));
         ?> 
         </div>
         
-        <h3>Storage</h3>
-        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Several settings relate to where the Asset Manager stores its files and how they are accessed.</p>
+        <h3><?php print $data['settings.storage.title']; ?></h3>
+        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['settings.storage.path.desc']; ?></p>
         <?php
-        print \Formbuilder\Form::text('library_path', $data['library_path'], array('label' => 'Library Path','description'=>'Relative to the <code>MODX_ASSETS_URL</code>'));
+        print \Formbuilder\Form::text('library_path', $data['library_path'], array('label' => $data['lbl.librarypath'],'description'=>$data['settings.storage.path.note']));
         ?> 
         <?php
-        print \Formbuilder\Form::checkbox('url_override', $data['url_override'], array('label' => 'URL Override'));
+        print \Formbuilder\Form::checkbox('url_override', $data['url_override'], array('label' => $data['lbl.override']));
         ?>
-        <p>Normally, asset URLS are calculated as <code>MODX_ASSET_URL</code> + <code>assman.library_path</code> + Asset stub.  If URL override is enabled, the URLS are calculated as <code>assman.site_url</code> + <code>assman.library_path</code> + Asset stub.</p>
+        <p><?php print $data['settings.storage.override.desc']; ?></p>
         
         <?php
-        print \Formbuilder\Form::text('site_url', $data['site_url'], array('label' => 'Override URL','description'=>'Used to calculate URLs When the URL Override is checked.'));
+        print \Formbuilder\Form::text('site_url', $data['site_url'], array('label' => $data['lbl.override'],'description'=>$data['settings.storage.override.note']));
         ?>         
         
         
         </div>
 
-        <h3>Content Types</h3>
-        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>By default, the Asset Manager will detect the MIME types of uploaded files and create a <code>modContentType</code> object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.</p>
+        <h3><?php print $data['settings.contenttype.title']; ?></h3>
+        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['settings.contenttype.desc']; ?></p>
         <?php
-        print \Formbuilder\Form::checkbox('autocreate_content_type', $data['autocreate_content_type'], array('label' => 'Auto-create'));
+        print \Formbuilder\Form::checkbox('autocreate_content_type', $data['autocreate_content_type'], array('label' => $data['lbl.autocreate']));
         ?>    
-        
+        </div>
         <br/>
-        <input class="btn assman-btn" type="submit" value="Update Settings" />
+        <input class="btn assman-btn" type="submit" value="<?php print $data['btn.updatesettings']; ?>" />
 
     </form>
 
     <hr/>
 
-    <a class="btn" href="<?php print MODX_MANAGER_URL; ?>?a=system/settings">See all Settings</a>
+    <a class="btn" href="<?php print MODX_MANAGER_URL; ?>?a=system/settings"><?php print $data['btn.seesettings']; ?></a>
 
 </div>

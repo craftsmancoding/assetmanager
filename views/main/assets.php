@@ -3,10 +3,10 @@ $a = (int) $_GET['a'];
 print $this->getMsg();
 ?>
 <div class="assman_canvas_inner">
-    <h2 class="assman_cmp_heading" id="assman_pagetitle">Manage Assets</h2>
+    <h2 class="assman_cmp_heading" id="assman_pagetitle"><?php print $data['pagetitle']; ?></h2>
 </div>
 
-<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Browse your asset library.</p></div>
+<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $data['subtitle']; ?></p></div>
 
 <div class="assman_canvas_inner">
 
@@ -16,9 +16,9 @@ print $this->getMsg();
 
         <div class="pull-right">   
             <form action="<?php print static::page('assets'); ?>" method="post">
-                <input type="text" name="searchterm" placeholder="Search..." value="<?php print $data['searchterm']; ?>"/>    
-                <input type="submit" class="button btn assman-btn" value="Search"/>
-                <a href="<?php print static::page('assets'); ?>" class="btn">Show All</a>
+                <input type="text" name="searchterm" placeholder="<?php print $data['btn.search']; ?>..." value="<?php print $data['searchterm']; ?>"/>    
+                <input type="submit" class="button btn assman-btn" value="<?php print $data['btn.search']; ?>"/>
+                <a href="<?php print static::page('assets'); ?>" class="btn"><?php print $data['btn.showall']; ?></a>
             </form>
             
         </div>
@@ -29,18 +29,18 @@ print $this->getMsg();
     <thead>
         <tr>
             <th>
-                Thumbnail
+                <?php print $data['lbl.thumbnail']; ?>
             </th>
             <th>
-                Title
+                <?php print $data['lbl.title']; ?>
             </th>
             <th>
-                Alt
+                <?php print $data['lbl.alt']; ?>
             </th>
             <th>
-                Size
+                <?php print $data['lbl.size']; ?>
             </th>
-            <th>Action</th>
+            <th><?php print $data['lbl.action']; ?></th>
         </tr>
     </thead>
     <tbody>
@@ -52,8 +52,8 @@ print $this->getMsg();
         <td><?php print $r->get('size'); ?>
         </td>
         <td>
-            <span class="button btn" onclick="javascript:paint('assetedit',{asset_id:<?php print $r->get('asset_id'); ?>});">Edit</span>
-            <span class="button btn" onclick="javascript:mapi('asset','delete',{asset_id:<?php print $r->get('asset_id'); ?>},'assets');">Delete</span>
+            <span class="button btn" onclick="javascript:paint('assetedit',{asset_id:<?php print $r->get('asset_id'); ?>});"><?php print $data['btn.edit']; ?></span>
+            <span class="button btn" onclick="javascript:mapi('asset','delete',{asset_id:<?php print $r->get('asset_id'); ?>},'assets');"><?php print $data['btn.delete']; ?></span>
         </td>
     </tr>
 <?php endforeach; ?>

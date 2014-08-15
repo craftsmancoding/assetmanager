@@ -45,7 +45,9 @@ class PageController extends BaseController {
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.colorbox.js');                      
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/multisortable.js');  
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/jquery.quicksand.js');      
-        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');        
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/app.js');  
+
+        
     }
 
 
@@ -63,6 +65,16 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
+
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
+
+        $this->setPlaceholder('lbl.thumbnail', $this->modx->lexicon('assman.lbl.thumbnail'));
+        $this->setPlaceholder('lbl.title', $this->modx->lexicon('assman.lbl.title'));
+        $this->setPlaceholder('lbl.alt', $this->modx->lexicon('assman.lbl.alt'));
+        $this->setPlaceholder('lbl.size', $this->modx->lexicon('assman.lbl.size'));
+        $this->setPlaceholder('lbl.action', $this->modx->lexicon('assman.lbl.action'));
+
         return $this->fetchTemplate('main/assets.php');
     }
     public function postAssets(array $scriptProperties = array()) {
@@ -71,6 +83,8 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
         return $this->fetchTemplate('main/assets.php');
     }
     
@@ -82,6 +96,8 @@ class PageController extends BaseController {
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.index.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.index.subtitle'));
         return $this->fetchTemplate('main/index.php');
     }
 
@@ -95,7 +111,9 @@ class PageController extends BaseController {
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->config).';
         </script>');
-        
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.groups.pagetitle'));
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.groups.subtitle'));
+        $this->setPlaceholder('btn.addgroup', $this->modx->lexicon('assman.btn.addgroup'));
         return $this->fetchTemplate('group/manage.php');
     }
     
@@ -116,6 +134,7 @@ class PageController extends BaseController {
     public function getSettings(array $scriptProperties = array(),$msg='') {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $this->setPlaceholder('msg', $msg);
+
         $this->setPlaceholder('library_path', $this->modx->getOption('assman.library_path'));
         $this->setPlaceholder('url_override', $this->modx->getOption('assman.url_override'));
         $this->setPlaceholder('site_url', $this->modx->getOption('assman.site_url'));
@@ -123,7 +142,34 @@ class PageController extends BaseController {
         $this->setPlaceholder('thumbnail_width', $this->modx->getOption('assman.thumbnail_width'));
         $this->setPlaceholder('thumbnail_height', $this->modx->getOption('assman.thumbnail_height'));
         $this->setPlaceholder('autocreate_content_type', $this->modx->getOption('assman.autocreate_content_type'));
-        
+        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.settings.pagetitle'));
+
+        $this->setPlaceholder('settings.thumbnail.title', $this->modx->lexicon('assman.settings.thumbnail.title'));
+        $this->setPlaceholder('settings.thumbnail.desc', $this->modx->lexicon('assman.settings.thumbnail.desc'));
+        $this->setPlaceholder('settings.resourcetype.title', $this->modx->lexicon('assman.settings.resourcetype.title'));
+        $this->setPlaceholder('settings.resourcetype.desc', $this->modx->lexicon('assman.settings.resourcetype.desc',
+            array('modweblink' => '<code>modWebLink</code>','symlink' => '<code>modSymLink</code>','modstaticresource' => '<code>modStaticResource</code>','moddocument' => '<code>modDocument</code>')));   
+        $this->setPlaceholder('settings.storage.title', $this->modx->lexicon('assman.settings.storage.title'));
+        $this->setPlaceholder('settings.storage.path.desc', $this->modx->lexicon('assman.settings.storage.path.desc'));
+        $this->setPlaceholder('settings.storage.path.note', $this->modx->lexicon('assman.settings.storage.path.note',array('modxassetsurl','<code>MODX_ASSETS_URL</code>')));
+        $this->setPlaceholder('settings.storage.override.desc', $this->modx->lexicon('assman.settings.storage.override.desc',
+            array('modxassetsurl'=>'<code>MODX_ASSETS_URL</code>','library_path'=>'<code>assman.library_path</code>','siteurl'=>'<code>assman.site_url</code>')));
+        $this->setPlaceholder('settings.storage.override.note', $this->modx->lexicon('assman.settings.storage.override.note'));
+        $this->setPlaceholder('settings.contenttype.desc', $this->modx->lexicon('assman.settings.contenttype.desc',
+            array('contenttype'=>'<code>modContentType</code>')));
+        $this->setPlaceholder('settings.contenttype.desc', $this->modx->lexicon('assman.settings.contenttype.desc'));
+
+        $this->setPlaceholder('btn.updatesettings', $this->modx->lexicon('assman.btn.updatesettings'));
+        $this->setPlaceholder('btn.seesettings', $this->modx->lexicon('assman.btn.seesettings'));
+
+        $this->setPlaceholder('lbl.thumbwidth', $this->modx->lexicon('assman.lbl.thumbwidth'));
+        $this->setPlaceholder('lbl.thumbheight', $this->modx->lexicon('assman.lbl.thumbheight'));
+        $this->setPlaceholder('lbl.classkeys', $this->modx->lexicon('assman.lbl.classkeys'));
+        $this->setPlaceholder('lbl.librarypath', $this->modx->lexicon('assman.lbl.librarypath'));
+        $this->setPlaceholder('lbl.override', $this->modx->lexicon('assman.lbl.override'));
+        $this->setPlaceholder('lbl.autocreate', $this->modx->lexicon('assman.lbl.autocreate'));
+
+
         return $this->fetchTemplate('main/settings.php');
      
     }
@@ -184,6 +230,8 @@ class PageController extends BaseController {
         $title = $this->modx->lexicon('assets_tab');
 
         $path = $this->modx->getOption('assman.core_path','', MODX_CORE_PATH.'components/assman/').'views/';
+
+        $this->setPlaceholder('assettab.drop', $this->modx->lexicon('assman.assettab.drop'));
         if ($page_id) {
             $out = file_get_contents($path.'main/pageassets.tpl');
             $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
