@@ -29,18 +29,18 @@ print $this->getMsg();
     <thead>
         <tr>
             <th>
-                <?php print $data['lbl.thumbnail']; ?>
+                <?php print $this->modx->lexicon('assman.lbl.thumbnail'); ?>
             </th>
             <th>
-                <?php print $data['lbl.title']; ?>
+                <?php print $this->modx->lexicon('assman.lbl.title'); ?>
             </th>
             <th>
-                <?php print $data['lbl.alt']; ?>
+                <?php print $this->modx->lexicon('assman.lbl.alt'); ?>
             </th>
             <th>
-                <?php print $data['lbl.size']; ?>
+                <?php print $this->modx->lexicon('assman.lbl.size'); ?>
             </th>
-            <th><?php print $data['lbl.action']; ?></th>
+            <th><?php print $this->modx->lexicon('assman.lbl.action'); ?></th>
         </tr>
     </thead>
     <tbody>
@@ -62,7 +62,7 @@ print $this->getMsg();
 
 <?php else: ?>
 
-    <div class="danger">You don't have any assets uploaded yet.</div>
+    <div class="danger"><?php print $this->modx->lexicon('assman.no_results'); ?></div>
 
 <?php endif; ?>
 

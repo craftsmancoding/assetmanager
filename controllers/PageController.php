@@ -55,7 +55,7 @@ class PageController extends BaseController {
     //! Assets
     //------------------------------------------------------------------------------
     /**
-     * Asset management main page
+     * Asset management main page aka Library
      *
      * @param array $scriptProperties
      */
@@ -65,18 +65,14 @@ class PageController extends BaseController {
         $results = $A->all($scriptProperties);
         $this->setPlaceholder('results', $results);
         $this->setPlaceholders($scriptProperties);
-
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.assets.pagetitle'));
-        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));
-
-        $this->setPlaceholder('lbl.thumbnail', $this->modx->lexicon('assman.lbl.thumbnail'));
-        $this->setPlaceholder('lbl.title', $this->modx->lexicon('assman.lbl.title'));
-        $this->setPlaceholder('lbl.alt', $this->modx->lexicon('assman.lbl.alt'));
-        $this->setPlaceholder('lbl.size', $this->modx->lexicon('assman.lbl.size'));
-        $this->setPlaceholder('lbl.action', $this->modx->lexicon('assman.lbl.action'));
-
+        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.assets.subtitle'));        
         return $this->fetchTemplate('main/assets.php');
     }
+    
+    /**
+     * Handles searches
+     */
     public function postAssets(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $A = $this->modx->newObject('Asset');
@@ -104,16 +100,15 @@ class PageController extends BaseController {
     //------------------------------------------------------------------------------
     //! Groups
     //------------------------------------------------------------------------------
-    public function getGroups(array $scriptProperties = array()) {
+    public function getGroups(array $scriptProperties = array(),$msg='') {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
+        $this->setPlaceholder('msg', $msg);
         $A = $this->modx->newObject('Asset');
         $this->config['Groups'] = $A->getAssetGroups();
+        // Avoid an Ajax lookup
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             var assman = '.json_encode($this->config).';
         </script>');
-        $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.groups.pagetitle'));
-        $this->setPlaceholder('subtitle', $this->modx->lexicon('assman.groups.subtitle'));
-        $this->setPlaceholder('btn.addgroup', $this->modx->lexicon('assman.btn.addgroup'));
         return $this->fetchTemplate('group/manage.php');
     }
     
@@ -121,7 +116,7 @@ class PageController extends BaseController {
         $groups = $this->modx->getOption('groups', $scriptProperties);
         $A = $this->modx->newObject('Asset');
         $A->setAssetGroups($groups);
-        return $this->getGroups();
+        return $this->getGroups(array(),'<div class="success">Groups updated.</div>');
     }
     
     
@@ -142,32 +137,8 @@ class PageController extends BaseController {
         $this->setPlaceholder('thumbnail_width', $this->modx->getOption('assman.thumbnail_width'));
         $this->setPlaceholder('thumbnail_height', $this->modx->getOption('assman.thumbnail_height'));
         $this->setPlaceholder('autocreate_content_type', $this->modx->getOption('assman.autocreate_content_type'));
+
         $this->setPlaceholder('pagetitle', $this->modx->lexicon('assman.settings.pagetitle'));
-
-        $this->setPlaceholder('settings.thumbnail.title', $this->modx->lexicon('assman.settings.thumbnail.title'));
-        $this->setPlaceholder('settings.thumbnail.desc', $this->modx->lexicon('assman.settings.thumbnail.desc'));
-        $this->setPlaceholder('settings.resourcetype.title', $this->modx->lexicon('assman.settings.resourcetype.title'));
-        $this->setPlaceholder('settings.resourcetype.desc', $this->modx->lexicon('assman.settings.resourcetype.desc',
-            array('modweblink' => '<code>modWebLink</code>','symlink' => '<code>modSymLink</code>','modstaticresource' => '<code>modStaticResource</code>','moddocument' => '<code>modDocument</code>')));   
-        $this->setPlaceholder('settings.storage.title', $this->modx->lexicon('assman.settings.storage.title'));
-        $this->setPlaceholder('settings.storage.path.desc', $this->modx->lexicon('assman.settings.storage.path.desc'));
-        $this->setPlaceholder('settings.storage.path.note', $this->modx->lexicon('assman.settings.storage.path.note',array('modxassetsurl','<code>MODX_ASSETS_URL</code>')));
-        $this->setPlaceholder('settings.storage.override.desc', $this->modx->lexicon('assman.settings.storage.override.desc',
-            array('modxassetsurl'=>'<code>MODX_ASSETS_URL</code>','library_path'=>'<code>assman.library_path</code>','siteurl'=>'<code>assman.site_url</code>')));
-        $this->setPlaceholder('settings.storage.override.note', $this->modx->lexicon('assman.settings.storage.override.note'));
-        $this->setPlaceholder('settings.contenttype.desc', $this->modx->lexicon('assman.settings.contenttype.desc',
-            array('contenttype'=>'<code>modContentType</code>')));
-        $this->setPlaceholder('settings.contenttype.desc', $this->modx->lexicon('assman.settings.contenttype.desc'));
-
-        $this->setPlaceholder('btn.updatesettings', $this->modx->lexicon('assman.btn.updatesettings'));
-        $this->setPlaceholder('btn.seesettings', $this->modx->lexicon('assman.btn.seesettings'));
-
-        $this->setPlaceholder('lbl.thumbwidth', $this->modx->lexicon('assman.lbl.thumbwidth'));
-        $this->setPlaceholder('lbl.thumbheight', $this->modx->lexicon('assman.lbl.thumbheight'));
-        $this->setPlaceholder('lbl.classkeys', $this->modx->lexicon('assman.lbl.classkeys'));
-        $this->setPlaceholder('lbl.librarypath', $this->modx->lexicon('assman.lbl.librarypath'));
-        $this->setPlaceholder('lbl.override', $this->modx->lexicon('assman.lbl.override'));
-        $this->setPlaceholder('lbl.autocreate', $this->modx->lexicon('assman.lbl.autocreate'));
 
 
         return $this->fetchTemplate('main/settings.php');

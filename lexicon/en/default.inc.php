@@ -37,19 +37,19 @@ $_lang['setting_assman.url_override_desc'] = 'If checked, the "Asset Manager Sit
 $_lang['setting_assman.site_url'] = 'Asset Manager Site URL';
 $_lang['setting_assman.site_url_desc'] = 'If "URL Override" is checked, this URL will be used instead of MODX_ASSET_URL when calculating URLs.';
 $_lang['setting_assman.thumbnail_width'] = 'Thumbnail Width';
-$_lang['setting_assman.thumbnail_width_desc'] = 'Used when calculating thumbnails when assets are first uploaded via the Asset Manager';
+$_lang['setting_assman.thumbnail_width_desc'] = 'Used when displaying thumbnails in the manager.';
 $_lang['setting_assman.thumbnail_height'] = 'Thumbnail Height';
-$_lang['setting_assman.thumbnail_height_desc'] = 'Used when calculating thumbnails when assets are first uploaded via the Asset Manager';
+$_lang['setting_assman.thumbnail_height_desc'] = 'Used when displaying thumbnails in the manager.';
 
 $_lang['setting_assman.groups'] = 'Asset Groups';
-$_lang['setting_assman.groups_desc'] = 'JSON array of names, used to group assets in the manager and in the front end.';
+$_lang['setting_assman.groups_desc'] = 'JSON array of names, used to group assets on each page.';
 
 
 $_lang['setting_assman.class_keys'] = 'Class Keys';
 $_lang['setting_assman.class_keys_desc'] = 'JSON array listing class names of MODX resources that will get the "Assets" tab added. Default is modDocument. Other possible values include modStaticResource, modSymLink, modWebLink, and any custom resource classes you may have defined.';
 
 $_lang['setting_assman.autocreate_content_type'] = 'Auto-Create Content Types';
-$_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in the content_type table, the Asset Manager will attempt to intelligently create it based on the file extension and detected mime-type. If you disable this setting, uploads may fail when a user tries to upload an allowed file type (via the upload_files setting), but no corresponding content type is defined.';
+$_lang['setting_assman.autocreate_content_type_desc'] = 'If you upload a content type that is not defined in your <code>modx_content_type</code> table, the Asset Manager will attempt to intelligently create a new content type based on the detected mime-type of the uploaded file. If you disable this setting, uploads may fail when a user tries to upload a files whose content types have not been defined.';
 
 
 //---------------------------------------
@@ -99,23 +99,24 @@ $_lang['assman.menu.support'] = 'Get Paid Support';
 $_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
 $_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
 $_lang['assman.assets.pagetitle'] = 'Manage Assets';
-$_lang['assman.assets.subtitle'] = 'Browse your asset library..';
+$_lang['assman.assets.subtitle'] = 'Browse your asset library.';
 $_lang['assman.settings.pagetitle'] = 'Asset Manager Settings';
 $_lang['assman.groups.pagetitle'] = 'Asset Groups';
-$_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group for page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';
+$_lang['assman.groups.subtitle'] = 'Use groups to help organize your assets within a page. Each asset may belong to only one group per page. If an asset is used on multiple pages, it may belong to a different group on each page where it is used.';
 
 $_lang['assman.settings.thumbnail.title'] = 'Thumbnail Dimensions';
 $_lang['assman.settings.thumbnail.desc'] = 'These settings affect the size of thumbnails displayed on the "Assets" tab.';
 $_lang['assman.settings.resourcetype.title'] = 'Resource Types';
-$_lang['assman.settings.resourcetype.desc'] = 'The Asset Manager can be attached to any valid MODX Resource Class, e.g. [[+modweblink]], [[+symlink]], [[+modstaticresource]], and [[+moddocument]] (the default).  List these as a JSON array.';
+$_lang['assman.settings.resourcetype.desc'] = 'The Asset Manager can be attached to any valid MODX Resource Class, e.g. <code>modWebLink</code>, <code>modSymLink</code>, <code>modStaticResource</code>, and <code>modDocument</code> (the default).  List these as a JSON array.';
 $_lang['assman.settings.storage.title'] = 'Storage';
 $_lang['assman.settings.storage.path.desc'] = 'Several settings relate to where the Asset Manager stores its files and how they are accessed.';
-$_lang['assman.settings.storage.path.note'] = 'Relative to the [[+modxassetsurl]]';
-$_lang['assman.settings.storage.override.desc'] = 'Normally, asset URLS are calculated as [[+modxassetsurl]] + [[+librarypath]] + Asset stub.  If URL override is enabled, the URLS are calculated as [[+siteurl]] + [[+librarypath]] + Asset stub.';
+$_lang['assman.settings.storage.path.note'] = 'Relative to the <code>MODX_ASSETS_URL</code>';
+$_lang['assman.settings.storage.override.desc'] = 'Normally, asset URLS are calculated as <code>MODX_ASSETS_URL</code> + <code>assman.library_path</code> + Asset stub.  If URL-override is enabled, the URLS are calculated as <code>assman.site_url</code> + <code>assman.library_path</code> + Asset stub.';
 $_lang['assman.settings.storage.override.note'] = 'Used to calculate URLs When the URL Override is checked.';
-$_lang['assman.settings.contenttype.desc'] = 'By default, the Asset Manager will detect the MIME types of uploaded files and create a [[+contenttype]] object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.';
+$_lang['assman.settings.contenttype.desc'] = 'By default, the Asset Manager will detect the MIME types of uploaded files and create a <code>modContentType</code> object for the detected content type.  This behavior saves a lot of time, but you may disable if you need to customize the specifics of your upload types.';
 $_lang['assman.settings.contenttype.title'] = 'Content Types';
 
+$_lang['assman.no_results'] = 'No results.';
 
 //---------------------------------------
 // Assets Tab
