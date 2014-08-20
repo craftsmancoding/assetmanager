@@ -1,9 +1,6 @@
 /* The MIT License */
 .dropzone-wrap {
-  border: 1px dashed #acacac;
   background: rgba(0,0,0,0.02);
-  padding: 1em;
-
 }
 .dropzone-previews,
 .dropzone-previews * {
