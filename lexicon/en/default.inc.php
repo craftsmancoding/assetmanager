@@ -99,6 +99,7 @@ $_lang['assman.menu.support'] = 'Get Paid Support';
 //---------------------------------------
 $_lang['assman.index.pagetitle'] = 'Welcome to the MODX Asset Manager';
 $_lang['assman.index.subtitle'] = 'Stay tuned. more tools and stuff will be here in future versions.';
+$_lang['assman.products.subtitle'] = 'Here you can Manage Products, Add Edit and Preview';
 $_lang['assman.verify.pagetitle'] = 'Verify Assets';
 $_lang['assman.verify.subtitle'] = 'Your filesystem and your database must be in sync in order for the Asset Manager to work. Use this page to verify your site.';
 
