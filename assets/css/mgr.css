@@ -1,24 +1,28 @@
 #assman_header a,
 #assman_canvas a,
 .assman_nav_item a {
-  color: #727272;
+  color: #3697cd;
   text-decoration: none;
 }
+
+
 
 #assman_header a:hover,
 #assman_canvas a:hover,
 .assman_nav_item a:hover {
-color: #77963d;
+color: #3697cd;
 }
 
 /**
  * CMPs
  */
 #assman_canvas {
-    background: #fff;
-    border: 1px solid #999999;
+ background: #fff;
     margin: 0px 10px 0px;
     padding-bottom: 20px; 
+-webkit-box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
+-moz-box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
+box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
 }
 
 .assman_canvas_inner {
@@ -42,10 +46,14 @@ h2.assman_cmp_heading {
 .assman_nav_item {
     display:inline;
     padding: 10px;
+    color: #3697cd;
+    font-size: 13px;
 }
 
 .assman_nav_item a.current {
-  font-weight: bold;
+    background: #fff;
+  padding: 7px 10px;
+  border-top: 3px solid #3697cd;
 }
 /* not sure if we need this... */
 .assman_nav_home {
@@ -120,91 +128,49 @@ h2.assman_cmp_heading {
   font-weight: bold;
 }
 
-.btn {
-  display: inline-block;
-  padding: 7px 8px;
-  margin-bottom: 5px;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  color: #333333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  border: 1px solid #bbbbbb;
-  border-bottom-color: #a2a2a2;
+
+
+.btn,
+.assman-btn {
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  color: #53595f;
-  font: bold 11px tahoma,verdana,helvetica,sans-serif;
-  text-shadow: 0 1px 0 #fcfcfc;
-  text-decoration: none;
+  padding: 7px 15px;
+  color: #6a6a6a !important;
+  font-weight: normal;
+  font-size: 14px;
+  text-shadow: none !important;
+  cursor: pointer !important;
 }
 
-.assman-btn {
-  background-color: #658F1A !important;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#658F1A", endColorstr="#658F1A");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#658F1A), to(#658F1A));
-  background-image: -moz-linear-gradient(top, #658F1A, #658F1A);
-  background-image: -ms-linear-gradient(top, #658F1A, #658F1A);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #658F1A), color-stop(100%, #658F1A));
-  background-image: -webkit-linear-gradient(top, #658F1A, #658F1A);
-  background-image: -o-linear-gradient(top, #658F1A, #658F1A);
-  background-image: linear-gradient(#658F1A, #658F1A);
-  border-color: #617a2d #617a2d hsl(80, 46%, 29%);
+.btn-primary {
+  background: #2aa798;
   color: #fff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.26);
-  -webkit-font-smoothing: antialiased;
+  border: 1px solid #2aa798;
 }
 
+.btn-info {
+  background: #556c88;
+  color: #fff !important;
+   border: 1px solid #556c88;
+}
 
-.btn-danger {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #da4f49;
-  background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
-  background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
-  background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
-  border-color: #bd362f #bd362f #802420;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #bd362f;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+.btn-primary:hover {
+  background: #02958f;
+}
 
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+.btn-large {
+  padding: 15px 25px !important;
+  font-size: 16px;
 }
-.btn-danger:hover,
-.btn-danger:active,
-.btn-danger.active,
-.btn-danger.disabled,
-.btn-danger[disabled] {
-  color: #ffffff;
-  background-color: #bd362f;
-  *background-color: #a9302a;
+
+.btn-mini {
+  padding: 5px 10px !important;
+   font-size: 10px;
 }
-.btn-danger:active,
-.btn-danger.active {
-  background-color: #942a25 \9;
-}
+
 
 
 .icon-trash {
@@ -423,9 +389,33 @@ select {
   color: #fff;
 }
 
+
 table.classy {
-  width: 100%;
+    width: 100%;
 }
+
+table.classy thead tr {
+    background: #e4e9ee !important; 
+}
+
+table.classy thead tr th {
+  padding: 12px 5px;
+  color: #696969;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+table.classy thead a {
+    color: #fff;
+}
+
+table thead a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+tr:nth-child(even) {background: #f5f6f9}
+tr:nth-child(odd) {background: #fff}
 
 .span70 {
   width: 70%;
@@ -488,25 +478,6 @@ table.classy {
 
 #modal_asset_img img {
   max-width: 100%;
-}
-
-table.classy {
-border-spacing: 0;
-border-right: 2px solid #3F4850;
-border-left: 2px solid #3F4850;
-border-bottom: 2px solid #3F4850;
-width: 100%;
-}
-
-table.classy thead th {
-background-color: #3F4850;
-color: #FFFFFF;
-text-transform: uppercase;
-font-size: 11px;
-font-weight: bold;
-padding-top: 10px;
-padding-bottom: 8px;
-text-shadow: 1px -1px 0 #3F3F3F;
 }
 
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
