@@ -52,7 +52,7 @@
         ?>    
         </div>
         <br/>
-        <input class="btn assman-btn" type="submit" value="<?php print $this->modx->lexicon('assman.btn.updatesettings'); ?>" />
+        <input class="btn assman-btn btn-primary" type="submit" value="<?php print $this->modx->lexicon('assman.btn.updatesettings'); ?>" />
 
     </form>
 

@@ -10,7 +10,7 @@
     <div class="clearfix">
 
         <form action="" method="post">
-            <input type="submit" name="verify" value="<?php print $this->modx->lexicon('assman.menu.verify'); ?>" />
+            <input type="submit" class="btn" name="verify" value="<?php print $this->modx->lexicon('assman.menu.verify'); ?>" />
         </form>
         
     </div><!--/clearfix-->

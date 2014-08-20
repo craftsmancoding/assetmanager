@@ -5,9 +5,9 @@
                 
                 <div id="assman_header" class="clearfix">
                     <ul id="assman_nav">
-                        <li class="assman_nav_item">
-                            <strong><?php print $this->modx->lexicon('assman.menu.manage'); ?>:</strong>
-                        </li>
+                         <li class="assman_nav_item">
+                            <a class="<?php print ($_GET['method'] == 'index') ? 'current' : '' ; ?>" href="<?php print self::page('index'); ?>"><?php print $this->modx->lexicon('assman.menu.manage'); ?></a>
+                         </li>
 
                          <li class="assman_nav_item">
                             <a class="<?php print ($_GET['method'] == 'assets') ? 'current' : '' ; ?>" href="<?php print self::page('assets'); ?>"><?php print $this->modx->lexicon('assman.menu.library'); ?></a>

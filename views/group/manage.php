@@ -1,14 +1,14 @@
 <script id="asset_groups_tpl" type="text/x-handlebars-template">
 <form method="post" action="">
-    <span class="btn" onclick="javascript:add_group();"><?php print $this->modx->lexicon('assman.btn.addgroup'); ?></span>
+    <span class="btn btn-primary" onclick="javascript:add_group();"><?php print $this->modx->lexicon('assman.btn.addgroup'); ?></span>
     <ul id="asset_groups">
     {{#each Groups}}    
         <li class="row-input"><input type="text" name="groups[]" class="row-field" value="{{this}}"/> <span class="btn" onclick="javascript:remove_me.call(this,event,'li');">x</span></li>
     {{/each}}
     </ul>
 
-    <input type="submit" class="btn assman-btn" value="<?php print $data['btn.save']; ?>"/>
-    <a class="btn" href="{{controller_url}}"><?php print $data['btn.cancel']; ?></a>
+    <input type="submit" class="btn assman-btn btn-info" value="<?php print $this->modx->lexicon('assman.btn.save'); ?>"/>
+    <a class="btn" href="{{controller_url}}"><?php print $this->modx->lexicon('assman.btn.cancel'); ?></a>
 </form>
 </script>
 
