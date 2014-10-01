@@ -229,7 +229,7 @@ div > input.x-form-field {
 
 .img-info-wrap {
   position: relative;
-  max-height:180px;
+  min-height:180px;
 }
 
 .img-info-inner {
