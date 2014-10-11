@@ -47,7 +47,8 @@ class Asset extends xPDOObject {
     /**
      * Make sure we're allowed to upload files of this type
      * @param string $filename
-     * @return true or exception
+     * @throws Exception
+     * @return true
      */
     public function _canUpload($filename) {
         // Are we allowed to upload this file type?
@@ -79,12 +80,13 @@ class Asset extends xPDOObject {
     /**
      * Retrive "all" records matching the filter $args.
      *
-     * We use getIterator, but we have to work around the "feature" (bug?) that 
+     * We use getIterator, but we have to work around the "feature" (bug?) that
      * it will not return an empty array if it has no results. See
      * https://github.com/modxcms/revolution/issues/11373
      *
-     * @param array $arguments (including filters)
+     * @param $args (including filters)
      * @param boolean $debug
+     * @throws Exception
      * @return mixed xPDO iterator (i.e. a collection, but memory efficient) or SQL query string
      */
     public function all($args,$debug=false) {
@@ -162,7 +164,7 @@ class Asset extends xPDOObject {
         return $Assets;
     }
 
-    
+
     /**
      * Dictate related assets (e.g. to a current page).
      * The $data array should describe the *relations*, not the parent asset.  E.g. PageAsset objects,
@@ -171,18 +173,16 @@ class Asset extends xPDOObject {
      *
      * This will remove all assets not in the given $data, add any new pivots, and order them (seq)
      * Additional parameters are made available here for any 3rd party extension to associate assets
-     * with an object type other than PageAsset. 
+     * with an object type other than PageAsset.
      *
      * @param array $data of associated records
      * @param integer $this_id ID of thing being joined to, e.g. this page id
-     * @param sstring $id_name default 'page_id' 
+     * @param string $id_name default 'page_id'
      * @param string $join ProductAsset
-     * @param array $dictate'd asset_id's
-     *
-     * @return
+     * @return bool
      */
     public function dictateRelations(array $data, $this_id, $id_name='page_id', $join='PageAsset') {
-        //$this->xpdo->setLogLevel(4);
+
         $this->xpdo->log(\modX::LOG_LEVEL_DEBUG, 'Dictating Asset Relations for id '.$this_id.' with join '.$join.' : '.print_r($data,true),'',__CLASS__,__FILE__,__LINE__);
         
         $dictated = array();
@@ -241,7 +241,8 @@ class Asset extends xPDOObject {
      *
      * @param array $FILES structure mimics part of the $_FILES array, see above.
      * @param boolean $force_create if true, a duplicate asset will be created. False will trigger a search for existing asset.
-     * @return exception on error, Asset instance on success
+     * @throws Exception
+     * @return object Asset instance on success
      */
     public function fromFile($FILE, $force_create=false) {
         if (!is_array($FILE)) {
@@ -452,6 +453,7 @@ class Asset extends xPDOObject {
      *
      * @param string $fullpath
      * @param mixed $prefix to remove. Leave null to use MODX settings
+     * @throws Exception
      */
     public function getRelPath($fullpath, $prefix=null) {
 
@@ -513,7 +515,7 @@ class Asset extends xPDOObject {
      *  ...etc...
      *
      * @param string $src full path to the original image
-     * @param string $subdir to define resized images will be written
+     * @param integer $asset_id
      * @param integer $w
      * @param integer $h
      * @return string
@@ -566,6 +568,7 @@ class Asset extends xPDOObject {
      *
      * @param integer $w
      * @param integer $h
+     * @return string
      */
     public static function getMissingThumbnail($w,$h,$text) {
         //$ext = strtolower(strrchr($this->get('url'), '.'));
@@ -614,6 +617,7 @@ class Asset extends xPDOObject {
      *)
      *
      * @param array $FILE from upload (in case we need to auto-create)
+     * @throws Exception
      * @return object modContentType
      */
     public function getContentType($FILE) {
@@ -779,6 +783,7 @@ class Asset extends xPDOObject {
      * 
      * @param string $path full
      * @param string $umask default 0777
+     * @throws Exception
      * @return mixed : string path name on success (w trailing slash), Exception on fail
      */
     public function preparePath($path,$umask=0777) {
