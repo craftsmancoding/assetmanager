@@ -195,33 +195,36 @@ function define_dialog_boxes() {
         }   
     });
 
-    // Define Dropzone for Assets 
+     // Define Dropzone for Assets 
     // This does create an error on save: "Dropzone already attached." boo.
-    var myDropzone = new Dropzone("div#asset_upload", {
-        url: assman.controller_url+'&class=asset&method=create'
-    });    
-    // Refresh the list on success (append new tile to end)
-    // WARNING: if there's a fatal PHP error in the controller, you'll still end up here!
-    myDropzone.on("success", function(file,response) {
-        console.log('[Dropzone Success]', file, response);
-        if (response.status == "success") {
-            // Write data back to parent JS
-            //var asset_id = response.data.fields.asset_id;
-            //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
-            add_asset(response.data.fields);
-            draw_tab();
-            jQuery(".dz-preview").remove();
-       } 
-       else {                           
-            console.log('There was a problem with your image upload.');
-            jQuery(".dz-success-mark").hide();
-            jQuery(".dz-error-mark").show();
-            show_error(response.data.msg);
-       }
-    });    
-    myDropzone.on("error", function(file,errorMessage) {
-        console.log('[Dropzone Error]',file, errorMessage);
+    jQuery("div#asset_upload").dropzone({ 
+        url: assman.controller_url+'&class=asset&method=create',
+        init: function() {
+            this.on("success", function(file,response) { 
+                 console.log('[Dropzone Success]', file, response);
+                    if (response.status == "success") {
+                        // Write data back to parent JS
+                        //var asset_id = response.data.fields.asset_id;
+                        //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
+                        add_asset(response.data.fields);
+                        draw_tab();
+                        jQuery(".dz-preview").remove();
+                   } 
+                   else {                           
+                        console.log('There was a problem with your image upload.');
+                        jQuery(".dz-success-mark").hide();
+                        jQuery(".dz-error-mark").show();
+                        show_error(response.data.msg);
+                   }
+            });
+            this.on("error", function(file,errorMessage) { 
+                 console.log('[Dropzone Error]',file, errorMessage);
+            });
+
+        }
     });
+
+
 
     // Drag Drop Item Delete
     jQuery( "#trash-can" ).droppable({
