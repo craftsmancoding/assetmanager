@@ -8,6 +8,16 @@
     
     <form action="" method="post" id="assman_settings">
 
+        
+
+         <h3>Upload Max Size (php.ini and modx System Setting)</h3>
+        <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder">
+        <p>post_max_size(php.ini) : <strong><?php  print ini_get('post_max_size'); ?></strong></p> 
+         <p>upload_max_size(php.ini) : <strong><?php  print ini_get('upload_max_filesize'); ?></strong></p> 
+          <p>upload_maxsize (modx system setting) : <strong><?php  print ($this->modx->getOption('upload_maxsize')/1024)/1024; ?>M</strong></p>   
+        </div>
+        <br/>
+
         <h3><?php print $this->modx->lexicon('assman.settings.thumbnail.title'); ?></h3>
         <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p><?php print $this->modx->lexicon('assman.settings.thumbnail.desc'); ?></p>
         <?php

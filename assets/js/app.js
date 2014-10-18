@@ -203,6 +203,7 @@ function define_dialog_boxes() {
             this.on("success", function(file,response) { 
                  console.log('[Dropzone Success]', file, response);
                     if (response.status == "success") {
+                        alert('success');
                         // Write data back to parent JS
                         //var asset_id = response.data.fields.asset_id;
                         //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
@@ -210,7 +211,8 @@ function define_dialog_boxes() {
                         draw_tab();
                         jQuery(".dz-preview").remove();
                    } 
-                   else {                           
+                   else {     
+                        alert('Something went wrong. Please check the Asset Manager Setting Page and See if the image meet the max uploAd size');                      
                         console.log('There was a problem with your image upload.');
                         jQuery(".dz-success-mark").hide();
                         jQuery(".dz-error-mark").show();
@@ -218,6 +220,7 @@ function define_dialog_boxes() {
                    }
             });
             this.on("error", function(file,errorMessage) { 
+                 alert('Something went wrong. Please check the Asset Manager Setting Page and See if the image meet the max upload size');
                  console.log('[Dropzone Error]',file, errorMessage);
             });
 
