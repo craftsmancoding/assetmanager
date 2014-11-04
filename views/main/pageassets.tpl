@@ -126,7 +126,10 @@ an Assets node with a url key)
             <div class="dz-label">Drop files here to upload or</div>
             <div class="dz-default dz-message"><span>Select Files</span></div>
         </div>
-    	
+
+         <div class="dz-link-wrap clearfix fback-dz">
+            <div class="dz-label">Sorry your Browser Doesnt Support Drag and Drop Upload!</div>
+        </div>    	
 
     </div>
 

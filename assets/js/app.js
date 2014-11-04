@@ -203,7 +203,7 @@ function define_dialog_boxes() {
             this.on("success", function(file,response) { 
                  console.log('[Dropzone Success]', file, response);
                     if (response.status == "success") {
-                        alert('success');
+                        //alert('success');
                         // Write data back to parent JS
                         //var asset_id = response.data.fields.asset_id;
                         //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
@@ -224,6 +224,12 @@ function define_dialog_boxes() {
                  console.log('[Dropzone Error]',file, errorMessage);
             });
 
+
+
+        },
+        fallback: function(){
+            jQuery('.dz-link-wrap').hide();
+            jQuery('.fback-dz').show();
         }
     });
 
@@ -464,3 +470,45 @@ function update_asset_order(asset_ids) {
     }
     assman.PageAssets = tmp;
 }
+
+
+
+function fback_submit(obj) {
+   /* jQuery('.x-form').addClass('dx-test');
+    var url = assman.controller_url+'&class=asset&method=create';
+    var file = jQuery('#fbdz-file').val();
+    console.log(url);
+     console.log(file);*/
+/*        $.ajax({
+            type: "POST",
+            url: url,  
+            data: {file:file},  
+            success: function( response )  
+            {
+                console.log(response);
+                
+                 console.log('[Dropzone Fallback Success]', file, response);
+                    if (response.status == "success") {
+                        //alert('success');
+                        // Write data back to parent JS
+                        //var asset_id = response.data.fields.asset_id;
+                        //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
+                        add_asset(response.data.fields);
+                        draw_tab();
+                        jQuery(".dz-preview").remove();
+                   } 
+                   else {     
+                        alert('Something went wrong. Please check the Asset Manager Setting Page and See if the image meet the max uploAd size');                      
+                        console.log('There was a problem with your image upload.');
+                        jQuery(".dz-success-mark").hide();
+                        jQuery(".dz-error-mark").show();
+                        show_error(response.data.msg);
+                   }
+            }
+       });*/
+
+              
+ 
+}
+
+
