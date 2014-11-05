@@ -24,16 +24,6 @@
         "craftsmancoding/formbuilder": "dev-master",
         "craftsmancoding/pagination": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:craftsmancoding/formbuilder.git"
-        },
-        {
-            "type": "vcs",
-            "url":  "git@github.com:craftsmancoding/pagination.git"
-        }
-    ],
     "autoload": {
         "classmap":[
             "model/"
@@ -46,7 +36,7 @@
         "repoman": "1.0",
         "package_name": "Asset Manager",
         "namespace": "assman",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "release": "pl",
         "category":"Asset Manager",
         "core_path": "",

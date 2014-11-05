@@ -66,7 +66,7 @@
  * @package assman
  */
  
-// Gotta do this here because we don't have a reliable event for this. 
+// Gotta do this here because we don't have a reliable event to trigger autoloading. 
 require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
 class IndexManagerController extends \Assman\BaseController {
 
