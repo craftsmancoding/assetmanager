@@ -110,6 +110,8 @@ class PageController extends BaseController {
     //------------------------------------------------------------------------------
     /**
      * @param array $scriptProperties
+     *
+     * @return rendered
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
@@ -144,6 +146,8 @@ class PageController extends BaseController {
     //------------------------------------------------------------------------------
     /**
      * @param array $scriptProperties
+     *
+     * @return rendered
      */
     public function getSettings(array $scriptProperties = array(),$msg='') {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);

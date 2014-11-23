@@ -839,7 +839,7 @@ class Asset extends xPDOObject {
     /** 
      * We override the parent func so we can clean out the asset files
      */
-    public function remove(array $ancestors) {
+    public function remove(array $ancestors=array()) {
         $storage_basedir = $this->xpdo->getOption('assets_path').rtrim($this->xpdo->getOption('assman.library_path'),'/').'/';
         $this->xpdo->log(\modX::LOG_LEVEL_DEBUG, 'Removing Asset '.$this->getPrimaryKey().' with assets in storage_basedir '.$storage_basedir,'',__CLASS__,__FILE__,__LINE__);
         
