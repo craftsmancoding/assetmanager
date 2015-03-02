@@ -47,7 +47,7 @@ $ny = $new_h;
         
 $modx->log(\modX::LOG_LEVEL_INFO,'New asset dimensions calculated: '.$nx, $ny,'','scale2h Output Filer');
 
-$modx->setPlaceholder('asset_id.width', $ny);
+$modx->setPlaceholder('asset_id.width', $nx);
 return $Asset->getThumbnailURL($nx, $ny);
 
 
