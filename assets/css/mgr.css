@@ -390,22 +390,22 @@ select {
 }
 
 
-table.classy {
+table.classy-assetmgr {
     width: 100%;
 }
 
-table.classy thead tr {
+table.classy-assetmgr thead tr {
     background: #e4e9ee !important; 
 }
 
-table.classy thead tr th {
+table.classy-assetmgr thead tr th {
   padding: 12px 5px;
   color: #696969;
   font-weight: bold;
   font-size: 12px;
 }
 
-table.classy thead a {
+table.classy-assetmgr thead a {
     color: #fff;
 }
 
@@ -414,8 +414,8 @@ table thead a:hover {
     text-decoration: underline;
 }
 
-tr:nth-child(even) {background: #f5f6f9}
-tr:nth-child(odd) {background: #fff}
+table.classy-assetmgr  tr:nth-child(even) {background: #f5f6f9}
+table.classy-assetmgr tr:nth-child(odd) {background: #fff} 
 
 .span70 {
   width: 70%;

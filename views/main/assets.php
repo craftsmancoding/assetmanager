@@ -27,7 +27,7 @@
    </div>     
 
 <?php if ($data['results']): ?>
-<table class="classy">
+<table class="classy classy-assetmgr">
     <thead>
         <tr>
             <th>
