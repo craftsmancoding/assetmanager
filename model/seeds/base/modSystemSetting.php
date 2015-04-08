@@ -63,7 +63,7 @@ return array(
     ),
     array(
         'key'  =>     'assman.groups',
-		'value'=>     '',
+		'value'=>     '["Default"]',
 		'xtype'=>     'textfield',
 		'namespace' => 'assman',
 		'area' => 'assman:default'

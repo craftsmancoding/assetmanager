@@ -31,6 +31,7 @@ function add_asset(fields) {
     assman.PageAssets.push({
         asset_id: fields.asset_id,
         is_active: 1,
+        group: "Default",
         Asset: fields 
     });
 }
