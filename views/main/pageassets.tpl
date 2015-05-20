@@ -134,6 +134,7 @@ an Assets node with a url key)
     </div>
 
     <div id="trash-can" class="drop-delete">
+        <i class="fa-assmam-trash-icon"></i>
         <span>Drag Image Here to Delete</span>
     </div>
     

@@ -178,7 +178,6 @@ h2.assman_cmp_heading {
 }
 
 .drop-delete {
-  background: url('../images/trash.png') 10px 8px no-repeat;
   margin-top: 15px;
   border: 1px dashed #a7a7a7;
   display: block;
@@ -191,9 +190,6 @@ h2.assman_cmp_heading {
 .dz-link-wrap {
   width: 380px;
   margin: 0 auto;
-}
-.over-trash {
-  background: url('../images/trash-over.png') 10px 8px no-repeat;
 }
 
 .selected {
@@ -480,6 +476,27 @@ table.classy-assetmgr tr:nth-child(odd) {background: #fff}
   display: none;
 }
 
+
+.fa-assmam-trash-icon {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-size: 26px;
+  float: left;
+  
+}
+
+.over-trash .fa-assmam-trash-icon {
+  color: red;
+}
+
+
+.fa-assmam-trash-icon:before {
+  content: "\f1f8";
+}
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */
 .clear:before, .clear:after,
