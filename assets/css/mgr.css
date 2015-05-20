@@ -213,10 +213,6 @@ div > label.x-form-cb-label {
   display: inline;
 }
 
-div > input.x-form-field {
-  background: none !important;
-  margin-bottom: 0px !important;
-}
 
 .state {
   margin-bottom: 0px !important;
