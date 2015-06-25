@@ -68,5 +68,12 @@ return array(
 		'namespace' => 'assman',
 		'area' => 'assman:default'
     ),
+    array(
+        'key'  =>     'assman.skip_templates',
+        'value'=>     '',
+        'xtype'=>     'textfield',
+        'namespace' => 'assman',
+        'area' => 'assman:default'
+    ),
 );
 /*EOF*/

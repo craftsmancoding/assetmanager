@@ -31,6 +31,7 @@ switch ($modx->event->name) {
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
         $classes = json_decode($modx->getOption('assman.class_keys'),true);
+        $template =0;
         // New Resource?
         if (empty($resource)) {
             $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';
@@ -39,12 +40,20 @@ switch ($modx->event->name) {
         else {
             $class_key = $resource->get('class_key');    
             $page_id = $resource->get('id');
+            $template = $resource->get('template');
+        }
+
+        $skip_templates = array_map('trim', explode(',', $modx->getOption('assman.skip_templates')));
+        if (in_array($template, $skip_templates))
+        {
+            return;
         }
 
         if (in_array($class_key,$classes)) {
             $Page = new \Assman\PageController($modx);
             $Page->getPageAssetsTab(array('page_id'=>$page_id,'_nolayout'=>true));
         }
+
         break;
         
     case 'OnDocFormSave':
