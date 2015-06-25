@@ -115,12 +115,13 @@ elseif($sort) {
 if ($scriptProperties['limit']) {
     $c->limit($scriptProperties['limit']);
 }
-$cnt = $modx->getCount('PageAsset',$c);
 
-$ProductAssets = $modx->getCollectionGraph('PageAsset','{"Asset":{}}', $c);
 
-if ($ProductAssets) {
-    return $Snippet->format($ProductAssets,$innerTpl,$outerTpl,$firstTpl,$lastTpl,$onOne,$cnt);    
+$PageAsset = $modx->getCollectionGraph('PageAsset','{"Asset":{}}', $c);
+$cnt = count($PageAsset);
+
+if ($PageAsset) {
+    return $Snippet->format($PageAsset,$innerTpl,$outerTpl,$firstTpl,$lastTpl,$onOne,$cnt);
 }
 
 $modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','getPageAssets',__LINE__);
