@@ -13,6 +13,8 @@ else {
     console.debug('[Asset Manager]: jQuery loaded.');
 }
 
+var $jQ = (typeof($jQ) != 'undefined') ? $jQ : $.noConflict();
+
 /**
  * When upload happens (via dropzone), we need to add the asset and its info to the
  * mix.  This must avoid duplicates!
@@ -41,10 +43,10 @@ function add_asset(fields) {
  */
 function draw_tab() {
     console.log('[draw_tab]');
-    jQuery('#page_assets').html('');
+    $jQ('#page_assets').html('');
     var arrayLength = assman.PageAssets.length;
     for (var i = 0; i < arrayLength; i++) {
-        jQuery('#page_assets').append( assman.tpls.page_asset(assman.PageAssets[i]));
+        $jQ('#page_assets').append( assman.tpls.page_asset(assman.PageAssets[i]));
         if (assman.PageAssets[i].group) {
             assman.Groups.push(assman.PageAssets[i].group);
         }
@@ -52,39 +54,39 @@ function draw_tab() {
     
     assman.Groups = array_unique(assman.Groups);
     
-    jQuery('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
+    $jQ('#asset_category_filters').html('<li class="all first"><a href="#">All</a></li>');
     var arrayLength = assman.Groups.length;
     for (var i = 0; i < arrayLength; i++) {
         if (assman.Groups[i]) {
-            jQuery('#asset_category_filters').append( assman.tpls.category({"group": assman.Groups[i]}));        }
+            $jQ('#asset_category_filters').append( assman.tpls.category({"group": assman.Groups[i]}));        }
     }  
     
-    jQuery("#page_assets").sortable({
+    $jQ("#page_assets").sortable({
         // Save new order
         stop: function( event, ui ) {
             var newOrder = [];
-            jQuery('input.asset_id').each(function(){
-                //console.log( jQuery(this).val() );
-                newOrder.push(jQuery(this).val());
+            $jQ('input.asset_id').each(function(){
+                //console.log( $jQ(this).val() );
+                newOrder.push($jQ(this).val());
             });
             update_asset_order(newOrder);
         }
     });
-    jQuery("#page_assets").disableSelection();
+    $jQ("#page_assets").disableSelection();
 
 
     // Filter page_assets
     // Clone page_assets items to get a second collection for Quicksand plugin (image gallery)
-    var $portfolioClone = jQuery("#page_assets").clone();
+    var $portfolioClone = $jQ("#page_assets").clone();
     
     // Attempt to call Quicksand on every click event handler
-    jQuery("#asset_category_filters a").click(function(e){
+    $jQ("#asset_category_filters a").click(function(e){
         
-        jQuery("#asset_category_filters li").removeClass("current");
-        jQuery("#asset_category_filters li").removeClass("first"); 
+        $jQ("#asset_category_filters li").removeClass("current");
+        $jQ("#asset_category_filters li").removeClass("first"); 
         
         // Get the class attribute value of the clicked link
-        var $filterClass = jQuery(this).parent().attr("class");
+        var $filterClass = $jQ(this).parent().attr("class");
 
         if ( $filterClass == "all" ) {
             var $filteredPortfolio = $portfolioClone.find("li");
@@ -93,22 +95,22 @@ function draw_tab() {
         }
         
         // Call quicksand
-        jQuery("#page_assets").quicksand( $filteredPortfolio, { 
+        $jQ("#page_assets").quicksand( $filteredPortfolio, { 
             duration: 800, 
             easing: 'swing' 
         });
 
-        jQuery(this).parent().addClass("current");
+        $jQ(this).parent().addClass("current");
     })
 }
 
 // Used only in the CMP
 function define_delete_asset_dialog() {
     // Delete Asset
-    jQuery( "#delete_asset_modal" ).dialog({
+    $jQ( "#delete_asset_modal" ).dialog({
         autoOpen: false,
         open: function( event, ui ) {
-            jQuery.colorbox.close();     
+            $jQ.colorbox.close();     
         },
         height: 330,
         width: 500,
@@ -116,18 +118,18 @@ function define_delete_asset_dialog() {
         closeOnEscape: true,
         buttons: {
             "Delete": function() {
-                //alert('Delete: '+ jQuery(this).data('asset_id'));
-                var asset_id = jQuery(this).data('asset_id');
+                //alert('Delete: '+ $jQ(this).data('asset_id'));
+                var asset_id = $jQ(this).data('asset_id');
                 console.log('Deleting asset_id: '+asset_id);
                 assapi('asset','delete',{
                     asset_id: asset_id
                 });
-          		jQuery('#page-asset-'+asset_id).remove();
+          		$jQ('#page-asset-'+asset_id).remove();
 
-                jQuery( this ).dialog( "close" );
+                $jQ( this ).dialog( "close" );
             },
             "Cancel": function() {
-                jQuery( this ).dialog( "close" );
+                $jQ( this ).dialog( "close" );
             }
         }   
     });
@@ -136,10 +138,10 @@ function define_delete_asset_dialog() {
 
 function define_dialog_boxes() {
     // Delete Asset
-    jQuery( "#delete_asset_modal" ).dialog({
+    $jQ( "#delete_asset_modal" ).dialog({
         autoOpen: false,
         open: function( event, ui ) {
-            jQuery.colorbox.close();     
+            $jQ.colorbox.close();     
         },
         height: 330,
         width: 500,
@@ -147,8 +149,8 @@ function define_dialog_boxes() {
         closeOnEscape: true,
         buttons: {
             "Delete": function() {
-                //alert('Delete: '+ jQuery(this).data('asset_id'));
-                var asset_id = jQuery(this).data('asset_id');
+                //alert('Delete: '+ $jQ(this).data('asset_id'));
+                var asset_id = $jQ(this).data('asset_id');
                 console.log('Deleting: '+asset_id);
                 var page_id = assman.page_id;
                 assapi('pageasset','delete',{
@@ -161,12 +163,12 @@ function define_dialog_boxes() {
                         assman.PageAssets.splice(i,1); // unset
                     }
                 }
-          		jQuery('#page-asset-'+asset_id).remove();
+          		$jQ('#page-asset-'+asset_id).remove();
           		draw_tab();
-                jQuery( this ).dialog( "close" );
+                $jQ( this ).dialog( "close" );
             },
             "Remove from Page": function() {
-                var asset_id = jQuery(this).data('asset_id');
+                var asset_id = $jQ(this).data('asset_id');
                 console.log('Removing: '+asset_id, assman.PageAssets);
                 var page_id = assman.page_id;
                 assapi('pageasset','remove',{
@@ -185,20 +187,20 @@ function define_dialog_boxes() {
                         assman.PageAssets.splice(i,1); // unset
                     }
                 }
-          		jQuery('#page-asset-'+asset_id).remove();
+          		$jQ('#page-asset-'+asset_id).remove();
           		draw_tab();
-                jQuery( this ).dialog( "close" );
+                $jQ( this ).dialog( "close" );
 
             },
             "Cancel": function() {
-                jQuery( this ).dialog( "close" );
+                $jQ( this ).dialog( "close" );
             }
         }   
     });
 
      // Define Dropzone for Assets 
     // This does create an error on save: "Dropzone already attached." boo.
-    jQuery("div#asset_upload").dropzone({ 
+    $jQ("div#asset_upload").dropzone({ 
         url: assman.controller_url+'&class=asset&method=create',
         init: function() {
             this.on("success", function(file,response) { 
@@ -210,13 +212,13 @@ function define_dialog_boxes() {
                         //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
                         add_asset(response.data.fields);
                         draw_tab();
-                        jQuery(".dz-preview").remove();
+                        $jQ(".dz-preview").remove();
                    } 
                    else {     
                         alert('Something went wrong. Please check the Asset Manager Setting Page and See if the image meet the max uploAd size');                      
                         console.log('There was a problem with your image upload.');
-                        jQuery(".dz-success-mark").hide();
-                        jQuery(".dz-error-mark").show();
+                        $jQ(".dz-success-mark").hide();
+                        $jQ(".dz-error-mark").show();
                         show_error(response.data.msg);
                    }
             });
@@ -229,28 +231,28 @@ function define_dialog_boxes() {
 
         },
         fallback: function(){
-            jQuery('.dz-link-wrap').hide();
-            jQuery('.fback-dz').show();
+            $jQ('.dz-link-wrap').hide();
+            $jQ('.fback-dz').show();
         }
     });
 
 
 
     // Drag Drop Item Delete
-    jQuery( "#trash-can" ).droppable({
+    $jQ( "#trash-can" ).droppable({
             
         over: function( event, ui ) {
-            jQuery(this).addClass('over-trash');
+            $jQ(this).addClass('over-trash');
         },
         out: function(event, ui) {
-            var id = jQuery(ui.draggable).attr('id');
-            jQuery(this).removeClass('over-trash');
+            var id = $jQ(ui.draggable).attr('id');
+            $jQ(this).removeClass('over-trash');
         },
         drop: function( event, ui ) {
-            var asset_id = jQuery(ui.draggable).attr('data-id');
+            var asset_id = $jQ(ui.draggable).attr('data-id');
             console.log('Trash can drop delete: '+asset_id, assman.PageAssets);
-            jQuery('#delete_asset_modal').data('asset_id', asset_id).dialog('open');
-            jQuery(this).removeClass('over-trash');
+            $jQ('#delete_asset_modal').data('asset_id', asset_id).dialog('open');
+            $jQ(this).removeClass('over-trash');
             return false;
         }
     });
@@ -274,7 +276,7 @@ function open_asset_modal(asset_id) {
     }
     Asset['Groups'] = assman.Groups;
     Asset['manage_groups_url'] = assman.controller_url +"&class=page&method=groups";
-    jQuery.colorbox({
+    $jQ.colorbox({
         inline:false, 
         width: "850",
         height: function(){
@@ -289,7 +291,7 @@ function open_asset_modal(asset_id) {
             return assman.tpls.asset_modal(Asset);
         },
         onComplete: function() {
-            jQuery('#group-select').val(Asset.group);
+            $jQ('#group-select').val(Asset.group);
         }
     });
 }
@@ -299,7 +301,7 @@ function open_asset_modal(asset_id) {
  */
 function open_browse_assets_modal() {
     
-    jQuery.colorbox({
+    $jQ.colorbox({
         inline:false, 
         href: assman.controller_url +'&class=page&method=assets&_nolayout=1'
     });
@@ -313,9 +315,9 @@ function page_init() {
     console.debug('[page_init]');
     inited = 1; // flag it as having been initialized
     assman['tpls'] = {};
-    assman.tpls.page_asset = Handlebars.compile(jQuery('#page_asset_tpl').html());
-    assman.tpls.category = Handlebars.compile(jQuery('#asset_group_tpl').html());
-    assman.tpls.asset_modal = Handlebars.compile(jQuery('#asset_modal_tpl').html());
+    assman.tpls.page_asset = Handlebars.compile($jQ('#page_asset_tpl').html());
+    assman.tpls.category = Handlebars.compile($jQ('#asset_group_tpl').html());
+    assman.tpls.asset_modal = Handlebars.compile($jQ('#asset_modal_tpl').html());
     
     draw_tab();
     define_dialog_boxes();
@@ -349,7 +351,7 @@ function update_asset(form_id) {
         }
     }
     draw_tab();
-    jQuery.colorbox.close();
+    $jQ.colorbox.close();
 }
 
 // TODO: save this back to the db (separately from the parent page)
@@ -378,7 +380,7 @@ function assapi(classname,methodname,data,callback) {
     data._assman = Math.random()*10000000000000000;
     // Ajax post
     var url = assman.controller_url+'&class='+classname+'&method='+methodname;
-    jQuery.post(url, data, function( response ) {
+    $jQ.post(url, data, function( response ) {
         console.debug(response);
         if(response.status == 'fail') {
             console.log(response.data.errors);
@@ -417,15 +419,15 @@ function array_unique(a) {
 }
 
 function select_group(group) {
-    //var group = jQuery('#asset_groups').val();
-    jQuery('#modal_asset_group').val(group);
+    //var group = $jQ('#asset_groups').val();
+    $jQ('#modal_asset_group').val(group);
 }
 
 /**
  * Show a simple error message... we don't fade it out because it may contain important info.
  */
 function show_error(msg) {
-    jQuery('#assman_msg').html('<div class="danger">'+msg+'</div>');
+    $jQ('#assman_msg').html('<div class="danger">'+msg+'</div>');
 }
 
 
@@ -433,10 +435,10 @@ function show_error(msg) {
  * Show a success message, then fade it out and clear it so we can reuse the div.
  */
 function show_success(msg) {
-    jQuery('#assman_msg').html('<div class="success">'+msg+'</div>')
+    $jQ('#assman_msg').html('<div class="success">'+msg+'</div>')
     .delay(3000).fadeOut(function() {
-        jQuery(this).html('');
-        jQuery(this).show(); 
+        $jQ(this).html('');
+        $jQ(this).show(); 
     });
 }
 
@@ -449,7 +451,7 @@ function show_success(msg) {
  */
 function remove_me(event,parent) {
     console.debug('[remove_me] parent: '+parent);
-    jQuery(this).closest(parent).remove();
+    $jQ(this).closest(parent).remove();
 }
 
 /**
@@ -475,9 +477,9 @@ function update_asset_order(asset_ids) {
 
 
 function fback_submit(obj) {
-   /* jQuery('.x-form').addClass('dx-test');
+   /* $jQ('.x-form').addClass('dx-test');
     var url = assman.controller_url+'&class=asset&method=create';
-    var file = jQuery('#fbdz-file').val();
+    var file = $jQ('#fbdz-file').val();
     console.log(url);
      console.log(file);*/
 /*        $.ajax({
@@ -496,13 +498,13 @@ function fback_submit(obj) {
                         //assman.PageAssets.push({asset_id:asset_id,group:"",is_active:1,"Asset":response.data.fields});
                         add_asset(response.data.fields);
                         draw_tab();
-                        jQuery(".dz-preview").remove();
+                        $jQ(".dz-preview").remove();
                    } 
                    else {     
                         alert('Something went wrong. Please check the Asset Manager Setting Page and See if the image meet the max uploAd size');                      
                         console.log('There was a problem with your image upload.');
-                        jQuery(".dz-success-mark").hide();
-                        jQuery(".dz-error-mark").show();
+                        $jQ(".dz-success-mark").hide();
+                        $jQ(".dz-error-mark").show();
                         show_error(response.data.msg);
                    }
             }
