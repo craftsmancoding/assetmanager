@@ -219,6 +219,7 @@ class BaseController extends \modExtraManagerController {
         $this->checkFormCustomizationRules();
 
         $this->setPlaceholder('_config',$this->modx->config);
+        $this->setCssURLPlaceholders();
 
         $this->modx->invokeEvent('OnManagerPageBeforeRender',array('controller' => &$this));
 
