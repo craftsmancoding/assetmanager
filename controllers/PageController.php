@@ -234,10 +234,10 @@ class PageController extends BaseController {
                 MODx.on("ready",function() {
                     console.log("[assman] on ready...");
                     MODx.addTab("modx-resource-tabs",{
-                        title: '.json_encode(utf8_encode($title)).',
+                        title: '.json_encode(mb_convert_encoding($title,'UTF-8','auto')).',
                         id: "assets-resource-tab",
                         width: "95%",
-                        html: '.json_encode(utf8_encode($out)).'
+                        html: '.json_encode(mb_convert_encoding($out,'UTF-8','auto')).'
                     });
                     if (inited==0) {
                         page_init();
@@ -254,10 +254,10 @@ class PageController extends BaseController {
                 MODx.on("ready",function() {
                     console.log("[assman] on ready...");
                     MODx.addTab("modx-resource-tabs",{
-                        title: '.json_encode(utf8_encode($title)).',
+                        title: '.json_encode(mb_convert_encoding($title,'UTF-8','auto')).',
                         id: "assets-resource-tab",
                         width: "95%",
-                        html: '.json_encode(utf8_encode($out)).'
+                        html: '.json_encode(mb_convert_encoding($out,'UTF-8','auto')).'
                     });
                 });                
             </script>');
