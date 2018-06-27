@@ -1,5 +1,9 @@
 Changelog for Asset Manager
 
+Version 1.2.1
+-------------
+- Remove stray log on save
+
 Version 1.2.0
 -------------
 - Use stricter CSS
