@@ -1,5 +1,10 @@
 Changelog for Asset Manager
 
+Version 1.2.1
+-------------
+- Remove stray log on save
+- Resolve issue (introduced in 1.2.0) where the getPageAssets and Asset snippet may not return results [#86]
+
 Version 1.2.0
 -------------
 - Use stricter CSS

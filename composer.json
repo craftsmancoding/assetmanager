@@ -36,7 +36,7 @@
         "repoman": "1.0",
         "package_name": "AssetManager",
         "namespace": "assman",
-        "version": "1.2.0",
+        "version": "1.2.1",
         "release": "pl",
         "category":"Asset Manager",
         "core_path": "",

@@ -69,13 +69,13 @@ $Snippet->log('getProductImages',$scriptProperties);
 
 
 // Formatting Arguments:
-$innerTpl = $modx->getOption('innerTpl', $scriptProperties, '<li><img src="[[+Asset.url]]" width="[[+Asset.width]]" height="[[+Asset.height]]" alt="[[+Asset.alt]]" /></li>');
-$outerTpl = $modx->getOption('outerTpl', $scriptProperties, '<ul>[[+content]]</ul>');
-$firstTpl = $modx->getOption('firstTpl', $scriptProperties, $innerTpl);
-$lastTpl = $modx->getOption('lastTpl', $scriptProperties, $innerTpl);
-$onOne = $modx->getOption('onOne', $scriptProperties, 'innerTpl');
+$innerTpl = $modx->getOption('innerTpl', $scriptProperties, '<li><img src="[[+Asset.url]]" width="[[+Asset.width]]" height="[[+Asset.height]]" alt="[[+Asset.alt]]" /></li>', true);
+$outerTpl = $modx->getOption('outerTpl', $scriptProperties, '<ul>[[+content]]</ul>', true);
+$firstTpl = $modx->getOption('firstTpl', $scriptProperties, $innerTpl, true);
+$lastTpl = $modx->getOption('lastTpl', $scriptProperties, $innerTpl, true);
+$onOne = $modx->getOption('onOne', $scriptProperties, 'innerTpl', true);
 
-$sort = $modx->getOption('sort', $scriptProperties, 'PageAsset.seq');
+$sort = $modx->getOption('sort', $scriptProperties, '`PageAsset`.`seq`', true);
 $dir = $modx->getOption('dir', $scriptProperties);
 
 // Default Arguments:
@@ -97,10 +97,10 @@ if (!$page_id) {
 $criteria = array();
 $criteria['page_id'] = $page_id;
 $criteria['PageAsset.is_active'] = true;
-if (isset($scriptProperties['is_image'])) {
+if (isset($scriptProperties['is_image']) && $scriptProperties['is_image'] !== '') {
     $criteria['Asset.is_image'] = (bool) $scriptProperties['is_image'];
 }
-if (isset($scriptProperties['group'])) {
+if (isset($scriptProperties['group']) && $scriptProperties['group'] !== '') {
     $criteria['PageAsset.group'] = $scriptProperties['group'];
 }
 

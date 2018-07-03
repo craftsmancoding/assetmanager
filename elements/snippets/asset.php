@@ -41,7 +41,7 @@ $Snippet->log('Asset',$scriptProperties);
 $asset_id = (int) $modx->getOption('asset_id', $scriptProperties);
 $width = (int) $modx->getOption('width', $scriptProperties);
 $height = (int) $modx->getOption('height', $scriptProperties);
-$tpl = $modx->getOption('tpl', $scriptProperties, '<img src="[[+url]]" width="[[+width]]" height="[[+height]]" alt="[[+alt]]" />');
+$tpl = $modx->getOption('tpl', $scriptProperties, '<img src="[[+url]]" width="[[+width]]" height="[[+height]]" alt="[[+alt]]" />', true);
 
 $Asset = $modx->getObject('Asset', $asset_id);
 
