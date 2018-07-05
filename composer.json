@@ -24,6 +24,9 @@
         "craftsmancoding/formbuilder": "dev-master",
         "craftsmancoding/pagination": "dev-master"
     },
+    "require-dev": {
+        "phpunit/phpunit": "7.2.6"
+    },
     "autoload": {
         "classmap":[
             "model/"
