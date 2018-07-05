@@ -58,6 +58,7 @@ class PageController extends BaseController {
      * Asset management main page aka Library
      *
      * @param array $scriptProperties
+     * @return rendered
      */
     public function getAssets(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
@@ -90,7 +91,7 @@ class PageController extends BaseController {
  
      public function getVerify(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
-        $A = $this->modx->newObject('Asset');
+
         $this->setPlaceholders($scriptProperties);
     
         return $this->fetchTemplate('main/verify.php');
@@ -99,10 +100,15 @@ class PageController extends BaseController {
     public function postVerify(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Asset Manager PageController:'.__FUNCTION__);
         $A = $this->modx->newObject('Asset');
+
         $db_errors = $A->verifyDB();
-//        return '<pre>'.print_r($db_errors,true);
         $file_errors = $A->verifyFiles();
+
+        $scriptProperties['errors'] = array_merge($db_errors, $file_errors);
+
         $this->setPlaceholders($scriptProperties);
+
+        return $this->fetchTemplate('main/verify.php');
     } 
     
     //------------------------------------------------------------------------------

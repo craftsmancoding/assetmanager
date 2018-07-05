@@ -973,7 +973,7 @@ class Asset extends xPDOObject
                 $errors[] = array(
                     'status' => 'error',
                     'code' => 'missing_file',
-                    'message' => 'File does not exist',
+                    'message' => 'asset_id ' . $A->get('asset_id') . ' does not exist at path '. $A->get('path'),
                     'data' => $A->toArray()
                 );
                 continue;
@@ -984,7 +984,7 @@ class Asset extends xPDOObject
                 $errors[] = array(
                     'status' => 'error',
                     'code' => 'incorrect_signature',
-                    'message' => 'File has been modified. Signature incorrect.',
+                    'message' => 'File at ' . $A->get('path') . ' for asset_id ' . $A->get('asset_id') . ' has been modified. Signature incorrect.',
                     'data' => $A->toArray()
                 );
             }
@@ -999,11 +999,11 @@ class Asset extends xPDOObject
     public function verifyFiles()
     {
         // Check main lib
-        $path = $this->xpdo->getOption('assets_path') . $this->xpdo->getOption('assman.library_path') . $stub;
+        $path = $this->xpdo->getOption('assets_path') . $this->xpdo->getOption('assman.library_path');
         if (!file_exists($path)) {
             $this->xpdo->log(\modX::LOG_LEVEL_ERROR, 'Asset does not exist: ' . $path, '',
                 __CLASS__ . '::' . __FUNCTION__, __LINE__);
-            return;
+            return [];
         }
 
         self::crawlDir($path);
@@ -1041,15 +1041,15 @@ class Asset extends xPDOObject
     {
         // Who are you?
         $sig = md5_file($file);
-        $Asset = self::$x->getObject('Asset', array('sig' => $sig));
-        if ($Asset) {
+
+        if ($Asset = self::$x->getObject('Asset', array('sig' => $sig))) {
             // are you where you are supposed to be?
             if ($Asset->get('path') != $file) {
                 self::$errors[] = array(
                     'status' => 'error',
                     'code' => 'incorrect_location',
-                    'message' => 'File has been moved to ' . $file,
-                    'data' => $A->toArray()
+                    'message' => $file . ' does not match signature ' . $sig . ' asset_id '. $Asset->get('asset_id'),
+                    'data' => $Asset->toArray()
                 );
             }
         } // Intruder! (or the sig in the db is incorrect)
@@ -1058,15 +1058,8 @@ class Asset extends xPDOObject
                 'status' => 'error',
                 'code' => 'untracked_file',
                 'message' => 'Untracked file: ' . $file,
-                'data' => $A->toArray()
+                'data' => []
             );
         }
-        //$storage_basedir = $this->xpdo->getOption('assets_path').rtrim($this->xpdo->getOption('assman.library_path'),'/').'/';
-        //$stub = $this->getRelPath($dst, $storage_basedir);
-        // unaccounted for file... do we have a matching signature?
-
-        // 
-        // self::$errors[] = array();    
-
     }
 }
