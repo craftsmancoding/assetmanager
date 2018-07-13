@@ -1,5 +1,12 @@
 Changelog for Asset Manager
 
+Version 1.3.0
+-------------
+- Updated tests
+- Compatibility for PHP 7.1
+- Compatibility for MODx 2.6.5
+- Various fixes
+
 Version 1.2.1
 -------------
 - Remove stray log on save
