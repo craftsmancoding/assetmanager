@@ -12,6 +12,20 @@
         <form action="" method="post">
             <input type="submit" class="btn" name="verify" value="<?php print $this->modx->lexicon('assman.menu.verify'); ?>" />
         </form>
-        
+
+        <?php if (array_key_exists('errors', $data) && empty($data['errors'])): ?>
+
+            <p>Congratulations!  Your asset library matches with what's in the database!</p>
+
+        <?php elseif (!empty($data['errors'])): ?>
+
+            <pre>
+            <?php foreach ($data['errors'] as $e): ?>
+                <?php print $e['message'] . "\n"; ?>
+            <?php endforeach; ?>
+            </pre>
+
+        <?php endif; ?>
+
     </div><!--/clearfix-->
 </div><!--/assman_canvas_inner-->

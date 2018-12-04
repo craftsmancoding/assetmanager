@@ -74,7 +74,6 @@ $outerTpl = $modx->getOption('outerTpl', $scriptProperties, '<ul>[[+content]]</u
 $firstTpl = $modx->getOption('firstTpl', $scriptProperties, $innerTpl, true);
 $lastTpl = $modx->getOption('lastTpl', $scriptProperties, $innerTpl, true);
 $onOne = $modx->getOption('onOne', $scriptProperties, 'innerTpl', true);
-
 $sort = $modx->getOption('sort', $scriptProperties, '`PageAsset`.`seq`', true);
 $dir = $modx->getOption('dir', $scriptProperties);
 

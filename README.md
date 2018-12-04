@@ -26,10 +26,10 @@ Requires PHP 5.3 or greater and MODX 2.3 (version 1.0 was compatible with MODX 2
 
 This package would not be possible without the beautiful and brilliant work of other coders. 
 
-- [Dropzone](http://www.dropzonejs.com/) -- a brilliant drag and drop file uploader with image previews.
+- [Dropzone](https://www.dropzonejs.com/) -- a brilliant drag and drop file uploader with image previews.
 - [Quicksand](http://razorjack.net/quicksand/) -- a great sorting/animation jQuery library.
 - [jCrop](http://deepliquid.com/content/Jcrop.html) -- provides image cropping functionality.
-- [Placehold.it](http://placehold.it/) -- a quick and simple image placeholding service.
+- [Placehold.it](https://placehold.it/) -- a quick and simple image placeholding service.
 
 
 ## Technical Note:
