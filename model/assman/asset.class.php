@@ -610,7 +610,7 @@ class Asset extends xPDOObject
         //$ext = strtolower(strrchr($this->get('url'), '.'));
         //$w = $this->xpdo->getOption('assman.thumbnail_width');
         //$h = $this->xpdo->getOption('assman.thumbnail_height');
-        return sprintf('//placehold.it/%sx%s/648a1e/ffffff/&text=%s', $w, $h, $text);
+        return sprintf('https://placehold.it/%sx%s/648a1e/ffffff/&text=%s', $w, $h, $text);
     }
 
     /**
