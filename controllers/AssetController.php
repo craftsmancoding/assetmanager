@@ -39,7 +39,7 @@ class AssetController extends APIController {
             return $this->sendFail(array('errors'=> 'FILE data empty for field: '.$fieldname));
         }
         if (!empty($_FILES[$fieldname]['error'])) {
-            return $this->sendFail(array('errors'=> 'Error uploading file: '.$_FILES[$filename]['error']));
+            return $this->sendFail(array('errors'=> 'Error uploading file: '.$_FILES[$fieldname]['error']));
         }        
         
         try {

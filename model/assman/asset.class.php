@@ -329,6 +329,10 @@ class Asset extends xPDOObject
             $this->set('duration', $info['duration']);
         } else {
             $this->set('is_image', 0);
+            // These attributes are set with default values to avoid MySQL errors.
+            $this->set('width', 0);
+            $this->set('height', 0);
+            $this->set('duration', 0);
         }
 
         if (!$this->save()) {
@@ -606,7 +610,7 @@ class Asset extends xPDOObject
         //$ext = strtolower(strrchr($this->get('url'), '.'));
         //$w = $this->xpdo->getOption('assman.thumbnail_width');
         //$h = $this->xpdo->getOption('assman.thumbnail_height');
-        return sprintf('http://placehold.it/%sx%s/648a1e/ffffff/&text=%s', $w, $h, $text);
+        return sprintf('//placehold.it/%sx%s/648a1e/ffffff/&text=%s', $w, $h, $text);
     }
 
     /**
